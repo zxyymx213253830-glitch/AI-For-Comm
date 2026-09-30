@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>计划书修改分析报告 · 百炼→OpenTrek</title>
+<style>
+:root {
+  --bg: #FAFAF8;
+  --card-bg: #FFFFFF;
+  --border: #E8E7E1;
+  --primary: #534AB7;
+  --primary-light: #EEEDFE;
+  --text: #2C2C2A;
+  --text-muted: #888780;
+  --danger: #C44;
+  --danger-bg: #FDF0F0;
+  --success: #2A8;
+  --success-bg: #F0FAF5;
+  --warn: #B80;
+  --warn-bg: #FFF9E8;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.75;
+  padding: 0;
+}
+.header {
+  background: #26215C;
+  color: #FFF;
+  padding: 40px 24px;
+  text-align: center;
+}
+.header h1 { font-size: 28px; font-weight: 700; margin-bottom: 8px; }
+.header p { color: #CECBF6; font-size: 14px; }
+.container { max-width: 900px; margin: 0 auto; padding: 24px 16px 60px; }
+
+.summary {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin: 24px 0;
+}
+.summary-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 20px;
+  text-align: center;
+}
+.summary-card .num { font-size: 32px; font-weight: 700; color: var(--primary); }
+.summary-card .label { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+
+.section { margin: 32px 0; }
+.section-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #26215C;
+  border-bottom: 2px solid var(--primary);
+  padding-bottom: 8px;
+  margin-bottom: 16px;
+}
+
+.change-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+  margin: 12px 0;
+}
+.change-card .change-header {
+  padding: 12px 16px;
+  font-weight: 700;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.change-card .change-header.removed { background: var(--danger-bg); color: var(--danger); }
+.change-card .change-header.added { background: var(--success-bg); color: var(--success); }
+.change-card .change-header.modified { background: var(--warn-bg); color: var(--warn); }
+.change-card .change-body { padding: 12px 16px; font-size: 13px; }
+.change-card .old-text {
+  background: var(--danger-bg);
+  border-left: 3px solid var(--danger);
+  padding: 8px 12px;
+  margin: 6px 0;
+  border-radius: 0 4px 4px 0;
+  font-family: Consolas, monospace;
+  font-size: 12px;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+.change-card .new-text {
+  background: var(--success-bg);
+  border-left: 3px solid var(--success);
+  padding: 8px 12px;
+  margin: 6px 0;
+  border-radius: 0 4px 4px 0;
+  font-family: Consolas, monospace;
+  font-size: 12px;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+.change-card .note {
+  color: var(--text-muted);
+  font-size: 12px;
+  margin-top: 6px;
+  padding-top: 6px;
+  border-top: 1px dashed var(--border);
+}
+
+.enhancement-card {
+  background: linear-gradient(135deg, var(--primary-light), #F7F6FC);
+  border: 1px solid #D4D0F0;
+  border-radius: 8px;
+  padding: 16px;
+  margin: 12px 0;
+}
+.enhancement-card .enh-title {
+  font-weight: 700;
+  color: var(--primary);
+  font-size: 14px;
+  margin-bottom: 6px;
+}
+.enhancement-card .enh-desc { font-size: 13px; color: var(--text); }
+.enhancement-card .enh-source {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: 6px;
+}
+
+.badge {
+  display: inline-block;
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-weight: 600;
+}
+.badge.removed { background: var(--danger); color: #FFF; }
+.badge.added { background: var(--success); color: #FFF; }
+.badge.modified { background: var(--warn); color: #FFF; }
+
+table.mapping {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  margin: 12px 0;
+}
+table.mapping th {
+  background: #26215C;
+  color: #FFF;
+  padding: 8px 12px;
+  text-align: left;
+  font-weight: 500;
+}
+table.mapping td {
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+table.mapping tr.alt td { background: var(--bg); }
+
+.footer {
+  text-align: center;
+  padding: 24px;
+  color: var(--text-muted);
+  font-size: 12px;
+  border-top: 1px solid var(--border);
+  margin-top: 40px;
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>计划书修改分析报告</h1>
+  <p>百炼平台 (Bailian/DashScope) → OpenTrek (TrekAgent) 全面适配</p>
+</div>
+
+<div class="container">
+
+  <div class="summary">
+    <div class="summary-card">
+      <div class="num">17</div>
+      <div class="label">修改点（MD + HTML）</div>
+    </div>
+    <div class="summary-card">
+      <div class="num">4</div>
+      <div class="label">新增 OpenTrek 能力增强</div>
+    </div>
+    <div class="summary-card">
+      <div class="num">2</div>
+      <div class="label">修改文件</div>
+    </div>
+  </div>
+
+  <!-- 核心映射表 -->
+  <div class="section">
+    <div class="section-title">核心概念映射表</div>
+    <table class="mapping">
+      <tr>
+        <th style="width:30%;">百炼（原文）</th>
+        <th style="width:30%;">OpenTrek（修改后）</th>
+        <th>说明</th>
+      </tr>
+      <tr>
+        <td><code>dashscope</code> Python SDK</td>
+        <td>HTTP REST API（标准库 <code>urllib</code>）</td>
+        <td>OpenTrek 无独立 SDK，直接 HTTP 调用</td>
+      </tr>
+      <tr class="alt">
+        <td><code>DASHSCOPE_API_KEY</code></td>
+        <td><code>APP_KEY</code>（Bearer Token）</td>
+        <td>认证方式不同</td>
+      </tr>
+      <tr>
+        <td><code>dashscope.Assistants.create()</code></td>
+        <td>OpenTrek 控制台创建智能体 → 获取 <code>agentCode</code></td>
+        <td>Agent 在平台控制台预创建</td>
+      </tr>
+      <tr class="alt">
+        <td><code>dashscope.Threads</code> + <code>Messages</code> + <code>Runs</code></td>
+        <td><code>createSession</code> + <code>/run</code>（SSE 流式）</td>
+        <td>会话管理模型完全不同</td>
+      </tr>
+      <tr>
+        <td><code>qwen-max</code> / <code>qwen-plus</code></td>
+        <td>控制台选配模型（通过 <code>agentCode</code> 绑定）</td>
+        <td>模型在创建智能体时选定</td>
+      </tr>
+      <tr class="alt">
+        <td>百炼控制台知识库 + <code>text-embedding-v4</code></td>
+        <td>OpenTrek <code>kortex</code> API 检索 + <code>kbIndexCode</code></td>
+        <td>知识库检索方式不同</td>
+      </tr>
+      <tr>
+        <td>百炼控制台：<code>bailian.console.aliyun.com</code></td>
+        <td>OpenTrek 控制台：<code><platform-host>:80/sfm-agent-studio</code></td>
+        <td>平台地址不同</td>
+      </tr>
+      <tr class="alt">
+        <td>API 调用费用（按 token 计费）</td>
+        <td>学校部署平台，无直接费用</td>
+        <td>风险项变更</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- 逐节修改详情 -->
+  <div class="section">
+    <div class="section-title">逐节修改详情</div>
+
+    <!-- 修改1 -->
+    <div class="change-card">
+      <div class="change-header modified">
+        <span class="badge modified">修改</span> 1.2 节点化设计 · 工具集
+      </div>
+      <div class="change-body">
+        <div class="old-text">百炼API调用 · 计算器 · RAG检索</div>
+        <div class="new-text">OpenTrek API · 计算器 · RAG检索</div>
+      </div>
+    </div>
+
+    <!-- 修改2 -->
+    <div class="change-card">
+      <div class="change-header modified">
+        <span class="badge modified">修改</span> 1.4 创新点（答辩要点）
+      </div>
+      <div class="change-body">
+        <div class="old-text">3. 百炼平台深度集成——百炼 Assistant API 作为每个节点的大脑，百炼知识库提供领域 RAG
+4. 跨学科覆盖
+5. 全链路可追溯</div>
+        <div class="new-text">3. OpenTrek 平台深度集成——基于 OpenTrek Agent API 构建每个节点，OpenTrek 知识库提供领域 RAG
+4. SSE 流式实时输出——思考过程（thought.delta）与回答文本（message.delta）实时分离输出，全过程可观测
+5. 跨学科覆盖
+6. 全链路可追溯——OpenTrek 原生 trace 支持（trace=true）
+7. 平台原生记忆与知识库高级检索——memoryUserId 用户级记忆隔离，AND/OR 复合逻辑过滤</div>
+        <div class="note">新增 3 个 OpenTrek 特有创新点，从 5 点扩充到 7 点</div>
+      </div>
+    </div>
+
+    <!-- 修改3 -->
+    <div class="change-card">
+      <div class="change-header modified">
+        <span class="badge modified">修改</span> 第二章 · 架构图底层
+      </div>
+      <div class="change-body">
+        <div class="old-text">百炼平台底座 / Assistant API / qwen-max/plus
+百炼知识库RAG / 3GPP/信息论/FPGA三库</div>
+        <div class="new-text">OpenTrek底座 / Agent API / SSE流式
+OpenTrek知识库 / kortex RAG / 3GPP/信息论/FPGA三库</div>
+      </div>
+    </div>
+
+    <!-- 修改4 -->
+    <div class="change-card">
+      <div class="change-header modified">
+        <span class="badge modified">修改</span> 2.2 解题工作流
+      </div>
+      <div class="change-body">
+        <div class="old-text">math_agent 调用百炼 API 推导</div>
+        <div class="new-text">math_agent 调用 OpenTrek API 推导</div>
+      </div>
+    </div>
+
+    <!-- 修改5 -->
+    <div class="change-card">
+      <div class="change-header modified">
+        <span class="badge modified">修改</span> 3.0 新增 OpenTrek API 调用流程（全新章节）
+      </div>
+      <div class="change-body">
+        <div class="new-text">新增 OpenTrek API 调用流程表格，说明 createSession → /run(SSE) → 解析 thought.delta + message.delta 完整链路，以及备选异步流程（createNewChannel + /auto/new/open/run）</div>
+        <div class="note">原计划书缺少 API 调用流程说明，基于 5 份 PDF 文档新增</div>
+      </div>
+    </div>
+
+    <!-- 修改6 -->
+    <div class="change-card">
+      <div class="change-header modified">
+        <span class="badge modified">修改</span> 3.1 环境准备
+      </div>
+      <div class="change-body">
+        <div class="old-text">注册阿里云账号，开通百炼平台
+pip install dashscope structlog openai
+export DASHSCOPE_API_KEY="sk-xxxxxxxx"
+import dashscope
+resp = dashscope.Generation.call(model="qwen-plus", prompt="你好")</div>
+        <div class="new-text">登录 OpenTrek 平台（学校部署）→ 创建 APP_KEY → 获取 agentCode/agentVersion
+pip install structlog（HTTP 调用用标准库 urllib，无额外 SDK）
+export OPENTREK_APP_KEY="your_app_key"
+验证代码改用 urllib.request 调用 createSession 接口</div>
+        <div class="note">无需安装 dashscope/openai SDK，依赖更轻量</div>
+      </div>
+    </div>
+
+    <!-- 修改7 -->
+    <div class="change-card">
+      <div class="change-header modified">
+        <span class="badge modified">修改</span> 3.3 核心代码：Agent 节点
+      </div>
+      <div class="change-body">
+        <div class="old-text">import dashscope
+class AgentNode:
+    def __init__(self, name, model, instructions):
+        self.assistant = dashscope.Assistants.create(model=model, ...)
+        self.thread = dashscope.Threads.create()
+    def think(self, task):
+        dashscope.Messages.create(self.thread.id, ...)
+        run = dashscope.Runs.create(self.thread.id, ...)
+        msgs = dashscope.Messages.list(self.thread.id)
+        reply = msgs.data[0].content[0].text.value</div>
+        <div class="new-text">import json, urllib.request, urllib.error
+class AgentNode:
+    def __init__(self, name, agent_code, agent_version, bus=None):
+        self.session_id = self._create_session()  # 调用 createSession
+    def think(self, task):
+        # 调用 /run 接口（stream=True），解析 SSE 流
+        text = self._parse_sse(resp)  # 提取 message.delta / text.delta
+    @staticmethod
+    def _parse_sse(resp):
+        # 解析 thought.delta（忽略）+ message.delta（累计）+ text.delta（累计）</div>
+        <div class="note">从 DashScope SDK 调用完全重写为 HTTP REST + SSE 流式解析，与实际代码一致</div>
+      </div>
+    </div>
+
+    <!-- 修改8 -->
+    <div class="change-card">
+      <div class="change-header modified">
+        <span class="badge modified">修改</span> 3.5 知识库操作
+      </div>
+      <div class="change-body">
+        <div class="old-text">百炼平台操作：知识库搭建
+百炼控制台完成，3 个知识库
+向量模型选 text-embedding-v4
+操作步骤：控制台 → 数据管理 → 导入数据 → 创建知识库索引</div>
+        <div class="new-text">OpenTrek 知识库操作：RAG 搭建
+OpenTrek 控制台创建 3 个知识库，通过 kortex API 检索
+新增 kb_client.py 检索客户端代码示例
+说明 kbIndexCode、workspacecode、advancedRules 高级检索能力</div>
+        <div class="note">从控制台手动操作改为 API 调用 + 代码示例</div>
+      </div>
+    </div>
+
+    <!-- 修改9 -->
+    <div class="change-card">
+      <div class="change-header modified">
+        <span class="badge modified">修改</span> 第四章 · 团队分工
+      </div>
+      <div class="change-body">
+        <div class="old-text">A: 封装百炼 Assistant API / 无 SSE 解析器 / 无知识库检索客户端
+B: 调通百炼 Assistant API / 在百炼控制台调试 / qwen-max/qwen-plus 模型选择</div>
+        <div class="new-text">A: 封装 OpenTrek Agent API / 新增 SSE 流式解析器（P0）/ 新增知识库检索客户端 kb_client.py（P1）
+B: 调通 OpenTrek createSession + /run / 在 OpenTrek 控制台创建智能体 / 控制台选配模型</div>
+        <div class="note">接口约定同步更新为 AgentNode(name, agent_code, agent_version, bus)</div>
+      </div>
+    </div>
+
+    <!-- 修改10 -->
+    <div class="change-card">
+      <div class="change-header modified">
+        <span class="badge modified">修改</span> 第六章 · 风险与对策
+      </div>
+      <div class="change-body">
+        <div class="old-text">百炼 Assistant API 行为与预期不符 → 备选改用兼容 OpenAI 的 Generation API
+API 调用费用超支 → 开发期用 qwen-plus/turbo，演示切 qwen-max</div>
+        <div class="new-text">OpenTrek API 行为与预期不符（SSE 解析异常）→ 备选改为非流式 stream=false
+新增：OpenTrek 平台内网访问受限 → 校园网/VPN 环境
+新增：SSE 流式响应中断或超时 → SSE_READ_TIMEOUT + MAX_LINES 保护</div>
+        <div class="note">移除费用风险（学校平台无直接费用），新增 2 个 OpenTrek 特有风险</div>
+      </div>
+    </div>
+
+    <!-- 修改11 -->
+    <div class="change-card">
+      <div class="change-header modified">
+        <span class="badge modified">修改</span> 附录 · 参考资源
+      </div>
+      <div class="change-body">
+        <div class="old-text">百炼平台控制台：https://bailian.console.aliyun.com
+DashScope SDK 文档：https://help.aliyun.com/zh/model-studio/
+知识库创建指南：https://help.aliyun.com/zh/model-studio/rag-knowledge-base</div>
+        <div class="new-text">OpenTrek 控制台：http://<platform-host>:80/sfm-agent-studio
+OpenTrek API 文档（项目根目录 5 份 PDF）：
+  创建session.pdf / 发起agent调用.pdf / 发起一次对话.pdf / 创建连接.pdf / 知识库检索.pdf</div>
+        <div class="note">参考资源全部替换为 OpenTrek 相关链接和文档</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- OpenTrek 能力增强点 -->
+  <div class="section">
+    <div class="section-title">OpenTrek 能力增强点（基于 PDF 文档）</div>
+
+    <div class="enhancement-card">
+      <div class="enh-title">1. SSE 流式实时输出</div>
+      <div class="enh-desc">OpenTrek 的 <code>/run</code> 接口支持 SSE 流式返回，将 <strong>思考过程</strong>（thought.delta）和<strong>回答文本</strong>（message.delta）分离输出。这天然契合项目"全链路日志"的铁律——思考过程可独立记录和展示，回答文本拼接后输出用户。</div>
+      <div class="enh-source">来源：发起agent调用.pdf — SSE 流式输出格式（object: thought.delta / message.delta）</div>
+    </div>
+
+    <div class="enhancement-card">
+      <div class="enh-title">2. 原生 Trace 支持</div>
+      <div class="enh-desc"><code>/run</code> 接口支持 <code>trace=true</code> 参数，OpenTrek 原生返回调用链路记录。无需额外开发即可实现"全过程可追溯"的答辩要点，比百炼平台的日志方案更轻量。</div>
+      <div class="enh-source">来源：发起agent调用.pdf — trace 参数（当 trace=true，控制是否返回 trace 记录）</div>
+    </div>
+
+    <div class="enhancement-card">
+      <div class="enh-title">3. 知识库高级检索（AND/OR 复合逻辑）</div>
+      <div class="enh-desc">OpenTrek <code>kortex</code> API 支持 <code>advancedRules</code> 参数，可按文件名（fileName）进行 EQ（等于）、IN（包含）、IS_NOT_NULL（非空）、LIKE（模糊匹配）等复合逻辑过滤。适用于精确定位"3GPP TS 29.274 中的 GTPv2 Create Session"等场景，比百炼的简单向量检索更灵活。</div>
+      <div class="enh-source">来源：知识库检索.pdf — advancedRules 参数（operator: AND/OR, conditions: simple/nested）</div>
+    </div>
+
+    <div class="enhancement-card">
+      <div class="enh-title">4. 用户级记忆隔离（memoryUserId）</div>
+      <div class="enh-desc"><code>createSession</code> 接口支持可选参数 <code>memoryUserId</code>，按用户标识生成隔离的记忆分区。在多 Agent 协作场景下，每个 Agent 节点可维护独立的用户记忆上下文，无需自行管理记忆存储。</div>
+      <div class="enh-source">来源：创建session.pdf — memoryUserId 参数（用于区分用户的标识，与平台用户 ID 无关）</div>
+    </div>
+
+  </div>
+
+  <!-- 修改文件清单 -->
+  <div class="section">
+    <div class="section-title">修改文件清单</div>
+    <table class="mapping">
+      <tr>
+        <th style="width:35%;">文件</th>
+        <th style="width:15%;">修改类型</th>
+        <th>修改内容</th>
+      </tr>
+      <tr>
+        <td><code>docs/项目方案书.md</code></td>
+        <td>全面修改</td>
+        <td>17 处百炼引用替换为 OpenTrek；新增 API 调用流程章节；重写代码示例和知识库操作</td>
+      </tr>
+      <tr class="alt">
+        <td><code>docs/proposal.html</code></td>
+        <td>全面修改</td>
+        <td>封面关键词、创新点、风险表、任务清单、参考资源全部同步更新</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="footer">
+    生成时间：2026-08-05 · 计划书版本 v2.0 · 适配 OpenTrek (TrekAgent) 平台
+  </div>
+
+</div>
+
+</body>
+</html>

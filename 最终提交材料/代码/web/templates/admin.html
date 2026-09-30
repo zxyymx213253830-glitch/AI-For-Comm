@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}设置{% endblock %}
+{% block page_title %}设置{% endblock %}
+{% block page_sub %}平台接入 · Agent 注册表{% endblock %}
+{% block content %}
+<div class="settings-wrap">
+  <div class="glass set-card">
+    <h3>平台接入</h3>
+    <div class="sd">配置本地编排器与 OpenTrek 云端智能体平台的连接参数。</div>
+    <div class="field"><label>平台地址 baseUrl</label><input id="f-baseUrl" placeholder="http://…/agent/api"></div>
+    <div class="field"><label>应用密钥 appKey</label>
+      <div class="pw-wrap">
+        <input type="password" id="f-appKey" placeholder="平台颁发的 AppKey">
+        <button class="pw-toggle" id="pwToggle" type="button" title="显示 / 隐藏">
+          <svg viewBox="0 0 24 24" stroke="currentColor"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+        </button>
+      </div>
+    </div>
+    <div class="two-col">
+      <div class="field"><label>请求超时（秒）</label><input id="f-timeout" type="number" min="10"></div>
+      <div class="field"><label>SSE 读取超时（秒）</label><input id="f-sse" type="number" min="10"></div>
+    </div>
+  </div>
+
+  <div class="glass set-card">
+    <h3>Agent 注册表</h3>
+    <div class="sd">注册到平台的专家智能体，可修改编码、版本与知识库绑定。</div>
+    <div id="agentList"><div class="log-empty">加载中…</div></div>
+  </div>
+
+  <div class="set-actions">
+    <button class="btn btn-primary" id="saveBtn">保存配置</button>
+    <button class="btn btn-ghost" id="reloadBtn">重新加载</button>
+  </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/admin.js') }}"></script>
+{% endblock %}

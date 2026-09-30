@@ -1,0 +1,9 @@
+# AI for Comm 运行时依赖（2026-09-02 实测环境：Python 3.13.12）
+# 说明：平台 HTTP/SSE 调用走标准库 urllib，不需要 requests；
+#       括号内为本项目实测通过的版本，装更高版本亦可。
+flask>=3.0          # Web 六页应用与 SSE 进度推送（实测 3.1.3）
+structlog>=23.0     # 结构化事件日志 → logs/session.jsonl（实测 26.1.0）
+numpy>=1.26         # 通信算法库、蒙特卡洛仿真的数值计算（实测 2.5.2）
+scipy>=1.11         # erf/erfc 精确误码率积分（实测 1.18.1）
+sympy>=1.12         # 符号数学推演与恒等式复核工具（实测 1.14.0）
+matplotlib>=3.8     # sim_agent 代码在沙箱子进程出图，须配 MPLBACKEND=Agg（实测 3.11.1）

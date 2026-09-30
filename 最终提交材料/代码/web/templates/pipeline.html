@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block title %}科研任务{% endblock %}
+{% block page_title %}科研任务{% endblock %}
+{% block page_sub %}六步流水线 · 多智能体协同{% endblock %}
+{% block content %}
+<div class="glass task-input">
+  <textarea id="topic" placeholder="输入研究课题，回车开始…">BPSK 在 AWGN 信道下的误码率理论推导与仿真验证</textarea>
+  <div class="foot">
+    <div class="quick-tags">
+      <button class="qt" type="button" onclick="fillTopic('BPSK 在 AWGN 信道下的误码率理论推导与仿真验证')">示例：BPSK 误码率</button>
+      <button class="qt" type="button" onclick="fillTopic('MIMO-OFDM 系统信道容量分析与仿真')">MIMO-OFDM 容量</button>
+      <button class="qt" type="button" onclick="fillTopic('5G NR 随机接入流程与信令机制研究')">5G 随机接入</button>
+    </div>
+    <button class="btn btn-primary" id="runBtn">▶ 开始研究</button>
+  </div>
+</div>
+
+<div class="result-banner" id="resultBanner"></div>
+<div class="fail-banner" id="failBanner"></div>
+
+<div class="research-grid">
+  <div>
+    <div class="stepper" id="stepper"></div>
+    <div class="glass net-panel">
+      <div class="net-hint">智能体协作网络 · 消息总线拓扑</div>
+      <div class="net-actions">
+        <button id="autoBtn" type="button">⏸ 暂停自转</button>
+      </div>
+      <div class="stage" id="stage">
+        <svg class="links" id="links" viewBox="0 0 600 420" preserveAspectRatio="none"></svg>
+        <div class="scene" id="scene"></div>
+        <div class="node-tooltip" id="tooltip"></div>
+      </div>
+      <div class="legend">
+        <span><i style="background:var(--green)"></i>在线</span>
+        <span><i style="background:var(--indigo)"></i>工作中</span>
+        <span><i style="background:var(--orange)"></i>校验中</span>
+        <span style="margin-left:auto;color:var(--tx3)">拖拽旋转 · 悬停节点查看详情</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="side">
+    <div class="glass panel" id="panelLog">
+      <div class="panel-h" data-panel="panelLog">实时日志 <span class="chev">▾</span></div>
+      <div class="panel-b" id="logBox"><div class="log-empty">等待任务启动…<br>日志将按来源智能体实时滚动</div></div>
+    </div>
+    <div class="glass panel" id="panelProd">
+      <div class="panel-h" data-panel="panelProd">阶段产出 <span class="chev">▾</span></div>
+      <div class="panel-b" id="prodBox"><div class="log-empty">暂无阶段产出</div></div>
+    </div>
+    <div class="glass panel" id="panelVerify">
+      <div class="panel-h" data-panel="panelVerify">验证结果 <span class="chev">▾</span></div>
+      <div class="panel-b" id="verifyBox"><div class="log-empty">校验尚未开始</div></div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/pipeline.js') }}"></script>
+{% endblock %}

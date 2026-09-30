@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI for Comm 项目结课汇报书</title>
+<style>
+:root {
+  --ink: #0a1f3d;
+  --ink-tint: #152a4a;
+  --paper: #f1f3f5;
+  --paper-tint: #e4e8ec;
+  --gold: #c9973f;
+  --text: #1a2332;
+  --muted: #5b6472;
+  --serif: "Songti SC", "STSong", "SimSun", serif;
+  --sans: "PingFang SC", "Microsoft YaHei", sans-serif;
+  --mono: "JetBrains Mono", "Consolas", monospace;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { background: var(--paper); color: var(--text); font-family: var(--sans); }
+body { line-height: 1.8; }
+
+/* ── 扉页 ─────────────────────────── */
+.cover {
+  width: 210mm; min-height: 297mm; background: var(--ink); color: #e9edf2;
+  display: flex; flex-direction: column; justify-content: center;
+  padding: 28mm 22mm; page-break-after: always; position: relative; overflow: hidden;
+}
+.cover::before {
+  content: ""; position: absolute; inset: 0;
+  background: radial-gradient(ellipse 120% 60% at 85% -10%, rgba(201,151,63,.16), transparent 60%),
+              radial-gradient(ellipse 90% 45% at -10% 110%, rgba(21,42,74,.9), transparent 65%);
+}
+.cover > * { position: relative; }
+.cover .kicker { font-size: 13px; letter-spacing: .35em; color: var(--gold); margin-bottom: 26px; }
+.cover h1 { font-family: var(--serif); font-size: 44px; font-weight: 700; line-height: 1.35; margin-bottom: 14px; }
+.cover .subtitle { font-size: 17px; color: #aebacd; margin-bottom: 40px; letter-spacing: .06em; }
+.cover .badge {
+  display: inline-block; border: 1px solid var(--gold); color: var(--gold);
+  padding: 6px 22px; font-size: 13px; letter-spacing: .3em; margin-bottom: 44px;
+}
+.cover .keywords { font-size: 13px; color: #8fa0b8; margin-bottom: 56px; }
+.cover .keywords b { color: #c6d2e2; font-weight: 600; }
+.cover .meta {
+  border-top: 1px solid rgba(201,151,63,.45); padding-top: 18px;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 8px 24px; font-size: 12.5px; color: #8fa0b8;
+}
+.cover .meta b { color: #dbe3ee; font-weight: 600; }
+
+/* ── 版心 ─────────────────────────── */
+.sheet { max-width: 720px; margin: 0 auto; padding: 48px 24px 96px; }
+@media screen { .doc { animation: fadein .3s ease; } @keyframes fadein { from {opacity:0} to {opacity:1} } }
+@media (prefers-reduced-motion: reduce) { .doc { animation: none; } }
+
+/* ── 目录 ─────────────────────────── */
+.toc { page-break-after: always; padding-top: 12px; }
+.toc h2 { font-family: var(--serif); font-size: 26px; color: var(--ink); border-bottom: 3px solid var(--gold); padding-bottom: 10px; margin-bottom: 26px; }
+.toc ol { list-style: none; }
+.toc li { display: flex; align-items: baseline; padding: 9px 0; border-bottom: 1px dotted #c3cbd4; font-size: 15px; }
+.toc li .no { font-family: var(--serif); color: var(--gold); font-size: 18px; font-weight: 700; width: 44px; flex: none; }
+
+/* ── 章节 ─────────────────────────── */
+section.chapter { page-break-before: always; margin-top: 8px; }
+section.chapter:first-of-type { page-break-before: auto; }
+h2.ch {
+  font-family: var(--serif); font-size: 25px; color: var(--ink);
+  border-bottom: 3px solid var(--gold); padding-bottom: 10px; margin: 34px 0 20px;
+}
+h2.ch .cno { color: var(--gold); margin-right: 14px; }
+h3 { font-size: 16.5px; color: var(--ink-tint); margin: 26px 0 10px; }
+h3::before { content: "◆ "; color: var(--gold); font-size: 12px; }
+p { margin: 0 0 12px; }
+p + p { text-indent: 0; }
+strong { color: var(--ink); }
+ul.plain, ol.plain { margin: 0 0 14px 22px; }
+ul.plain li, ol.plain li { margin-bottom: 6px; }
+
+/* ── 摘要块 ───────────────────────── */
+.abstract {
+  background: var(--paper-tint); border-left: 4px solid var(--gold);
+  padding: 16px 20px; margin: 14px 0 20px; font-size: 14.5px; border-radius: 0 6px 6px 0;
+}
+
+/* ── 表格 ─────────────────────────── */
+table { width: 100%; border-collapse: collapse; margin: 14px 0 20px; font-size: 13px; }
+th { background: var(--ink); color: #e9edf2; padding: 8px 10px; text-align: left; font-weight: 600; }
+td { padding: 7px 10px; border-bottom: 1px solid #d4dae1; vertical-align: top; }
+tr:nth-child(even) td { background: var(--paper-tint); }
+td code, p code, li code { font-family: var(--mono); font-size: 12px; background: #e2e7ec; padding: 1px 5px; border-radius: 3px; }
+
+/* ── 架构图 ───────────────────────── */
+pre.arch {
+  font-family: var(--mono); font-size: 11.5px; line-height: 1.55;
+  background: var(--ink); color: #dbe3ee; padding: 18px 16px; border-radius: 6px;
+  overflow-x: auto; margin: 14px 0 20px; page-break-inside: avoid;
+}
+
+/* ── 时间轴 ───────────────────────── */
+.timeline { list-style: none; margin: 14px 0 22px; }
+.timeline li { position: relative; padding: 0 0 20px 30px; border-left: 2px solid var(--paper-tint); margin-left: 9px; }
+.timeline li::before {
+  content: ""; position: absolute; left: -8px; top: 4px; width: 14px; height: 14px;
+  border-radius: 50%; background: var(--gold); border: 3px solid var(--paper);
+}
+.timeline .t { font-family: var(--serif); color: var(--ink); font-weight: 700; font-size: 15px; }
+
+/* ── 注块 ─────────────────────────── */
+.note {
+  background: #fff; border: 1px solid #d4dae1; border-left: 4px solid var(--ink-tint);
+  padding: 12px 16px; font-size: 13px; color: var(--muted); margin: 14px 0 20px; border-radius: 0 6px 6px 0;
+}
+
+footer.colophon {
+  margin-top: 48px; padding-top: 16px; border-top: 1px solid #c3cbd4;
+  font-size: 12px; color: var(--muted); text-align: center;
+}
+
+@media print {
+  .cover { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  th, .cover, pre.arch { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  section.chapter, table, .timeline li, pre.arch { page-break-inside: avoid; }
+}
+@page { size: A4; }
+</style>
+</head>
+<body>
+<div class="doc">
+
+<!-- ================= 封面 ================= -->
+<div class="cover">
+  <div class="kicker">AI 创新大赛 · 结课汇报</div>
+  <h1>AI for Comm<br>通信领域多智能体科研协作系统</h1>
+  <div class="subtitle">项目总体计划执行汇报 · 结课汇报书</div>
+  <div class="badge">端 到 端 验 证 · 通 过</div>
+  <div class="keywords"><b>关键词</b>　多智能体协作 · 六步科研流水线 · 蒙特卡洛真执行仿真 · 三级校验闭环 · OpenTrek 智能体工厂</div>
+  <div class="meta">
+    <span><b>项目周期</b>　2026-07-28 至 2026-09-02（约五周）</span>
+    <span><b>平台环境</b>　阿里云专有云 OpenTrek Agent Dev</span>
+    <span><b>工作空间</b>　AI For Comm</span>
+    <span><b>智能体规模</b>　7 平台智能体 · 7 知识库 · 4 工具 · 3 技能</span>
+    <span><b>汇报编制</b>　周行远（架构师）</span>
+    <span><b>编制日期</b>　2026-09-02</span>
+  </div>
+</div>
+<!-- ================= 封面结束 ================= -->
+
+<div class="sheet">
+
+<!-- ================= 目录 ================= -->
+<nav class="toc">
+  <h2>目录</h2>
+  <ol>
+    <li><span class="no">01</span>项目概述</li>
+    <li><span class="no">02</span>总体架构</li>
+    <li><span class="no">03</span>平台侧建设情况</li>
+    <li><span class="no">04</span>本地侧建设情况</li>
+    <li><span class="no">05</span>质量验证与量化结果</li>
+    <li><span class="no">06</span>项目目录地图</li>
+    <li><span class="no">07</span>里程碑时间线</li>
+    <li><span class="no">08</span>下一步计划</li>
+  </ol>
+</nav>
+
+<!-- ================= 01 ================= -->
+<section class="chapter">
+  <h2 class="ch"><span class="cno">01</span>项目概述</h2>
+  <div class="abstract">
+    让 7 个各司其职的 AI 智能体像一个科研小组一样协作，把「给出一个通信课题 → 自动产出一份经过交叉校验、含真实仿真图表的研究报告」这件事全流程打通。系统采用「大脑在平台、手脚在本地」的混合架构：智能体推理与知识库检索由 OpenTrek 平台承载，真实计算执行、代码沙箱、报告渲染与 Web 应用由本地落地，两侧通过标准接口解耦。
+  </div>
+  <h3>要解决的三个硬伤</h3>
+  <table>
+    <tr><th style="width:32%">单一大模型的硬伤</th><th>本系统对症机制</th></tr>
+    <tr><td>推导易错、没人复核</td><td>独立校验智能体 + 三级评级 + 不通过自动退回修正（闭环 ≤2 轮）</td></tr>
+    <tr><td>「仿真结果」可能是编的</td><td>仿真真执行闭环：代码必须在本地沙箱真实跑通，结果回灌后才许出图</td></tr>
+    <tr><td>产出格式散落不可用</td><td>固定字段 JSON 统稿协议 + 高审美 HTML 渲染引擎，产出即交付</td></tr>
+  </table>
+</section>
+
+<!-- ================= 02 ================= -->
+<section class="chapter">
+  <h2 class="ch"><span class="cno">02</span>总体架构</h2>
+  <pre class="arch">┌────────────────────── 本地应用层 ──────────────────────┐
+│ Web 应用（Flask · 6 个中文页面：对话/研究/报告库/监控/设置）│
+│ 命令行入口 main.py（无人值守跑完整研究）                   │
+├────────────────────── 本地编排层 core/ ─────────────────┤
+│ 六步科研流水线：规划拆题 → 文献调研 → 并行咨询专家 →       │
+│                 交叉校验 → 闭环修正(≤2轮) → 统稿成报      │
+│ 协作编排器 · 内存消息总线 · SSE 流式解析 · 配置管理        │
+├────────────────────── 本地工具层 tools/ ────────────────┤
+│ SymPy 符号计算 · 通信算法库 · Python 代码沙箱 ·            │
+│ Verilog 仿真 · 文献检索 · 本地资料检索 · 工具注册表        │
+├───────────── HTTP/SSE ──┴──── 平台层 OpenTrek ──────────┤
+│ 7 个智能体（角色对话型 · ReAct 引擎）· 7 个知识库          │
+│ 4 个 API 工具（搭载至对应智能体）· 3 个技能（Skills Hub）  │
+└─────────────────────────────────────────────────────────┘</pre>
+  <h3>六步流水线</h3>
+  <table>
+    <tr><th style="width:16%">步骤</th><th style="width:30%">执行者</th><th>产出</th></tr>
+    <tr><td>1 规划拆题</td><td>规划者角色</td><td>课题拆成 2~5 个带专家归属的子问题（JSON）</td></tr>
+    <tr><td>2 文献调研</td><td>文献调研智能体</td><td>公网（arXiv / Semantic Scholar）+ 平台知识库双源综述</td></tr>
+    <tr><td>3 并行咨询</td><td>数学/协议/硬件/仿真专家</td><td>各子问题专家答案，同一专家至多领 1 题，并发执行</td></tr>
+    <tr><td>4 交叉校验</td><td>校验智能体</td><td>三级评级：【通过】/【有条件通过】/【不通过】</td></tr>
+    <tr><td>5 闭环修正</td><td>原专家智能体</td><td>不通过按反馈修正重提，至多 2 轮</td></tr>
+    <tr><td>6 统稿成报</td><td>报告主编智能体 + 本地渲染引擎</td><td>固定字段 JSON → 靛蓝瓷主题 HTML 研究报告（内嵌仿真图表）</td></tr>
+  </table>
+  <h3>三个关键机制</h3>
+  <ul class="plain">
+    <li><strong>仿真真执行闭环</strong>——仿真智能体出代码，本地沙箱真实运行（临时目录隔离、无窗口绘图、中文字体预置），运行结果回灌智能体，与理论公式同图对照后才出图，从制度上杜绝「编造运行结果」。</li>
+    <li><strong>工具回环协议</strong>——本地工具清单注入提示词，智能体按需申请调用，执行结果回喂继续推理。</li>
+    <li><strong>知识库挂载</strong>——调用时按配置声明自动携带知识库检索参数，数学/协议/硬件/文献智能体各挂对应领域库。</li>
+  </ul>
+</section>
+
+<!-- ================= 03 ================= -->
+<section class="chapter">
+  <h2 class="ch"><span class="cno">03</span>平台侧建设情况</h2>
+  <p>以下数据为 2026-09-02 经平台接口实查采集，可登录 OpenTrek「AI For Comm」工作空间复核。</p>
+  <h3>智能体（7 个，全部已上线）</h3>
+  <table>
+    <tr><th>智能体</th><th>职责</th><th>模型</th><th>在线版本</th><th>角色手册</th></tr>
+    <tr><td>math_agent</td><td>信息论公式推导与信道容量计算</td><td>qwen3.6-plus</td><td>v2.0</td><td>3446 字 · 含推导三步法</td></tr>
+    <tr><td>comm_agent</td><td>3GPP 协议查询与信令流程分析</td><td>qwen3.6-plus</td><td>v5.0</td><td>默认模板 + 约束注入</td></tr>
+    <tr><td>hw_agent</td><td>FPGA / Verilog 模块生成与时序分析</td><td>qwen3.6-plus</td><td>v7.2</td><td>精简防超 token 版</td></tr>
+    <tr><td>sim_agent</td><td>蒙特卡洛仿真代码生成与理论对照</td><td>qwen3.6-plus</td><td>v1.0</td><td>五步法 + 全文交付指令</td></tr>
+    <tr><td>vertify_agent</td><td>推导/代码/结果交叉校验，三级评级</td><td>qwen3.6-plus</td><td>v5.1</td><td>3246 字 · 含通用四项清单</td></tr>
+    <tr><td>lit_review_agent</td><td>文献检索、归纳与综述生成</td><td>glm-5.1</td><td>v1.0</td><td>双源检索规范</td></tr>
+    <tr><td>report_agent</td><td>多智能体产出统稿成结构化报告 JSON</td><td>qwen3.6-plus</td><td>v1.0</td><td>1753 字 · JSON 统稿协议</td></tr>
+  </table>
+  <p>版本迭代实录：hw_agent v6.0 → v7.2（修复空回复与 token 耗尽，本地已锁定 v7.2）；verify_agent v5.0 → v5.1（评级规则重构）；comm_agent v4.0 → v5.0。</p>
+
+  <h3>知识库（7 个，全部已启用）</h3>
+  <table>
+    <tr><th>知识库</th><th>类型</th><th>建库</th><th>服务智能体</th></tr>
+    <tr><td>信息论数学标准库（Shannon 1948 原文、讲义）</td><td>文档库</td><td>07-28</td><td>数学推导</td></tr>
+    <tr><td>3GPP_KB（5G NR / 核心网标准条款）</td><td>自定义库</td><td>08-03</td><td>协议分析</td></tr>
+    <tr><td>3GPP_Document_KB（Release 18 规范）</td><td>文档库</td><td>08-05</td><td>协议分析 · 文献调研</td></tr>
+    <tr><td>FPGA_Fundamentals_Standards_KB</td><td>文档库</td><td>08-06</td><td>硬件实现</td></tr>
+    <tr><td>FPGA_AMD_Vivado_Tooling_KB（综合/约束/时序）</td><td>文档库</td><td>08-07</td><td>硬件实现</td></tr>
+    <tr><td>FPGA_AMD_Devices_IP_KB（器件与 IP）</td><td>文档库</td><td>08-07</td><td>硬件实现</td></tr>
+    <tr><td>通信仿真标准库（6 类模板，经本地数值验证）</td><td>自定义库</td><td>08-27</td><td>通信仿真</td></tr>
+  </table>
+  <p>建库方法：本地 knowledge/ 目录撰写源文档 → 数值验证 → 打包为平台导入格式入库，平台库与本地库同源可溯。</p>
+
+  <h3>工具集（4 个 API 工具，已搭载至对应智能体）</h3>
+  <table>
+    <tr><th>工具</th><th>功能要点</th><th>搭载智能体</th></tr>
+    <tr><td>信息论数学知识库检索</td><td>熵/信道容量/编码定理定向检索，禁止编造公式</td><td>math_agent</td></tr>
+    <tr><td>3GPP知识库检索</td><td>规范条款级检索，无充分依据须明说</td><td>comm_agent</td></tr>
+    <tr><td>硬件知识库批量检索</td><td>一次并查 FPGA 基础/器件 IP/Vivado 三库</td><td>hw_agent</td></tr>
+    <tr><td>知识库检索（通用）</td><td>按库索引 + 相似度得分返回片段</td><td>lit_review_agent 等</td></tr>
+  </table>
+
+  <h3>技能 Skills Hub（3 个，均已发布并搭载至对应智能体环节）</h3>
+  <table>
+    <tr><th>技能</th><th>内容</th><th>搭载对象</th></tr>
+    <tr><td>sim-five-step-method<br><b>仿真五步法</b></td><td>方案→代码→真执行→理论对比→出图强制闭环，禁止交付未真实运行过的代码</td><td>sim_agent</td></tr>
+    <tr><td>research-report-compile<br><b>科研汇报统稿</b></td><td>收集→组织→成文→复核四步，七章节固定结构，数据零编造</td><td>report_agent</td></tr>
+    <tr><td>research-report-aesthetic<br><b>高审美排版规范</b></td><td>靛蓝瓷主题设计令牌、版式硬规则、禁止清单（本报告即按此规范排版）</td><td>报告渲染环节</td></tr>
+  </table>
+  <div class="note">机制注（备答辩追问）：角色对话型智能体的技能生效方式为<b>方法论注入</b>——技能正文已写入对应智能体的在线提示词与本地执行管线（如仿真五步法即 sim_agent 的角色规范与真执行流程）；平台 Skills Hub 承担技能资产的中心化留档与跨空间共享。平台的技能绑定关系当前面向高代码型智能体形态，属平台产品边界而非本项目缺失。</div>
+</section>
+
+<!-- ================= 04 ================= -->
+<section class="chapter">
+  <h2 class="ch"><span class="cno">04</span>本地侧建设情况</h2>
+  <h3>核心框架（core/，10 模块）</h3>
+  <p>智能体通用节点（会话管理 / SSE 流解析 / 空回复重试）、六步研究流水线、双智能体协作编排器、内存消息总线、工具回环驱动、报告 HTML 渲染引擎、配置管理器（Web 设置页可视化编辑并热写配置）、结构化日志。</p>
+  <h3>本地工具层（tools/，7 项，离线验收 30/30 通过）</h3>
+  <ul class="plain">
+    <li>SymPy 符号计算与等式复核；通信算法库（调制、信噪比换算、理论误码率与容量——16QAM 公式已修正为精确积分式并经蒙特卡洛验证）</li>
+    <li>Python 代码沙箱（临时目录隔离、无窗口绘图、图表回收；代码提取支持围栏 / 无语言围栏 / 章节缩进 / 裸代码回退四形态）</li>
+    <li>Verilog 本地编译仿真、arXiv 与 Semantic Scholar 文献检索、本地资料毫秒级检索、工具注册表（中文标签直达前端徽标）</li>
+  </ul>
+  <h3>Web 应用（web/，6 页全中文界面）</h3>
+  <p>实时对话（SSE 流式）、研究流水线执行页（步骤进度 + 3D 协作网络动画）、报告库（在线查看/下载，公式渲染 + 代码高亮）、智能体监控看板、设置页（平台连接与凭证管理）。设计系统为深海军蓝 / 琥珀金主题，配套自研 logo。</p>
+  <h3>通信仿真专项</h3>
+  <ul class="plain">
+    <li>仿真模板 6 类全部落地并经本地数值验证：AWGN 误码率蒙特卡洛、香农信道容量、数字调制星座图、瑞利衰落、MIMO 容量、信道编码增益，另有绘图与实验规范 1 篇</li>
+    <li>标杆案例：BPSK 在 AWGN 信道误码率全链路——理论推导 → 蒙特卡洛仿真真执行 → 理论曲线同图对照 → 校验通过 → 入报告</li>
+    <li>图表自动嵌入：流水线生成的 PNG 自动回收并内嵌最终 HTML 报告</li>
+  </ul>
+  <h3>提示词工程（prompts/，与平台在线版同源同步）</h3>
+  <p>五份角色手册 + 五份硬约束文件。09-02 并入交付包新规范：数学「推导三步法」（推导→符号复算→边界检验）与校验「通用四项清单」（量纲 / 单调性 / 特殊值代入 / 文献对照），已直调平台配置接口上线并回读验证。</p>
+  <h3>部署与运行环境</h3>
+  <p>Docker / Compose 容器化定义齐备；内网演示环境服务常驻 7860 端口、防火墙放行、局域网可访；校园网零信任环境的会话过期问题已完成诊断与穿透预案。</p>
+</section>
+
+<!-- ================= 05 ================= -->
+<section class="chapter">
+  <h2 class="ch"><span class="cno">05</span>质量验证与量化结果</h2>
+  <table>
+    <tr><th style="width:34%">验证项</th><th>结果</th></tr>
+    <tr><td>能力评测（38 题集，09-02 摸底）</td><td>单题直答 24/25 成功（96%）；校验评审自动判定 5/5 全命中；多智能体协作闭环 4/5（报告链路受平台 180 秒超时限制，已有本地兜底）</td></tr>
+    <tr><td>工具层离线验收</td><td>30/30 通过（含公式修正与检索时延优化）</td></tr>
+    <tr><td>端到端标杆</td><td>BPSK 课题全流程走通，报告含真执行仿真图</td></tr>
+    <tr><td>报告产物</td><td>累计正式研究报告 17 份（HTML，可持续追加）</td></tr>
+    <tr><td>交付整合自检</td><td>离线全项自检通过（编译 / 导入 / 提取单测 / 题库完整性）</td></tr>
+    <tr><td>过程留痕</td><td>关键节点截图 30+ 张、专项排查记录 3 份，全部归档可溯</td></tr>
+  </table>
+  <h3>工程攻坚（沉淀为可复用经验）</h3>
+  <ul class="plain">
+    <li>平台 180 秒硬超时：截断抢救 + 本地机械统稿兜底</li>
+    <li>SSE 终答不全：思考链回退 + 调用侧指令注入双保险</li>
+    <li>代码围栏截断：平台输出与本地提取联合修复</li>
+    <li>子进程绘图阻塞：无窗口后端强制预防</li>
+    <li>提示词 token 耗尽：极简角色手册重构（v7.2 经验）</li>
+    <li>平台多版本并存：调用侧显式版本锁定策略</li>
+  </ul>
+</section>
+
+<!-- ================= 06 ================= -->
+<section class="chapter">
+  <h2 class="ch"><span class="cno">06</span>项目目录地图</h2>
+  <pre class="arch">核心代码   core/（框架） agents/（角色） tools/（工具） prompts/（提示词） web/（前端）
+知识资产   knowledge/（知识库源文档） skills/（平台技能源） evals/（评测集）
+运行产物   outputs/（研究报告 + 图表） logs/（会话日志）
+文档留档   docs/（方案书 / 架构图 / 本报告 / 平台资料 / 设计稿 / 验证截图）
+归档       archive/（历史资产，不参与运行）
+入口配置   config.json · main.py · build_kb_json.py · Dockerfile · requirements.txt</pre>
+  <p>各目录内均备有中文 README 详述用途，总览见《目录结构说明.md》。</p>
+</section>
+
+<!-- ================= 07 ================= -->
+<section class="chapter">
+  <h2 class="ch"><span class="cno">07</span>里程碑时间线</h2>
+  <ul class="timeline">
+    <li><span class="t">07-28 ~ 08-07 · 平台基建</span><br>4 个智能体创建迭代、5 个知识库建库，通信仿真与报告渲染打底</li>
+    <li><span class="t">08-26 ~ 08-31 · 体系成型</span><br>文献 / 仿真 / 报告 3 个新智能体上线；六步流水线 + 闭环修正 + 真执行回灌；Web 应用六页齐备；评测集 38 题建立</li>
+    <li><span class="t">09-01 · 审美升级</span><br>报告高审美排版规范（靛蓝瓷主题）落地并入平台技能中心</li>
+    <li><span class="t">09-02 · 交付整合</span><br>队友交付包全面整合（评测工具链 / 智能体脚本 / 推导与校验规范 / 2 个新技能上架）；硬件智能体版本核实并切换 v7.2；两份新提示词推送平台上线</li>
+  </ul>
+</section>
+
+<!-- ================= 08 ================= -->
+<section class="chapter">
+  <h2 class="ch"><span class="cno">08</span>下一步计划</h2>
+  <ol class="plain">
+    <li><strong>报告协作链路提速</strong>——规避平台 180 秒超时的分段统稿方案，补齐评测中唯一未通过链路</li>
+    <li><strong>评测常态化</strong>——38 题全量 + 人工评分维度打分，形成每次迭代后的回归基线</li>
+    <li><strong>硬件验证补全</strong>——hw_agent 接入 RTL 仿真验证环节（本地 Verilator 通道已具备）</li>
+    <li><strong>技能形态演进</strong>——待平台高代码型智能体可用后，将三个技能从「方法论注入」升级为平台原生绑定</li>
+    <li><strong>评测集扩容</strong>——向 OFDM、波束管理、语义通信等方向追加高难题</li>
+  </ol>
+  <footer class="colophon">
+    AI for Comm · 项目结课汇报书 · 2026-09-02 · 系统架构图见 docs/architecture.svg · 研究报告样例见 Web「报告库」 · 平台资产可登录 OpenTrek「AI For Comm」工作空间实查
+  </footer>
+</section>
+
+</div><!-- /sheet -->
+</div><!-- /doc -->
+</body>
+</html>

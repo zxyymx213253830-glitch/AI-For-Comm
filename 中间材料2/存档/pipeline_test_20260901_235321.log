@@ -1,0 +1,37 @@
+============================================================
+科研任务流水线端到端验收  2026-09-01 23:53:21
+课题: BPSK 在 AWGN 信道下的误码率理论推导与仿真验证
+============================================================
+
+[0/6] 已加载 7 个 Agent: math_agent, verify_agent, comm_agent, hw_agent, sim_agent, lit_review_agent, report_agent
+
+[1/6] 启动流水线（预计 3~8 分钟）...
+
+[2/6] 校验问题拆解
+      [PASS] 拆解出子问题 ≥1 — BPSK调制信号在AWGN信道中的接收模型与噪声统计特性是什; 如何基于高斯分布概率密度函数推导BPSK的理论误码率（BER; 如何设计蒙特卡洛仿真算法来生成随机比特流、添加高斯噪声并统计; 如何通过改变信噪比（SNR/EbN0）对比仿真结果与理论推导
+
+[3/6] 校验文献调研
+      [PASS] 综述非空且非降级提示 — 1921 字符
+      [PASS] 综述含参考文献清单 — Xiv 2019 [5] Jiao B, Yang Y, Yin M. Layered BPSK for High Data Rates, arXiv 2018
+
+[4/6] 校验并行专家
+      [PASS] 专家回答数 ≥1 — comm, math, sim
+      [PASS] 专家(comm) 回答有效 — 746 字符
+      [PASS] 专家(math) 回答有效 — 1578 字符
+      [PASS] 专家(sim) 回答有效 — 2681 字符
+
+[5/6] 校验综合意见
+      [FAIL] verdict 含三级评级之一 — 22 字符
+
+[6/7] 校验报告统稿（report_agent）
+      [PASS] 统稿 JSON 解析成功 — summary=134 字, findings=3 条
+      [PASS] 统稿字段齐全 — summary; background; findings; cross_analysis; conclusion; outlook; keywords
+
+[7/7] 校验 HTML 报告
+      [PASS] 报告文件存在且 >1KB — outputs\research_20260902_001828.html (134192 bytes)
+      [PASS] 报告含靛蓝瓷模板与统稿章节 — 扉页/执行摘要已渲染
+
+============================================================
+总计: 11/12 项通过 | 耗时 888.2s
+日志: outputs\pipeline_test_20260901_235321.log
+============================================================

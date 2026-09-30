@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI for Comm — 科研任务报告</title>
+<style>
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: "Microsoft YaHei", "PingFang SC", sans-serif; background: #f5f7fa; color: #2c3e50; line-height: 1.8; }
+.header { background: linear-gradient(135deg, #1a237e, #283593); color: #fff; padding: 40px 60px; }
+.header h1 { font-size: 28px; margin-bottom: 8px; }
+.header .meta { opacity: 0.8; font-size: 14px; }
+.container { max-width: 1000px; margin: 0 auto; padding: 30px 20px; }
+.card { background: #fff; border-radius: 12px; box-shadow: 0 2px 12px rgba(0,0,0,0.06); margin-bottom: 24px; overflow: hidden; }
+.card-header { padding: 16px 24px; font-weight: 700; font-size: 16px; border-bottom: 1px solid #eee; display: flex; align-items: center; gap: 10px; }
+.card-body { padding: 24px; }
+.badge { display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 12px; font-weight: 600; }
+.badge-math { background: #e3f2fd; color: #1565c0; }
+.badge-verify { background: #e8f5e9; color: #2e7d32; }
+.badge-pass { background: #c8e6c9; color: #1b5e20; }
+.badge-warn { background: #fff3e0; color: #e65100; }
+.badge-bus { background: #f3e5f5; color: #7b1fa2; }
+.flow { display: flex; align-items: center; justify-content: center; gap: 16px; padding: 24px; flex-wrap: wrap; }
+.flow-node { background: #fff; border: 2px solid #e0e0e0; border-radius: 10px; padding: 16px 24px; text-align: center; min-width: 140px; }
+.flow-node .icon { font-size: 28px; margin-bottom: 4px; }
+.flow-node .label { font-weight: 700; font-size: 14px; }
+.flow-arrow { font-size: 24px; color: #9e9e9e; }
+.derivation-box, .feedback-box { white-space: pre-wrap; font-family: "Courier New", "Microsoft YaHei", monospace; background: #fafafa; border: 1px solid #eee; border-radius: 8px; padding: 20px; font-size: 14px; }
+.checklist { list-style: none; }
+.checklist li { padding: 6px 0; }
+.checklist li::before { content: "\2713 "; color: #4caf50; font-weight: 700; }
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 24px; }
+.stat-card { background: #fff; border-radius: 12px; box-shadow: 0 2px 12px rgba(0,0,0,0.06); padding: 20px; text-align: center; }
+.stat-card .value { font-size: 32px; font-weight: 700; color: #1a237e; }
+.stat-card .label { font-size: 13px; color: #999; margin-top: 4px; }
+.footer { text-align: center; color: #999; font-size: 12px; padding: 30px; }
+pre { white-space: pre-wrap; word-wrap: break-word; }
+
+.badge-lit { background: #fff8e1; color: #f57f17; }
+.badge-planner { background: #ede7f6; color: #4527a0; }
+.badge-exp { background: #e3f2fd; color: #1565c0; }
+.expert-answer, .lit-box { white-space: pre-wrap; font-family: "Microsoft YaHei", monospace;
+  background: #fafafa; border: 1px solid #eee; border-radius: 8px; padding: 20px; font-size: 14px; }
+table.plan { width: 100%; border-collapse: collapse; font-size: 14px; }
+table.plan th, table.plan td { border-bottom: 1px solid #eee; padding: 10px 12px; text-align: left; }
+table.plan th { background: #f5f7fa; color: #555; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>AI for Comm — 科研任务协作报告</h1>
+  <div class="meta">
+    生成时间: 2026-08-27 13:30:43 &nbsp;|&nbsp;
+    平台: OpenTrek &nbsp;|&nbsp;
+    模式: 科研任务流水线（拆解→调研→专家→校验→报告）
+  </div>
+</div>
+
+<div class="container">
+
+  <div class="stats">
+    <div class="stat-card"><div class="value">4</div><div class="label">参与 Agent</div></div>
+    <div class="stat-card"><div class="value">1</div><div class="label">子问题数</div></div>
+    <div class="stat-card"><div class="value">1</div><div class="label">总耗时（秒）</div></div>
+    <div class="stat-card"><div class="value">✅ 通过</div><div class="label">校验结论</div></div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">🎯 研究课题</div>
+    <div class="card-body"><b>t</b>&nbsp;<span class="badge badge-planner">规划者 x</span></div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">🔄 协作流程</div>
+    <div class="flow">
+      <div class="flow-node"><div class="icon">🗺️</div><div class="label">问题拆解</div>
+        <div style="font-size:11px;color:#999;margin-top:4px;">x</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node" style="border-color:#f57f17;background:#fffbf0;">
+        <div class="icon">📚</div><div class="label">文献调研</div>
+        <div style="font-size:11px;color:#999;margin-top:4px;">公网 + 平台KB</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node"><div class="icon">🧑‍🔬</div><div class="label">并行专家</div>
+        <div style="font-size:11px;color:#999;margin-top:4px;">comm</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node"><div class="icon">✅</div><div class="label">综合校验</div>
+        <div style="font-size:11px;color:#999;margin-top:4px;">verify_agent</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node"><div class="icon">📄</div><div class="label">HTML 报告</div>
+        <div style="font-size:11px;color:#999;margin-top:4px;">本页</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">🗂️ 任务拆解</div>
+    <div class="card-body">
+      <table class="plan">
+        <tr><th>#</th><th>子问题</th><th>负责专家</th></tr>
+        <tr><td>1</td><td>q</td><td><span class="badge badge-exp">comm</span></td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><span class="badge badge-lit">lit_review_agent</span> 文献综述</div>
+    <div class="card-body"><div class="lit-box">lit</div></div>
+  </div>
+
+
+  <div class="card">
+    <div class="card-header"><span class="badge badge-exp">comm_agent</span> q</div>
+    <div class="card-body"><div class="expert-answer">ansansansansansansansansansansansansansansansansansansansansansansansansansansansansansansansansansansansansansansansans</div></div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><span class="badge badge-verify">verify_agent</span> 综合校验意见</div>
+    <div class="card-body"><div class="feedback-box">【通过】</div></div>
+  </div>
+
+</div>
+
+<div class="footer">
+  AI for Comm · 通信领域多 Agent 协作智能问答系统 · Powered by OpenTrek
+</div>
+</body>
+</html>

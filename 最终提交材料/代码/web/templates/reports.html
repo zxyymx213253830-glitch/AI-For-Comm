@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}报告库{% endblock %}
+{% block page_title %}报告库{% endblock %}
+{% block page_sub %}历次科研成果 · 在线查看{% endblock %}
+{% block content %}
+{% if reports %}
+<div class="lib-head">
+  <div class="search">
+    <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    <input id="libSearch" placeholder="搜索报告文件名…">
+  </div>
+  <select class="select-min" id="libSort">
+    <option value="new">最新优先</option>
+    <option value="old">最旧优先</option>
+  </select>
+</div>
+<div class="report-grid" id="reportGrid">
+  {% for r in reports %}
+  <div class="glass card report-card" data-name="{{ r.filename|lower }}" data-mtime="{{ r.mtime }}">
+    <h4>📄 {{ r.filename }}</h4>
+    <div class="meta"><span>{{ r.time_str }}</span><span>{{ r.size_kb }} KB</span></div>
+    <div class="sum">六步流水线自动生成的研究报告，含理论推导、仿真验证与校验结论。</div>
+    <div class="ops">
+      <a class="btn btn-primary btn-sm" target="_blank" href="/reports/view/{{ r.filename }}">在线查看</a>
+      <a class="btn btn-ghost btn-sm" href="/reports/download/{{ r.filename }}">下载</a>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+<div class="empty-state" id="libEmpty" style="display:none">
+  <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+  <h4>没有匹配的报告</h4>
+  <p>换个关键词试试，或清空搜索框查看全部报告。</p>
+</div>
+{% else %}
+<div class="empty-state">
+  <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+  <h4>还没有研究报告</h4>
+  <p>提交一个通信科研课题，平台将自动产出经过校验的研究报告。</p>
+  <a class="btn btn-primary" href="/research">去发起第一个课题</a>
+</div>
+{% endif %}
+{% endblock %}
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/library.js') }}"></script>
+{% endblock %}

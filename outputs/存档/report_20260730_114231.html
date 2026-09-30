@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI for Comm — 协作验证报告</title>
+<style>
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: "Microsoft YaHei", "PingFang SC", sans-serif; background: #f5f7fa; color: #2c3e50; line-height: 1.8; }
+.header { background: linear-gradient(135deg, #1a237e, #283593); color: #fff; padding: 40px 60px; }
+.header h1 { font-size: 28px; margin-bottom: 8px; }
+.header .meta { opacity: 0.8; font-size: 14px; }
+.container { max-width: 1000px; margin: 0 auto; padding: 30px 20px; }
+.card { background: #fff; border-radius: 12px; box-shadow: 0 2px 12px rgba(0,0,0,0.06); margin-bottom: 24px; overflow: hidden; }
+.card-header { padding: 16px 24px; font-weight: 700; font-size: 16px; border-bottom: 1px solid #eee; display: flex; align-items: center; gap: 10px; }
+.card-body { padding: 24px; }
+.badge { display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 12px; font-weight: 600; }
+.badge-math { background: #e3f2fd; color: #1565c0; }
+.badge-verify { background: #e8f5e9; color: #2e7d32; }
+.badge-pass { background: #c8e6c9; color: #1b5e20; }
+.badge-warn { background: #fff3e0; color: #e65100; }
+.badge-bus { background: #f3e5f5; color: #7b1fa2; }
+.flow { display: flex; align-items: center; justify-content: center; gap: 16px; padding: 24px; flex-wrap: wrap; }
+.flow-node { background: #fff; border: 2px solid #e0e0e0; border-radius: 10px; padding: 16px 24px; text-align: center; min-width: 140px; }
+.flow-node .icon { font-size: 28px; margin-bottom: 4px; }
+.flow-node .label { font-weight: 700; font-size: 14px; }
+.flow-arrow { font-size: 24px; color: #9e9e9e; }
+.derivation-box, .feedback-box { white-space: pre-wrap; font-family: "Courier New", "Microsoft YaHei", monospace; background: #fafafa; border: 1px solid #eee; border-radius: 8px; padding: 20px; font-size: 14px; }
+.checklist { list-style: none; }
+.checklist li { padding: 6px 0; }
+.checklist li::before { content: "\2713 "; color: #4caf50; font-weight: 700; }
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 24px; }
+.stat-card { background: #fff; border-radius: 12px; box-shadow: 0 2px 12px rgba(0,0,0,0.06); padding: 20px; text-align: center; }
+.stat-card .value { font-size: 32px; font-weight: 700; color: #1a237e; }
+.stat-card .label { font-size: 13px; color: #999; margin-top: 4px; }
+.footer { text-align: center; color: #999; font-size: 12px; padding: 30px; }
+pre { white-space: pre-wrap; word-wrap: break-word; }
+
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>AI for Comm — 多 Agent 协作验证报告</h1>
+  <div class="meta">
+    生成时间: 2026-07-30 11:42:31 &nbsp;|&nbsp;
+    平台: OpenTrek &nbsp;|&nbsp;
+    项目: 通信领域智能问答系统
+  </div>
+</div>
+
+<div class="container">
+
+  <div class="stats">
+    <div class="stat-card"><div class="value">2</div><div class="label">参与 Agent</div></div>
+    <div class="stat-card"><div class="value">394</div><div class="label">总耗时（秒）</div></div>
+    <div class="stat-card"><div class="value">✅ 通过</div><div class="label">验证结论</div></div>
+    <div class="stat-card"><div class="value">3</div><div class="label">消息交换轮次</div></div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">🔄 协作流程</div>
+    <div class="flow">
+      <div class="flow-node">
+        <div class="icon">🧮</div>
+        <div class="label">数学 Agent</div>
+        <div style="font-size:11px;color:#999;margin-top:4px;">信息论推导</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node" style="border-color:#7b1fa2;background:#faf5fc;">
+        <div class="icon">📡</div>
+        <div class="label">MessageBus</div>
+        <div style="font-size:11px;color:#999;margin-top:4px;">消息路由</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node">
+        <div class="icon">✅</div>
+        <div class="label">验证 Agent</div>
+        <div style="font-size:11px;color:#999;margin-top:4px;">正确性检查</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node" style="border-color:#7b1fa2;background:#faf5fc;">
+        <div class="icon">📡</div>
+        <div class="label">MessageBus</div>
+        <div style="font-size:11px;color:#999;margin-top:4px;">结果回传</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><span class="badge badge-math">math_agent</span> 数学推导结果</div>
+    <div class="card-body"><div class="derivation-box">【已知条件】
+- 信道类型：AWGN
+- 带宽 B = 20 MHz = 20 × 10^6 Hz
+- 信噪比 SNR = 30 dB
+
+【使用公式】
+香农信道容量公式（引自知识库 01_香农信道容量公式.md，Shannon 1948 Eq. (38)）：
+C = B · log₂(1 + S/N)
+
+【推导过程】
+第 1 步：dB → 线性值换算
+  SNR_linear = 10^(SNR_dB / 10) = 10^(30/10) = 10^3 = 1000.0
+
+第 2 步：代入香农公式
+  C = B · log₂(1 + SNR_linear)
+  C = 20 × 10^6 · log₂(1 + 1000.0)
+  C = 20 × 10^6 · log₂(1001.0)
+
+第 3 步：计算 log₂(1001)
+  根据换底公式：log₂(x) = ln(x) / ln(2)
+  log₂(1001) = ln(1001) / ln(2) ≈ 6.9088 / 0.6931 ≈ 9.9672
+
+第 4 步：最终计算
+  C = 20 × 10^6 × 9.9672
+  C = 199.34 × 10^6 bps
+  按3位有效数字修约：C ≈ 199 Mbps
+
+【最终结果】
+信道容量 C ≈ 199 Mbps
+
+【物理意义】
+该结果表明在20 MHz带宽与30 dB高信噪比条件下，该AWGN信道的理论极限传输速率约为199 Mbps，验证了香农极限对系统设计的约束作用。</div></div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><span class="badge badge-verify">verify_agent</span> 验证反馈</div>
+    <div class="card-body"><div class="feedback-box">【通过】
+核对了以下内容：
+1. 公式选择与出处 — 正确
+2. ��位换算（dB转线性、MHz转Hz） — 正确
+3. 对数底数与换底过程 — 正确
+4. 中间计算步骤展开 — 正确
+5. 数值精度 — 正确（中间过程保留5位有效数字）
+6. 最终结果单位 — 正确
+7. 物理意义解释 — 正确
+结论：推导/代码正确，可以采用。</div></div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">📋 人工核对要点</div>
+    <div class="card-body"><ul class="checklist"><li>推导是否引用了正确的香农公式 C = B·log₂(1+S/N)</li>
+<li>dB 换算是否正确（30dB → S/N = 1000）</li>
+<li>数值计算是否精确（≈ 199.5 Mbps）</li>
+<li>两端 Agent 消息是否通过 MessageBus 路由</li>
+<li>logs/session.jsonl 是否记录了完整链路</li></ul></div>
+  </div>
+
+</div>
+
+<div class="footer">
+  AI for Comm · 通信领域多 Agent 协作智能问答系统 · Powered by OpenTrek
+</div>
+</body>
+</html>

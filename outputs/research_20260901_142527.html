@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI for Comm — 科研任务报告</title>
+<!-- Markdown 渲染 -->
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<!-- 数学公式渲染 -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<!-- 代码高亮 -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9/build/styles/atom-one-dark.min.css">
+<script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9/build/highlight.min.js"></script>
+<style>
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --ink: #0a1f3d;          /* 靛蓝瓷主色：深靛蓝 */
+  --ink-tint: #152a4a;
+  --paper: #f1f3f5;        /* 瓷白 */
+  --paper-tint: #e4e8ec;
+  --gold: #c9973f;         /* 琥珀金强调 */
+  --hairline: #d5dbe2;
+  --pass: #2e7d32; --warn: #b26a00; --fail: #b03030;
+  --serif: "Noto Serif SC", "Source Han Serif SC", "SimSun", serif;
+  --sans: "Noto Sans SC", "Microsoft YaHei", "PingFang SC", sans-serif;
+}
+body { font-family: var(--sans); background: var(--paper); color: var(--ink); line-height: 1.9; font-size: 15px; }
+
+/* ── 扉页 ── */
+.cover { background: var(--ink); color: var(--paper); padding: 88px 40px 64px; position: relative; overflow: hidden; }
+.cover::before { content: ""; position: absolute; top: 0; right: 0; width: 42%; height: 100%;
+  background: radial-gradient(ellipse at 70% 20%, rgba(201,151,63,.14), transparent 62%); pointer-events: none; }
+.cover .eyebrow { font-size: 12px; letter-spacing: .45em; color: var(--gold); text-transform: uppercase; margin-bottom: 26px; }
+.cover h1 { font-family: var(--serif); font-size: 40px; font-weight: 700; line-height: 1.35;
+  max-width: 860px; margin: 0 auto 0; }
+.cover-inner { max-width: 920px; margin: 0 auto; position: relative; }
+.cover .meta-row { margin-top: 38px; display: flex; flex-wrap: wrap; gap: 0; border-top: 1px solid rgba(241,243,245,.22); }
+.cover .meta-item { padding: 14px 26px 0 0; margin-right: 26px; font-size: 13px; color: rgba(241,243,245,.72); }
+.cover .meta-item b { color: var(--paper); font-weight: 600; margin-left: 8px; }
+.verdict-badge { display: inline-block; padding: 7px 18px; border: 1px solid; border-radius: 2px;
+  font-size: 14px; font-weight: 700; letter-spacing: .1em; margin-top: 30px; }
+.v-pass { color: #b9e4bd; border-color: #6fbf77; background: rgba(111,191,119,.12); }
+.v-warn { color: #f5d7a3; border-color: var(--gold); background: rgba(201,151,63,.14); }
+.v-fail { color: #f2b8b8; border-color: #d97b7b; background: rgba(217,123,123,.12); }
+.v-info { color: rgba(241,243,245,.85); border-color: rgba(241,243,245,.4); }
+.kw { margin-top: 22px; font-size: 12px; letter-spacing: .08em; color: rgba(241,243,245,.6); }
+.kw span { border: 1px solid rgba(241,243,245,.25); padding: 3px 12px; margin: 0 8px 8px 0; display: inline-block; border-radius: 2px; }
+
+/* ── 主体 ── */
+.container { max-width: 920px; margin: 0 auto; padding: 56px 24px 40px; }
+section.chapter { margin-bottom: 56px; animation: rise .5s ease both; }
+@keyframes rise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { section.chapter { animation: none; } }
+.ch-head { display: flex; align-items: baseline; gap: 16px; border-bottom: 1px solid var(--ink);
+  padding-bottom: 12px; margin-bottom: 26px; }
+.ch-no { font-family: var(--serif); font-size: 30px; color: var(--gold); font-weight: 700; line-height: 1; }
+.ch-head h2 { font-family: var(--serif); font-size: 22px; font-weight: 700; }
+.ch-src { margin-left: auto; font-size: 12px; color: #8a94a3; letter-spacing: .12em; white-space: nowrap; }
+.prose h1, .prose h2, .prose h3 { font-family: var(--serif); margin: 18px 0 8px; color: var(--ink); }
+.prose h1 { font-size: 20px; } .prose h2 { font-size: 17px; } .prose h3 { font-size: 15.5px; }
+.prose p { margin: 8px 0; }
+.prose ul, .prose ol { padding-left: 26px; margin: 8px 0; }
+.prose code { background: var(--paper-tint); padding: 1px 6px; border-radius: 3px; font-size: 13px; }
+.prose pre { background: var(--ink); color: #dde4ec; padding: 18px; border-radius: 6px;
+  overflow-x: auto; margin: 12px 0; white-space: pre-wrap; word-wrap: break-word; }
+.prose pre code { background: none; padding: 0; color: inherit; }
+.prose table { border-collapse: collapse; margin: 12px 0; width: 100%; font-size: 13.5px; }
+.prose th, .prose td { border: 1px solid var(--hairline); padding: 8px 12px; text-align: left; }
+.prose th { background: var(--paper-tint); }
+.prose blockquote { border-left: 3px solid var(--gold); padding-left: 14px; color: #4a5568; margin: 10px 0; }
+
+/* 摘要/结论块 */
+.lead { background: #fff; border-left: 4px solid var(--gold); padding: 26px 30px;
+  box-shadow: 0 1px 8px rgba(10,31,61,.05); border-radius: 0 6px 6px 0; }
+.lead .prose p:first-child { font-size: 16px; }
+
+/* 协作链路时间轴（签名元素：01~06 编号对应真实六步流程） */
+.timeline { display: grid; grid-template-columns: repeat(6, 1fr); gap: 0; margin-top: 6px; }
+.tl-node { position: relative; padding: 0 6px; text-align: center; }
+.tl-node::before { content: ""; position: absolute; top: 15px; left: 0; right: 0; border-top: 1px solid var(--hairline); }
+.tl-node:first-child::before { left: 50%; } .tl-node:last-child::before { right: 50%; }
+.tl-dot { position: relative; z-index: 1; width: 30px; height: 30px; margin: 0 auto 10px; border-radius: 50%;
+  background: var(--ink); color: var(--paper); font-size: 12px; font-weight: 700; line-height: 30px; font-family: var(--serif); }
+.tl-node.gold .tl-dot { background: var(--gold); }
+.tl-lbl { font-size: 12.5px; font-weight: 600; }
+.tl-sub { font-size: 11px; color: #8a94a3; margin-top: 2px; }
+
+/* 任务拆解表 */
+table.plan { width: 100%; border-collapse: collapse; font-size: 14px; background: #fff; }
+table.plan th, table.plan td { border-bottom: 1px solid var(--hairline); padding: 12px 14px; text-align: left; }
+table.plan th { background: var(--paper-tint); font-size: 12.5px; letter-spacing: .06em; color: #5a6577; }
+.exp-tag { display: inline-block; padding: 2px 10px; font-size: 12px; border: 1px solid var(--hairline);
+  border-radius: 2px; color: var(--ink-tint); background: var(--paper); }
+
+/* 附录 */
+details.appendix-item { background: #fff; border: 1px solid var(--hairline); border-radius: 6px;
+  margin-bottom: 12px; overflow: hidden; }
+details.appendix-item summary { cursor: pointer; padding: 14px 20px; font-size: 14px; font-weight: 600;
+  list-style: none; display: flex; align-items: center; gap: 10px; }
+details.appendix-item summary::before { content: "▸"; color: var(--gold); transition: transform .2s; }
+details.appendix-item[open] summary::before { transform: rotate(90deg); }
+details.appendix-item .ap-body { padding: 0 20px 18px; border-top: 1px dashed var(--hairline); }
+.ap-meta { margin-left: auto; font-size: 12px; color: #8a94a3; font-weight: 400; }
+.sim-figure { text-align: center; margin: 16px 0; }
+.sim-figure img { max-width: 100%; border-radius: 6px; box-shadow: 0 2px 10px rgba(10,31,61,.12); }
+
+.footer { text-align: center; color: #9aa3b0; font-size: 12px; padding: 36px 20px 48px;
+  border-top: 1px solid var(--hairline); max-width: 920px; margin: 0 auto; }
+
+@media print {
+  body { background: #fff; }
+  .cover { -webkit-print-color-adjust: exact; print-color-adjust: exact; padding: 48px 32px; }
+  section.chapter { animation: none; page-break-inside: avoid; }
+  .container { padding-top: 24px; }
+}
+@media (max-width: 760px) {
+  .cover h1 { font-size: 28px; }
+  .timeline { grid-template-columns: repeat(3, 1fr); gap: 14px 0; }
+  .tl-node::before { display: none; }
+}
+
+</style>
+</head>
+<body>
+
+<div class="cover">
+  <div class="cover-inner">
+    <div class="eyebrow">AI FOR COMM · 科研任务报告</div>
+    <h1>BPSK 在 AWGN 信道下的误码率理论推导与仿真验证</h1>
+    <div class="verdict-badge v-info">🔍 待评审</div>
+    
+    <div class="meta-row">
+      <div class="meta-item">生成时间<b>2026-09-01 14:25:27</b></div>
+      <div class="meta-item">参与 Agent<b>3</b></div>
+      <div class="meta-item">子问题<b>5</b></div>
+      <div class="meta-item">总耗时（秒）<b>565</b></div>
+      <div class="meta-item">平台<b>OpenTrek</b></div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+
+
+  <section class="chapter">
+    <div class="ch-head"><span class="ch-no">Ⅰ</span><h2>协作链路</h2>
+      <span class="ch-src">拆解→调研→专家→校验→统稿→渲染</span></div>
+    <div class="timeline">
+      <div class="tl-node"><div class="tl-dot">01</div><div class="tl-lbl">问题拆解</div><div class="tl-sub">comm_agent</div></div>
+      <div class="tl-node"><div class="tl-dot">02</div><div class="tl-lbl">文献调研</div><div class="tl-sub">公网 + 平台KB</div></div>
+      <div class="tl-node"><div class="tl-dot">03</div><div class="tl-lbl">并行专家</div><div class="tl-sub">math</div></div>
+      <div class="tl-node"><div class="tl-dot">04</div><div class="tl-lbl">综合校验</div><div class="tl-sub">verify_agent</div></div>
+      <div class="tl-node gold"><div class="tl-dot">05</div><div class="tl-lbl">报告统稿</div><div class="tl-sub">report_agent</div></div>
+      <div class="tl-node gold"><div class="tl-dot">06</div><div class="tl-lbl">渲染交付</div><div class="tl-sub">本页</div></div>
+    </div>
+    <div style="margin-top:34px;">
+      <table class="plan">
+        <tr><th style="width:36px">#</th><th>子问题</th><th style="width:110px">负责专家</th></tr>
+        <tr><td>1</td><td>BPSK调制信号与AWGN信道的数学模型如何建立？</td><td><span class="exp-tag">math</span></td></tr>
+<tr><td>2</td><td>如何基于概率密度函数与Q函数推导BPSK在AWGN信道下的理论误码率闭合表达式？</td><td><span class="exp-tag">math</span></td></tr>
+<tr><td>3</td><td>如何设计蒙特卡洛仿真流程以生成不同Eb/N0条件下的误码率统计数据？</td><td><span class="exp-tag">sim</span></td></tr>
+<tr><td>4</td><td>理论误码率曲线与仿真结果如何对比分析，误差来源及置信区间如何计算？</td><td><span class="exp-tag">sim</span></td></tr>
+<tr><td>5</td><td>在极低误码率区域，如何通过增加仿真迭代次数或改进采样方法保证蒙特卡洛仿真的统计可靠性？</td><td><span class="exp-tag">sim</span></td></tr>
+      </table>
+    </div>
+  </section>
+
+  <section class="chapter">
+    <div class="ch-head"><span class="ch-no">Ⅱ</span><h2>研究背景与文献综述</h2>
+      <span class="ch-src">lit_review_agent</span></div>
+
+    <details class="appendix-item"><summary>文献综述全文</summary>
+      <div class="ap-body"><div class="prose md-src">1. 【主题】BPSK 在 AWGN 信道下的误码率理论推导与仿真验证
+
+2. 【子问题】
+(1) BPSK调制信号与AWGN信道的数学模型如何建立？
+(2) 如何基于概率密度函数与Q函数推导BPSK在AWGN信道下的理论误码率闭合表达式？
+(3) 如何设计蒙特卡洛仿真流程以生成不同Eb/N0条件下的误码率统计数据？
+(4) 理论误码率曲线与仿真结果如何对比分析，误差来源及置信区间如何计算？
+(5) 在极低误码率区域，如何保证蒙特卡洛仿真的统计可靠性？
+
+3. 【研究背景】
+BPSK是最基础的二进制相移键控调制，AWGN信道是通信系统分析的经典模型。当前检索到的文献主要关注超越传统BPSK容量的新型叠加传输（如Cocktail BPSK），传统BPSK误码率理论推导与仿真验证属于基础理论，未在本次检索的文献库中被直接覆盖。
+
+4. 【核心内容】
+(1) **BPSK信号与AWGN数学模型**：本次检索未覆盖经典单流BPSK与AWGN的数学建模推导。检索到的文献仅提及以AWGN信道作为并行叠加BPSK（Cocktail BPSK）的传输背景（Bingli Jiao等，2018 [3][4]；2019 [2][5]），以及MIMO AWGN下的隐蔽通信背景（Ahmed Bendary等，2019 [1]），未给出BPSK基础信号模型定义。
+(2) **基于Q函数的误码率闭合表达式推导**：检索未覆盖。文献[2][3][4][5]探讨的是叠加两层BPSK符号在AWGN下的可达到速率，未提供传统BPSK基于概率密度函数与Q函数（Q函数推导通常源自Proakis等经典教材）的误码率闭合表达式推导。
+(3) **蒙特卡洛仿真流程设计**：检索未覆盖。所提供文献中均未涉及针对传统BPSK不同Eb/N0下误码率蒙特卡洛仿真流程的具体设计。
+(4) **理论与仿真对比及置信区间**：检索未覆盖。文献未涉及传统BPSK仿真与理论曲线的误差分析及置信区间计算方法。
+(5) **极低误码率区域的统计可靠性**：检索未覆盖。文献未讨论增加仿真迭代次数或重要性采样等改进方法在极低误码率场景下的应用。
+
+5. 【现状与挑战】
+当前挑战在于：检索获取的文献聚焦于“超越BPSK信道容量”的并行叠加传输技术（Cocktail/Layered BPSK），而对用户关注的传统BPSK误码率基础理论推导与仿真验证存在严重缺失。由于基础经典理论多见于教科书（如Proakis《数字通信》）而非最新arXiv期刊论文，导致当前知识库对该子问题覆盖率为0。
+
+6. 【结论】
+基于当前检索结果，无法完成“BPSK在AWGN信道下的误码率理论推导与仿真验证”的实质性综述，核心论断均缺乏文献支撑。建议深入方向：补充检索经典通信理论专著（如Proakis 2001）及IEEE Trans. on Commun.上关于蒙特卡洛仿真置信区间与低误码率采样优化的基础文献。
+
+7. 【参考文献】
+[1] Ahmed Bendary, Amr Abdelaziz, C. Emre Koksal. Achieving Positive Covert Capacity over MIMO AWGN Channels, 2019.
+[2] Bingli Jiao, Yuli Yang, Mingxi Yin. Cocktail BPSK: Achievable Data Rate beyond Channel Capacity, 2019.
+[3] Bingli Jiao, Yuli Yang, Mingxi Yin. Layered BPSK for High Data Rates, 2018.
+[4] Bingli Jiao, Yuli Yang, Mingxi Yin. Cocktail BPSK: Cross Power Utilization for High Data Rates, 2018.
+[5] Bingli Jiao, Dongsheng Zheng, Mingxi Yin 等. Beyond the Channel Capacity of BPSK Input, 2019.
+
+（自检：由于核心知识点均未在检索文献中覆盖，已按规范如实说明缺失，未编造引用，逻辑一致。综述完成，共引用0处有效支撑论断）</div></div>
+    </details>
+  </section>
+
+  <section class="chapter">
+    <div class="ch-head"><span class="ch-no">Ⅲ</span><h2>核心发现</h2>
+      <span class="ch-src">领域专家论证</span></div>
+<div style="margin-bottom:26px;"><h3 style="font-family:var(--serif);font-size:17px;margin-bottom:6px;">1. BPSK调制信号与AWGN信道的数学模型如何建立？ <span class="exp-tag" style="font-size:11px;vertical-align:2px;">math</span></h3><div class="prose md-src">【核心结论】传统BPSK在AWGN信道下的理论模型与误码率闭合表达式为通信系统分析的基石。当前提供的调研资料聚焦于叠加/分层BPSK前沿研究，未直接覆盖基础单流BPSK建模与推导。基于通信数学知识库与经典理论，现给出标准数学模型、严格推导过程及仿真验证方法，并明确标注资料缺口。
+
+【资料缺口声明】
+经核查，调研文献[1]-[5]（Jiao等, Bendary等）主要探讨Cocktail/Layered BPSK可达速率及MIMO隐蔽通信，未覆盖：①单流BPSK基础信号与AWGN数学模型；②基于PDF与Q函数的误码率闭合推导；③蒙特卡洛仿真流程设计；④置信区间计算与低误码率采样优化。以下内容基于标准通信理论及本系统知识库模块进行补充。
+
+---
+
+### (1) BPSK调制信号与AWGN信道的数学模型如何建立？
+基带等效模型：
+- 发送信号：BPSK将比特 b∈{0, 1} 映射为实数符号 s∈{-√Eb, +√Eb}，能量归一化为 Eb（焦耳/比特）。
+- 信道模型：AWGN信道在基带等效下表示为加性高斯白噪声。接收信号 r 为：r = s + n。其中 n 为实部高斯噪声，服从均值为0、方差为 σ² = N0/2 的正态分布，即 n ~ N(0, N0/2)。N0 为单边噪声功率谱密度。
+- 适用条件：理想载波同步、匹配滤波后采样时刻的等效离散模型。
+
+### (2) 如何基于概率密度函数与Q函数推导BPSK在AWGN信道下的理论误码率闭合表达式？
+严格推导（四步法）：
+第一步：列出已知条件
+- 假设等概发送 s1 = +√Eb。
+- 噪声 n ~ N(0, N0/2)。
+- 接收端采用最大似然（ML）检测，判决门限为 γ = 0。误码发生在发送 s1 但 r &lt; 0 时。
+
+第二步：选择公式
+- 条件PDF：f(r|s1) = 1/√(2πσ²) * exp(-(r-√Eb)²/(2σ²))，其中 σ² = N0/2。
+- Q函数定义（引自知识库 6.3节）：Q(x) = 1/√(2π) ∫[x,∞] e^(-t²/2) dt。
+- 适用条件：AWGN信道，相干解调，理想同步。
+
+第三步：代入计算
+误码概率 Pb = P(r &lt; 0 | s1)，对PDF积分：
+Pb = ∫[-∞, 0] 1/√(πN0) * exp(-(r-√Eb)²/N0) dr
+进行变量代换，令 t = (r-√Eb)/√(N0/2)，则 dr = √(N0/2) dt。
+当 r=0 时，t = -√(2Eb/N0)。
+积分变为：Pb = 1/√(2π) ∫[-√(2Eb/N0), ∞] e^(-t²/2) dt
+根据Q函数定义及对称性，该积分结果直接等于 Q(√(2Eb/N0))。
+
+第四步：给出结论
+BPSK在AWGN信道下的理论误码率闭合表达式为 Pb = Q(√(2Eb/N0))。
+物理意义：误码率仅取决于比特信噪比 Eb/N0，与载波频率和绝对带宽无关；Q函数反映了高斯噪声尾部越过判决门限的概率。
+
+### (3) 如何设计蒙特卡洛仿真流程以生成不同Eb/N0条件下的误码率统计数据？
+1. 参数初始化：设定 Eb/N0 扫描范围（如 0~10 dB，步长 1 dB），显式转换为线性值 γ = 10^((Eb/N0)_dB/10)。
+2. 比特生成：每帧生成 N 个独立同分布（i.i.d.）的随机二进制比特流。
+3. BPSK映射：0 → -√Eb，1 → +√Eb（仿真常设 Eb=1）。
+4. 噪声添加：计算噪声方差 σ² = 1/(2γ)，生成高斯随机序列 n ~ N(0, σ²)，计算接收信号 r = s + n。
+5. 解调判决：r ≥ 0 判为1，r &lt; 0 判为0。
+6. 误码统计：对比发送与接收比特，统计错误比特数 K。重复 M 帧，累计总传输比特数 N_total 和总误码数 K_total。
+7. BER计算：BER_sim = K_total / N_total。遍历所有 Eb/N0 点。
+
+### (4) 理论误码率曲线与仿真结果如何对比分析，误差来源及置信区间如何计算？
+- 对比分析：将理论曲线与仿真点绘制在半对数坐标上。正常情况下，仿真点应紧密贴合理论曲线。
+- 误差来源：① 蒙特卡洛有限样本导致的统计波动；② 伪随机数生成器相关性；③ 浮点舍入误差。
+- 置信区间计算：误码事件近似服从正态分布。估计值 p̂ = K/N，方差 Var(p̂) ≈ p̂/N_total。95%置信区间为：[p̂ - 1.96√(p̂(1-p̂)/N_total), p̂ + 1.96√(p̂(1-p̂)/N_total)]。图中以误差棒表示。
+
+### (5) 在极低误码率区域，如何保证蒙特卡洛仿真的统计可靠性？
+当目标 BER ≤ 10⁻⁶ 时，常规MC计算量呈指数爆炸。保障可靠性的核心方法：
+1. 重要性采样（Importance Sampling）：改变噪声PDF为更易产生错误的分布，引入似然比权重进行无偏估计，可加速仿真 10³~10⁵ 倍。
+2. 半解析法：仅对衰落/干扰进行蒙特卡洛仿真，AWGN部分直接使用理论Q函数积分。
+3. 外推法：在中等SNR采集数据，利用对数线性特性拟合外推（需验证假设）。
+4. 并行长序列：利用多核/GPU并行，确保误码计数 K ≥ 100 以满足中心极限定理。
+
+---
+总结：传统BPSK理论体系完备，核心表达式为 Pb=Q(√(2Eb/N0))。建议后续结合 Proakis《数字通信》等经典专著补充文献引证，并在仿真环节引入重要性采样技术突破低误码率验证瓶颈。</div></div>
+  </section>
+
+
+
+  <section class="chapter">
+    <div class="ch-head"><span class="ch-no">Ⅴ</span><h2>校验意见</h2>
+      <span class="ch-src">verify_agent</span></div>
+    <div class="prose md-src">(综合校验被跳过：平台侧校验环节暂时不可用 —— 网络错误: [WinError 10051] 向一个无法连接的网络尝试了一个套接字操作。)</div>
+  </section>
+
+
+
+  <section class="chapter">
+    <div class="ch-head"><span class="ch-no">附录</span><h2>专家论证原文</h2>
+      <span class="ch-src">证据留存</span></div>
+<details class="appendix-item"><summary><span class="exp-tag">math_agent</span> BPSK调制信号与AWGN信道的数学模型如何建立？<span class="ap-meta"> · +1 个补充子问题</span></summary><div class="ap-body"><div class="prose md-src">【核心结论】传统BPSK在AWGN信道下的理论模型与误码率闭合表达式为通信系统分析的基石。当前提供的调研资料聚焦于叠加/分层BPSK前沿研究，未直接覆盖基础单流BPSK建模与推导。基于通信数学知识库与经典理论，现给出标准数学模型、严格推导过程及仿真验证方法，并明确标注资料缺口。
+
+【资料缺口声明】
+经核查，调研文献[1]-[5]（Jiao等, Bendary等）主要探讨Cocktail/Layered BPSK可达速率及MIMO隐蔽通信，未覆盖：①单流BPSK基础信号与AWGN数学模型；②基于PDF与Q函数的误码率闭合推导；③蒙特卡洛仿真流程设计；④置信区间计算与低误码率采样优化。以下内容基于标准通信理论及本系统知识库模块进行补充。
+
+---
+
+### (1) BPSK调制信号与AWGN信道的数学模型如何建立？
+基带等效模型：
+- 发送信号：BPSK将比特 b∈{0, 1} 映射为实数符号 s∈{-√Eb, +√Eb}，能量归一化为 Eb（焦耳/比特）。
+- 信道模型：AWGN信道在基带等效下表示为加性高斯白噪声。接收信号 r 为：r = s + n。其中 n 为实部高斯噪声，服从均值为0、方差为 σ² = N0/2 的正态分布，即 n ~ N(0, N0/2)。N0 为单边噪声功率谱密度。
+- 适用条件：理想载波同步、匹配滤波后采样时刻的等效离散模型。
+
+### (2) 如何基于概率密度函数与Q函数推导BPSK在AWGN信道下的理论误码率闭合表达式？
+严格推导（四步法）：
+第一步：列出已知条件
+- 假设等概发送 s1 = +√Eb。
+- 噪声 n ~ N(0, N0/2)。
+- 接收端采用最大似然（ML）检测，判决门限为 γ = 0。误码发生在发送 s1 但 r &lt; 0 时。
+
+第二步：选择公式
+- 条件PDF：f(r|s1) = 1/√(2πσ²) * exp(-(r-√Eb)²/(2σ²))，其中 σ² = N0/2。
+- Q函数定义（引自知识库 6.3节）：Q(x) = 1/√(2π) ∫[x,∞] e^(-t²/2) dt。
+- 适用条件：AWGN信道，相干解调，理想同步。
+
+第三步：代入计算
+误码概率 Pb = P(r &lt; 0 | s1)，对PDF积分：
+Pb = ∫[-∞, 0] 1/√(πN0) * exp(-(r-√Eb)²/N0) dr
+进行变量代换，令 t = (r-√Eb)/√(N0/2)，则 dr = √(N0/2) dt。
+当 r=0 时，t = -√(2Eb/N0)。
+积分变为：Pb = 1/√(2π) ∫[-√(2Eb/N0), ∞] e^(-t²/2) dt
+根据Q函数定义及对称性，该积分结果直接等于 Q(√(2Eb/N0))。
+
+第四步：给出结论
+BPSK在AWGN信道下的理论误码率闭合表达式为 Pb = Q(√(2Eb/N0))。
+物理意义：误码率仅取决于比特信噪比 Eb/N0，与载波频率和绝对带宽无关；Q函数反映了高斯噪声尾部越过判决门限的概率。
+
+### (3) 如何设计蒙特卡洛仿真流程以生成不同Eb/N0条件下的误码率统计数据？
+1. 参数初始化：设定 Eb/N0 扫描范围（如 0~10 dB，步长 1 dB），显式转换为线性值 γ = 10^((Eb/N0)_dB/10)。
+2. 比特生成：每帧生成 N 个独立同分布（i.i.d.）的随机二进制比特流。
+3. BPSK映射：0 → -√Eb，1 → +√Eb（仿真常设 Eb=1）。
+4. 噪声添加：计算噪声方差 σ² = 1/(2γ)，生成高斯随机序列 n ~ N(0, σ²)，计算接收信号 r = s + n。
+5. 解调判决：r ≥ 0 判为1，r &lt; 0 判为0。
+6. 误码统计：对比发送与接收比特，统计错误比特数 K。重复 M 帧，累计总传输比特数 N_total 和总误码数 K_total。
+7. BER计算：BER_sim = K_total / N_total。遍历所有 Eb/N0 点。
+
+### (4) 理论误码率曲线与仿真结果如何对比分析，误差来源及置信区间如何计算？
+- 对比分析：将理论曲线与仿真点绘制在半对数坐标上。正常情况下，仿真点应紧密贴合理论曲线。
+- 误差来源：① 蒙特卡洛有限样本导致的统计波动；② 伪随机数生成器相关性；③ 浮点舍入误差。
+- 置信区间计算：误码事件近似服从正态分布。估计值 p̂ = K/N，方差 Var(p̂) ≈ p̂/N_total。95%置信区间为：[p̂ - 1.96√(p̂(1-p̂)/N_total), p̂ + 1.96√(p̂(1-p̂)/N_total)]。图中以误差棒表示。
+
+### (5) 在极低误码率区域，如何保证蒙特卡洛仿真的统计可靠性？
+当目标 BER ≤ 10⁻⁶ 时，常规MC计算量呈指数爆炸。保障可靠性的核心方法：
+1. 重要性采样（Importance Sampling）：改变噪声PDF为更易产生错误的分布，引入似然比权重进行无偏估计，可加速仿真 10³~10⁵ 倍。
+2. 半解析法：仅对衰落/干扰进行蒙特卡洛仿真，AWGN部分直接使用理论Q函数积分。
+3. 外推法：在中等SNR采集数据，利用对数线性特性拟合外推（需验证假设）。
+4. 并行长序列：利用多核/GPU并行，确保误码计数 K ≥ 100 以满足中心极限定理。
+
+---
+总结：传统BPSK理论体系完备，核心表达式为 Pb=Q(√(2Eb/N0))。建议后续结合 Proakis《数字通信》等经典专著补充文献引证，并在仿真环节引入重要性采样技术突破低误码率验证瓶颈。</div></div></details>
+  </section>
+
+</div>
+
+<div class="footer">
+  AI for Comm · 通信领域多智能体协作科研平台 · 六步流水线（拆解→调研→专家→校验→统稿→渲染）· Powered by OpenTrek
+</div>
+
+<script>
+/* 公式保护：Markdown 会把 LaTeX 里的下划线当成斜体强调，
+   $\text{SNR}_{\text{th}} = 2^\eta - 1$ 这种写法一旦被排版库吃掉下划线，
+   整段正文会跟着变斜体、公式也废了。所以排版前先把公式摘出来占位，
+   排版完放回去，再交给 KaTeX。 */
+function protectMath(text){
+  var store=[];
+  var s=String(text==null?'':text)
+    .replace(/\$\$[\s\S]+?\$\$/g,function(m){store.push(m);return '\u0000K'+(store.length-1)+'\u0000';})
+    .replace(/\$(?:[^$\n])+?\$/g,function(m){store.push(m);return '\u0000K'+(store.length-1)+'\u0000';});
+  s = s.replace(/~/g, '\u0000W\u0000');
+  return [s,store];
+}
+function restoreMath(html,store){
+  return String(html).replace(/\u0000K(\d+)\u0000/g,function(m,i){return store[+i]==null?m:store[+i];})
+                     .replace(/\u0000W\u0000/g,'~');
+}
+
+// 渲染 Markdown + 数学公式 + 代码高亮
+document.addEventListener('DOMContentLoaded', function() {
+  marked.setOptions({ breaks: true, gfm: true,
+    highlight: function(code, lang) {
+      if (lang && hljs.getLanguage(lang)) {
+        try { return hljs.highlight(code, { language: lang }).value; } catch(e) {}
+      }
+      return hljs.highlightAuto(code).value;
+    }
+  });
+  document.querySelectorAll('.md-src').forEach(function(el) {
+    var raw = el.textContent;
+    if (!raw || !raw.trim()) return;
+    try { el.innerHTML = marked.parse(raw); } catch(e) { el.style.whiteSpace = 'pre-wrap'; return; }
+    try {
+      renderMathInElement(el, {
+        delimiters: [
+          {left: '$$', right: '$$', display: true},
+          {left: '$', right: '$', display: false},
+          {left: '\\(', right: '\\)', display: false},
+          {left: '\\[', right: '\\]', display: true}
+        ],
+        throwOnError: false
+      });
+    } catch(e) {}
+  });
+});
+</script>
+</body>
+</html>

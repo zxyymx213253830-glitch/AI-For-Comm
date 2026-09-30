@@ -1,0 +1,30 @@
+# 凭据：平台 appKey 不进镜像，改由 docker-compose 只读挂载 config.json
+config.json
+
+# 本地环境与缓存
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+.git/
+.qoder/
+.workbuddy/
+
+# 运行时产物（容器内以卷挂载，无需打进镜像）
+logs/
+outputs/
+
+# 交付与过程材料：体积大且与运行无关
+最终提交材料/
+中间材料/
+archive/
+docs/
+*.zip
+
+# 临时排查文件与调试留痕
+_shot*.png
+_survey.py
+_survey_out.txt
+_multi_out.txt
+_inv_out.txt
+tests/hw_debug_output*.txt

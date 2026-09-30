@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>AI for Comm 项目方案书</title>
+<style>
+@page {
+  size: A4;
+  margin: 22mm 20mm 20mm 20mm;
+}
+html { font-size: 10.5pt; }
+body { font-family: "Microsoft YaHei", "PingFang SC", sans-serif; color: #2C2C2A; line-height: 1.75; margin: 0; }
+
+/* ===== 封面 ===== */
+.cover { width: 210mm; height: 297mm; background: #26215C; color: #FFFFFF; position: relative; overflow: hidden; page-break-after: always; }
+.cover-inner { position: absolute; top: 0; left: 0; right: 0; bottom: 0; padding: 30mm 24mm; }
+.cover-badge { display: inline-block; border: 1px solid #7F77DD; color: #CECBF6; font-size: 9.5pt; letter-spacing: 4px; padding: 6px 18px; border-radius: 20px; }
+.cover-title { font-size: 44pt; font-weight: 700; margin: 32mm 0 6mm 0; letter-spacing: 2px; }
+.cover-sub { font-size: 17pt; color: #CECBF6; font-weight: 400; margin-bottom: 14mm; }
+.cover-line { width: 46mm; height: 3px; background: #7F77DD; margin-bottom: 14mm; }
+.cover-kw { font-size: 11pt; color: #AFA9EC; letter-spacing: 1px; line-height: 2.2; }
+.cover-kw span { margin-right: 8mm; }
+.cover-bottom { position: absolute; bottom: 24mm; left: 24mm; right: 24mm; font-size: 10pt; color: #AFA9EC; border-top: 1px solid #534AB7; padding-top: 6mm; }
+.cover-bottom td { color: #CECBF6; font-size: 10pt; }
+.cover-deco1 { position: absolute; top: 36mm; right: -34mm; width: 92mm; height: 92mm; border: 1.5mm solid #3C3489; border-radius: 50%; }
+.cover-deco2 { position: absolute; top: 68mm; right: 18mm; width: 24mm; height: 24mm; border: 1mm solid #534AB7; border-radius: 50%; }
+.cover-deco3 { position: absolute; bottom: 58mm; right: 38mm; width: 62mm; height: 62mm; border: 1mm solid #3C3489; border-radius: 12mm; }
+.cover-series { position: absolute; bottom: 42mm; left: 24mm; font-size: 10pt; color: #7F77DD; letter-spacing: 2px; }
+
+/* ===== 目录 ===== */
+.toc { page-break-after: always; }
+.toc-title { font-size: 20pt; font-weight: 700; color: #26215C; margin: 0 0 10mm 0; }
+.toc table { width: 100%; border-collapse: collapse; }
+.toc td { padding: 3.2mm 0; border-bottom: 1px dotted #D3D1C7; font-size: 11pt; }
+.toc td.num { width: 12mm; color: #534AB7; font-weight: 700; }
+.toc td.pg { width: 12mm; text-align: right; color: #5F5E5A; }
+.toc .toc-l2 td { padding-left: 12mm; font-size: 10pt; color: #5F5E5A; border-bottom: none; padding-top: 1mm; padding-bottom: 1mm; }
+
+/* ===== 章节 ===== */
+h1.chapter { page-break-before: always; font-size: 20pt; font-weight: 700; color: #26215C; margin: 0 0 2mm 0; padding-bottom: 3mm; border-bottom: 2.5px solid #534AB7; }
+h1.chapter .chno { color: #AFA9EC; margin-right: 6mm; }
+h2 { font-size: 13.5pt; font-weight: 700; color: #3C3489; margin: 8mm 0 3mm 0; }
+p { margin: 2mm 0; text-align: justify; }
+strong { color: #26215C; }
+
+/* ===== 组件 ===== */
+.callout { background: #F7F6FC; border-left: 3px solid #534AB7; padding: 3mm 5mm; margin: 4mm 0; border-radius: 0 6px 6px 0; }
+.callout p { margin: 1mm 0; }
+
+table.data { width: 100%; border-collapse: collapse; margin: 4mm 0; font-size: 10pt; }
+table.data th { background: #26215C; color: #FFFFFF; font-weight: 500; padding: 2.6mm 3mm; text-align: left; border: none; }
+table.data td { padding: 2.4mm 3mm; border-bottom: 1px solid #E8E7E1; vertical-align: top; }
+table.data tr.alt td { background: #FAFAF8; }
+
+code { font-family: "Cascadia Code", Consolas, monospace; font-size: 9pt; background: #F1F0F8; padding: 0.5mm 1.5mm; border-radius: 3px; color: #3C3489; }
+pre { background: #F6F6F9; border: 1px solid #E4E3EE; border-left: 3px solid #AFA9EC; border-radius: 4px; padding: 3.5mm 4mm; font-family: Consolas, monospace; font-size: 8.4pt; line-height: 1.55; white-space: pre-wrap; word-wrap: break-word; margin: 3mm 0; color: #2C2C2A; }
+
+.figure { margin: 5mm 0; text-align: center; }
+.figure img { width: 96%; border: 1px solid #E8E7E1; border-radius: 6px; }
+.figure .cap { font-size: 9pt; color: #888780; margin-top: 2mm; }
+
+ul, ol { margin: 2mm 0; padding-left: 7mm; }
+li { margin: 1.2mm 0; }
+
+/* ===== 任务清单 ===== */
+.phase { margin: 5mm 0; }
+.phase-head { background: #EEEDFE; border-left: 4px solid #534AB7; padding: 2.5mm 4mm; font-weight: 700; color: #3C3489; font-size: 11pt; border-radius: 0 4px 4px 0; }
+.phase ul { list-style: none; padding-left: 2mm; margin: 2.5mm 0; }
+.phase li { margin: 1.8mm 0; font-size: 10.5pt; }
+.phase li::before { content: "☐"; color: #534AB7; font-size: 11pt; margin-right: 3mm; }
+
+.footer-note { margin-top: 10mm; padding-top: 4mm; border-top: 1px solid #D3D1C7; font-size: 9pt; color: #888780; text-align: center; }
+</style>
+</head>
+<body>
+
+<!-- ================= 封面 ================= -->
+<div class="cover">
+  <div class="cover-deco1"></div>
+  <div class="cover-deco2"></div>
+  <div class="cover-deco3"></div>
+  <div class="cover-inner">
+    <div class="cover-badge">AI 创新大赛 · 参赛项目方案书</div>
+    <div class="cover-title">AI for Comm</div>
+    <div class="cover-sub">通信领域多智能体协作系统</div>
+    <div class="cover-line"></div>
+    <div class="cover-kw">
+      <span>节点化架构</span><span>多智能体协作</span><span>微信式节点通信</span><br>
+      <span>OpenTrek 平台</span><span>全链路日志</span><span>通信 × 数学 × 硬件</span>
+    </div>
+    <div class="cover-series">方案书 · 上篇　｜　下篇《实践手册》另册发行</div>
+    <div class="cover-bottom">
+      <table style="width:100%; border-collapse:collapse;">
+        <tr>
+          <td>版本　v2.0</td>
+          <td style="text-align:center;">2026 年 8 月</td>
+          <td style="text-align:right;">项目团队 · 三人组</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ================= 目录 ================= -->
+<div class="toc">
+  <div class="toc-title">目　录</div>
+  <table>
+    <tr><td class="num">01</td><td>项目构想</td><td class="pg">@@PG_ch1@@</td></tr>
+    <tr class="toc-l2"><td></td><td>项目定位 · 节点化设计理念 · 三条铁律 · 创新点</td><td></td></tr>
+    <tr><td class="num">02</td><td>系统架构</td><td class="pg">@@PG_ch2@@</td></tr>
+    <tr class="toc-l2"><td></td><td>总体架构 · 节点消息格式 · 解题工作流</td><td></td></tr>
+    <tr><td class="num">03</td><td>风险与对策</td><td class="pg">@@PG_ch3@@</td></tr>
+    <tr><td class="num">04</td><td>任务清单</td><td class="pg">@@PG_ch4@@</td></tr>
+    <tr><td class="num">A</td><td>附录 · 参考资源与配套文档</td><td class="pg">@@PG_chA@@</td></tr>
+  </table>
+</div>
+
+<!-- ================= 01 项目构想 ================= -->
+<h1 class="chapter" id="ch1"><span class="chno">01</span>项目构想</h1>
+
+<h2>1.1 项目定位</h2>
+<p>打造一个面向<strong>通信领域</strong>的多智能体（Multi-Agent）协作系统。用户提出一个通信相关问题，系统内部的多个专业 Agent 将像一个真实的工程师团队一样——分工协作、互相讨论、交叉验证——最终输出经过验证的高质量答案。</p>
+<p>系统以<strong>OpenTrek 平台</strong>为模型与知识底座，覆盖通信领域的三个学科域：</p>
+
+<table class="data">
+  <tr><th style="width:22%;">学科域</th><th style="width:36%;">覆盖内容</th><th>典型问题</th></tr>
+  <tr><td><strong>通信工程</strong></td><td>GPPP 协议族、信令流程、信道分析</td><td>GTPv2 中 Create Session Request 有哪些必选 IE？</td></tr>
+  <tr class="alt"><td><strong>数学理论</strong></td><td>信息论、信道容量、编码理论、数学建模</td><td>AWGN 信道 B=20MHz、SNR=30dB，求信道容量</td></tr>
+  <tr><td><strong>硬件实践</strong></td><td>FPGA 开发、Verilog/VHDL、时序分析</td><td>编写 8B/10B 编码器的 Verilog 模块并说明时序约束</td></tr>
+</table>
+
+<h2>1.2 核心设计理念：节点化</h2>
+<p>每个 Agent 是一个<strong>独立节点</strong>，节点内部包含四个功能模块：</p>
+<table class="data">
+  <tr><th style="width:30%;">模块</th><th>职责</th></tr>
+  <tr><td><strong>执行手册</strong>（System Prompt）</td><td>角色定义、领域知识、行为约束——以独立 Markdown 文件维护，改行为不改代码</td></tr>
+  <tr class="alt"><td><strong>工具集</strong>（Skills）</td><td>OpenTrek API 调用、数值计算器、知识库 RAG 检索</td></tr>
+  <tr><td><strong>记忆存储</strong>（Memory）</td><td>独立对话线程、历史消息、中间推导结果</td></tr>
+  <tr class="alt"><td><strong>消息接口</strong>（Message I/O）</td><td>收件箱与发件能力，所有收发全部写入日志</td></tr>
+</table>
+
+<p>节点与节点之间<strong>像人用微信聊天一样</strong>互相发消息，而非硬编码的固定流程：</p>
+<div class="callout">
+  <p><strong>math_agent → verify_agent：</strong>「C = B·log₂(1+S/N) = 199.5 Mbps，这是我的完整推导，请检查。」</p>
+  <p><strong>verify_agent → math_agent：</strong>「公式正确，单位换算无误，通过。」或「第三步 dB 换算有误，应为 …」</p>
+</div>
+
+<h2>1.3 三条铁律</h2>
+<table class="data">
+  <tr><th style="width:24%;">铁律</th><th>要求</th></tr>
+  <tr><td><strong>全链路日志</strong></td><td>每次 API 调用、每段思考、每条收发消息全部写入结构化日志（JSONL），问题可定位、过程可回放</td></tr>
+  <tr class="alt"><td><strong>测试先行</strong></td><td>先用一道已知标准答案的简单题跑通双节点链路，验证架构通畅后再扩展复杂场景</td></tr>
+  <tr><td><strong>Prompt 即配置</strong></td><td>执行手册为独立 Markdown 文件，三人可并行编辑，无需改动代码</td></tr>
+</table>
+
+<h2>1.4 创新点（答辩要点）</h2>
+<ol>
+  <li><strong>不是单 Agent 问答，而是多 Agent 协作团队</strong>——每个 Agent 拥有独立身份、记忆与工具。</li>
+  <li><strong>微信式节点通信</strong>——Agent 通过消息总线自主决定何时给谁发什么消息，而非固定工作流。</li>
+  <li><strong>OpenTrek 平台深度集成</strong>——基于 OpenTrek Agent API 构建每个节点，OpenTrek 知识库提供领域 RAG，协作框架完全自研。</li>
+  <li><strong>SSE 流式实时输出</strong>——利用 OpenTrek 的 SSE 流式接口，思考过程（thought.delta）与回答文本（message.delta）实时分离输出，全过程可观测。</li>
+  <li><strong>跨学科覆盖</strong>——通信工程 × 数学理论 × 硬件实践，一个系统打通通信领域全栈。</li>
+  <li><strong>全链路可追溯</strong>——结构化日志记录每一次调用与思考，OpenTrek 原生 trace 支持（trace=true），支持回放与调试。</li>
+  <li><strong>平台原生记忆与知识库高级检索</strong>——OpenTrek 支持 memoryUserId 实现用户级记忆隔离，知识库 API 支持 AND/OR 复合逻辑过滤与元数据检索。</li>
+</ol>
+
+<!-- ================= 02 系统架构 ================= -->
+<h1 class="chapter" id="ch2"><span class="chno">02</span>系统架构</h1>
+
+<h2>2.1 总体架构</h2>
+<p>系统自上而下分为五层：用户入口层、协调层、智能体协作层、消息总线层、平台与基础设施层。</p>
+
+<div class="figure">
+  <img src="architecture.svg" alt="AI for Comm 核心架构图">
+  <div class="cap">图 2-1　AI for Comm 多智能体核心架构（A/B/C 徽章为模块负责角色标注）</div>
+</div>
+
+<h2>2.2 节点间消息格式</h2>
+<pre>{
+  "from": "math_agent",        // 发送节点
+  "to":   "verify_agent",      // 接收节点
+  "type": "derivation",        // 消息类型
+  "content": "信道容量推导过程：C = B·log2(1+S/N) ...",
+  "timestamp": "2026-07-22T16:30:00"
+}</pre>
+<p>消息类型约定：<code>question</code>（提问）、<code>derivation</code>（推导/结果）、<code>feedback</code>（验证反馈）、<code>request</code>（请求协助）。每条消息在路由的同时自动落盘到日志文件。</p>
+
+<h2>2.3 解题工作流</h2>
+<p>标准解题流程为四步：<strong>① 接收问题 → ② 任务分解 → ③ Agent 求解 → ④ 交叉验证</strong>。以信道容量题为例的完整消息流：</p>
+<ol>
+  <li>用户输入 → Orchestrator 识别为信息论问题；</li>
+  <li>Orchestrator → math_agent：「请计算信道容量」；</li>
+  <li>math_agent 调用 OpenTrek API 逐步推导，得出 199.5 Mbps；</li>
+  <li>math_agent → verify_agent（derivation 消息）；</li>
+  <li>verify_agent 复核公式与数值 → 回发 feedback（通过 / 指出错误）；</li>
+  <li>Orchestrator 聚合结果输出给用户；全过程日志落盘，可逐条回放。</li>
+</ol>
+
+<!-- ================= 03 风险与对策 ================= -->
+<h1 class="chapter" id="ch3"><span class="chno">03</span>风险与对策</h1>
+<table class="data">
+  <tr><th style="width:34%;">风险</th><th style="width:12%;">概率</th><th>对策</th></tr>
+  <tr><td>OpenTrek API 行为与预期不符（SSE 解析异常等）</td><td>中</td><td>开工先做最小验证；备选改为非流式 stream=false 直接获取完整 JSON</td></tr>
+  <tr class="alt"><td>知识库检索命中率低</td><td>中</td><td>调整文档切分策略；advancedRules 按文档名过滤精准定位；必要时关键知识全文注入</td></tr>
+  <tr><td>多 Agent 对话陷入死循环</td><td>低</td><td>Orchestrator 设置最大轮次（如 8 轮）强制收敛并输出当前最优结果</td></tr>
+  <tr class="alt"><td>OpenTrek 平台内网访问受限</td><td>低</td><td>统一在校园网 / VPN 环境下开发；APP_KEY 妥善保管</td></tr>
+  <tr><td>SSE 流式响应中断或超时</td><td>低</td><td>设置 SSE_READ_TIMEOUT=300s；解析器有 MAX_LINES 保护；失败自动重试</td></tr>
+</table>
+
+<!-- ================= 04 任务清单 ================= -->
+<h1 class="chapter" id="ch4"><span class="chno">04</span>任务清单</h1>
+<p>按阶段推进，完成一项勾选一项。双节点链路验证（阶段三）为整个项目的关键路径，未通过前全员集中攻关。各任务的实操细节见配套文档《AI for Comm 实践手册》。</p>
+
+<div class="phase">
+  <div class="phase-head">阶段一 · 环境准备</div>
+  <ul>
+    <li>登录 OpenTrek 平台，创建 APP_KEY</li>
+    <li>安装 Python 依赖（structlog；HTTP 调用用标准库 urllib）</li>
+    <li>验证 OpenTrek API 连通性（createSession 接口）</li>
+    <li>创建项目仓库与目录结构</li>
+  </ul>
+</div>
+
+<div class="phase">
+  <div class="phase-head">阶段二 · 框架搭建</div>
+  <ul>
+    <li>实现配置管理 <code>core/config.py</code></li>
+    <li>实现 Agent 节点基类 <code>core/agent_node.py</code></li>
+    <li>实现消息总线 <code>core/message_bus.py</code></li>
+    <li>实现全局日志 <code>core/logger.py</code></li>
+  </ul>
+</div>
+
+<div class="phase">
+  <div class="phase-head">阶段三 · 双节点链路验证（关键路径）</div>
+  <ul>
+    <li>编写数学理论 Agent 执行手册 <code>prompts/math_system.md</code></li>
+    <li>编写验证 Agent 执行手册 <code>prompts/verify_system.md</code></li>
+    <li>实现 math_agent 与 verify_agent</li>
+    <li>跑通首个测试用例：AWGN 信道容量（标准答案 199.5 Mbps）</li>
+    <li>验证消息收发：derivation → feedback 完整闭环</li>
+    <li>检查日志完整性：调用、思考、消息全部落盘</li>
+  </ul>
+</div>
+
+<div class="phase">
+  <div class="phase-head">阶段四 · 全量 Agent 与知识库</div>
+  <ul>
+    <li>编写通信工程 Agent 执行手册</li>
+    <li>编写硬件实践 Agent 执行手册</li>
+    <li>实现 comm_agent 与 hw_agent</li>
+    <li>收集 3GPP 协议文档，创建通信协议知识库</li>
+    <li>整理信息论公式集，创建数学知识库</li>
+    <li>收集 FPGA 资料，创建硬件知识库</li>
+    <li>记录每个知识库的 kbIndexCode 和 workspacecode</li>
+    <li>三个知识库逐一命中测试（kortex API）</li>
+    <li>Agent 接入 RAG 检索工具</li>
+  </ul>
+</div>
+
+<div class="phase">
+  <div class="phase-head">阶段五 · 联调与加固</div>
+  <ul>
+    <li>实现 SSE 流式解析器（thought.delta / message.delta）</li>
+    <li>实现 Orchestrator 任务分解与智能路由</li>
+    <li>进阶测试：GTPv2 协议题（验证 RAG 引用规范章节）</li>
+    <li>进阶测试：同步 FIFO Verilog 生成（验证代码检查链路）</li>
+    <li>多轮对话死循环防护（最大轮次限制）</li>
+    <li>CLI 交互界面完善</li>
+  </ul>
+</div>
+
+<div class="phase">
+  <div class="phase-head">阶段六 · 成果输出</div>
+  <ul>
+    <li>Gradio Web 演示界面</li>
+    <li>端到端全场景演示验证</li>
+    <li>演示视频录制</li>
+    <li>答辩 PPT 与讲稿</li>
+  </ul>
+</div>
+
+<!-- ================= 附录 ================= -->
+<h1 class="chapter" id="chA"><span class="chno">A</span>附录 · 参考资源与配套文档</h1>
+
+<h2>A.1 配套文档</h2>
+<table class="data">
+  <tr><th style="width:36%;">文档</th><th>内容</th></tr>
+  <tr><td><strong>《AI for Comm 实践手册》</strong></td><td>环境搭建、核心代码、知识库操作、执行手册模板、测试用例、团队分工——本方案书所有落地操作的细节</td></tr>
+  <tr class="alt"><td>架构图 <code>docs/architecture.svg</code></td><td>多智能体核心架构矢量图，可直接用于 PPT</td></tr>
+</table>
+
+<h2>A.2 参考资源</h2>
+<table class="data">
+  <tr><th style="width:36%;">资源</th><th>链接</th></tr>
+  <tr><td>OpenTrek 控制台</td><td>http://<platform-host>:80/sfm-agent-studio</td></tr>
+  <tr class="alt"><td>OpenTrek API 文档</td><td>项目根目录 PDF（创建session / 发起agent调用 / 知识库检索等）</td></tr>
+  <tr><td>3GPP 规范下载</td><td>https://www.3gpp.org/specifications-technologies</td></tr>
+</table>
+
+<div class="footer-note">AI for Comm · 通信领域多智能体协作系统 —— 项目方案书 v2.0 · 适配 OpenTrek 平台（上篇）</div>
+
+</body>
+</html>

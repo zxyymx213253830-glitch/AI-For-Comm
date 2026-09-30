@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI for Comm — 科研任务报告</title>
+<!-- Markdown 渲染 -->
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<!-- 数学公式渲染 -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<!-- 代码高亮 -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9/build/styles/atom-one-dark.min.css">
+<script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9/build/highlight.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9/build/languages/verilog.min.js"></script>
+<style>
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: "Microsoft YaHei", "PingFang SC", sans-serif; background: #f5f7fa; color: #2c3e50; line-height: 1.8; }
+.header { background: linear-gradient(135deg, #1a237e, #283593); color: #fff; padding: 40px 60px; }
+.header h1 { font-size: 28px; margin-bottom: 8px; }
+.header .meta { opacity: 0.8; font-size: 14px; }
+.container { max-width: 1000px; margin: 0 auto; padding: 30px 20px; }
+.card { background: #fff; border-radius: 12px; box-shadow: 0 2px 12px rgba(0,0,0,0.06); margin-bottom: 24px; overflow: hidden; }
+.card-header { padding: 16px 24px; font-weight: 700; font-size: 16px; border-bottom: 1px solid #eee; display: flex; align-items: center; gap: 10px; }
+.card-body { padding: 24px; }
+.badge { display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 12px; font-weight: 600; }
+.badge-math { background: #e3f2fd; color: #1565c0; }
+.badge-verify { background: #e8f5e9; color: #2e7d32; }
+.badge-pass { background: #c8e6c9; color: #1b5e20; }
+.badge-warn { background: #fff3e0; color: #e65100; }
+.badge-bus { background: #f3e5f5; color: #7b1fa2; }
+.flow { display: flex; align-items: center; justify-content: center; gap: 16px; padding: 24px; flex-wrap: wrap; }
+.flow-node { background: #fff; border: 2px solid #e0e0e0; border-radius: 10px; padding: 16px 24px; text-align: center; min-width: 140px; }
+.flow-node .icon { font-size: 28px; margin-bottom: 4px; }
+.flow-node .label { font-weight: 700; font-size: 14px; }
+.flow-arrow { font-size: 24px; color: #9e9e9e; }
+.derivation-box, .feedback-box { background: #fafafa; border: 1px solid #eee; border-radius: 8px; padding: 20px; font-size: 14px; line-height: 1.8; }
+.derivation-box h1, .derivation-box h2, .derivation-box h3, .feedback-box h1, .feedback-box h2, .feedback-box h3 { margin: 12px 0 6px; color: #1a237e; }
+.derivation-box h1 { font-size: 20px; } .derivation-box h2 { font-size: 17px; } .derivation-box h3 { font-size: 15px; }
+.derivation-box p, .feedback-box p { margin: 6px 0; }
+.derivation-box ul, .derivation-box ol, .feedback-box ul, .feedback-box ol { padding-left: 24px; margin: 6px 0; }
+.derivation-box code, .feedback-box code { background: #e8eaf6; padding: 1px 5px; border-radius: 3px; font-size: 13px; }
+.derivation-box pre, .feedback-box pre { background: #263238; color: #e0e0e0; padding: 16px; border-radius: 8px; overflow-x: auto; margin: 10px 0; }
+.derivation-box pre code, .feedback-box pre code { background: none; padding: 0; color: inherit; }
+.derivation-box table, .feedback-box table { border-collapse: collapse; margin: 10px 0; width: 100%%; }
+.derivation-box th, .derivation-box td, .feedback-box th, .feedback-box td { border: 1px solid #ddd; padding: 6px 10px; text-align: left; font-size: 13px; }
+.derivation-box th, .feedback-box th { background: #e8eaf6; }
+.derivation-box blockquote, .feedback-box blockquote { border-left: 4px solid #1a237e; padding-left: 12px; color: #555; margin: 8px 0; }
+.checklist { list-style: none; }
+.checklist li { padding: 6px 0; }
+.checklist li::before { content: "\2713 "; color: #4caf50; font-weight: 700; }
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 24px; }
+.stat-card { background: #fff; border-radius: 12px; box-shadow: 0 2px 12px rgba(0,0,0,0.06); padding: 20px; text-align: center; }
+.stat-card .value { font-size: 32px; font-weight: 700; color: #1a237e; }
+.stat-card .label { font-size: 13px; color: #999; margin-top: 4px; }
+.footer { text-align: center; color: #999; font-size: 12px; padding: 30px; }
+pre { white-space: pre-wrap; word-wrap: break-word; }
+
+.badge-lit { background: #fff8e1; color: #f57f17; }
+.badge-planner { background: #ede7f6; color: #4527a0; }
+.badge-exp { background: #e3f2fd; color: #1565c0; }
+.badge-sim { background: #e8f5e9; color: #2e7d32; }
+.expert-answer, .lit-box { background: #fafafa; border: 1px solid #eee; border-radius: 8px; padding: 20px; font-size: 14px; line-height: 1.8; }
+.expert-answer h1, .expert-answer h2, .expert-answer h3, .lit-box h1, .lit-box h2, .lit-box h3 { margin: 12px 0 6px; color: #1a237e; }
+.expert-answer h1 { font-size: 20px; } .expert-answer h2 { font-size: 17px; } .expert-answer h3 { font-size: 15px; }
+.expert-answer p, .lit-box p { margin: 6px 0; }
+.expert-answer ul, .expert-answer ol, .lit-box ul, .lit-box ol { padding-left: 24px; margin: 6px 0; }
+.expert-answer code, .lit-box code { background: #e8eaf6; padding: 1px 5px; border-radius: 3px; font-size: 13px; }
+.expert-answer pre, .lit-box pre { background: #263238; color: #e0e0e0; padding: 16px; border-radius: 8px; overflow-x: auto; margin: 10px 0; }
+.expert-answer pre code, .lit-box pre code { background: none; padding: 0; color: inherit; }
+.expert-answer table, .lit-box table { border-collapse: collapse; margin: 10px 0; width: 100%; }
+.expert-answer th, .expert-answer td, .lit-box th, .lit-box td { border: 1px solid #ddd; padding: 6px 10px; text-align: left; font-size: 13px; }
+.expert-answer th, .lit-box th { background: #e8eaf6; }
+.expert-answer blockquote, .lit-box blockquote { border-left: 4px solid #1a237e; padding-left: 12px; color: #555; margin: 8px 0; }
+.sim-figure { text-align: center; margin: 16px 0; }
+.sim-figure img { max-width: 100%; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.12); }
+table.plan { width: 100%; border-collapse: collapse; font-size: 14px; }
+table.plan th, table.plan td { border-bottom: 1px solid #eee; padding: 10px 12px; text-align: left; }
+table.plan th { background: #f5f7fa; color: #555; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>AI for Comm — 科研任务协作报告</h1>
+  <div class="meta">
+    生成时间: 2026-08-31 23:30:41 &nbsp;|&nbsp;
+    平台: OpenTrek &nbsp;|&nbsp;
+    模式: 科研任务流水线（拆解→调研→专家→校验→报告）
+  </div>
+</div>
+
+<div class="container">
+
+  <div class="stats">
+    <div class="stat-card"><div class="value">3</div><div class="label">参与 Agent</div></div>
+    <div class="stat-card"><div class="value">3</div><div class="label">子问题数</div></div>
+    <div class="stat-card"><div class="value">369</div><div class="label">总耗时（秒）</div></div>
+    <div class="stat-card"><div class="value">🔍 查看详情</div><div class="label">校验结论</div></div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">🎯 研究课题</div>
+    <div class="card-body"><b>BPSK 在 AWGN 信道下的误码率理论推导与仿真验证</b>&nbsp;<span class="badge badge-planner">规划者 comm_agent</span></div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">🔄 协作流程</div>
+    <div class="flow">
+      <div class="flow-node"><div class="icon">🗺️</div><div class="label">问题拆解</div>
+        <div style="font-size:11px;color:#999;margin-top:4px;">comm_agent</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node" style="border-color:#f57f17;background:#fffbf0;">
+        <div class="icon">📚</div><div class="label">文献调研</div>
+        <div style="font-size:11px;color:#999;margin-top:4px;">公网 + 平台KB</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node"><div class="icon">🧑‍🔬</div><div class="label">并行专家</div>
+        <div style="font-size:11px;color:#999;margin-top:4px;">math</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node"><div class="icon">✅</div><div class="label">综合校验</div>
+        <div style="font-size:11px;color:#999;margin-top:4px;">verify_agent</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node"><div class="icon">📄</div><div class="label">HTML 报告</div>
+        <div style="font-size:11px;color:#999;margin-top:4px;">本页</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">🗂️ 任务拆解</div>
+    <div class="card-body">
+      <table class="plan">
+        <tr><th>#</th><th>子问题</th><th>负责专家</th></tr>
+        <tr><td>1</td><td>BPSK调制在AWGN信道下的理论误码率公式（Q函数形式）如何基于信号空间投影与高斯噪声分布严格推导？</td><td><span class="badge badge-exp">math</span></td></tr>
+<tr><td>2</td><td>蒙特卡洛仿真中如何准确实现AWGN叠加、Eb/N0到噪声方差的映射及统计置信度评估？</td><td><span class="badge badge-exp">sim</span></td></tr>
+<tr><td>3</td><td>理论曲线与仿真结果在不同SNR区间产生偏差的机制是什么？如何确定满足收敛精度的最小仿真迭代次数？</td><td><span class="badge badge-exp">sim</span></td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><span class="badge badge-lit">lit_review_agent</span> 文献综述</div>
+    <div class="card-body"><div class="lit-box">1. 【主题】BPSK在AWGN信道下的误码率理论推导与蒙特卡洛仿真验证机制。
+
+2. 【子问题】
+(1) BPSK理论误码率的Q函数形式如何基于信号空间严格推导？
+(2) 蒙特卡洛仿真中AWGN叠加、Eb/N0映射及置信度评估如何实现？
+(3) 理论与仿真曲线的偏差机制及最小迭代次数如何确定？
+
+3. 【研究背景】
+BPSK是最基本的二进制相移键控体制，AWGN信道下的误码率性能是衡量数字通信系统可靠性的基准。自Shannon奠定信息论基础后，BPSK误码率理论成为编码与调制技术演进（如Polar码、LDPC）的性能参照底线，其严格推导与高效仿真验证始终是通信系统设计的核心基础课（Proakis 2001）。
+
+4. 【核心内容】
+**4.1 BPSK理论误码率的严格推导**
+BPSK信号在信号空间中仅有一维（同相分量），两个信号点为$s_1 = +\sqrt{E_b}$与$s_2 = -\sqrt{E_b}$（Proakis 2001 §5.2）。接收信号$r = s_i + n$，其中$n \sim \mathcal{N}(0, N_0/2)$为高斯白噪声。最佳判决门限为0。发送$s_1$时，误码发生在$r &lt; 0$，即$n &lt; -\sqrt{E_b}$。因为高斯分布对称性，$P(e|s_1) = P(n &gt; \sqrt{E_b}) = Q(\sqrt{2E_b/N_0})$。等概发送时，$P_e = Q(\sqrt{2E_b/N_0})$，此即基于信号空间投影与高斯分布推导的Q函数误码率公式。
+
+**4.2 仿真实现：AWGN叠加、参数映射与置信度**
+仿真中，发送归一化信号$s \in \{+1, -1\}$（$E_b=1$），需叠加方差为$\sigma^2$的AWGN。由$E_b/N_0$映射噪声方差：$\sigma^2 = N_0/2 = 1/(2E_b/N_0)$（Proakis 2001 §5.2）。置信度评估依据二项分布的正态近似，误码率估计方差为$\sigma_{\hat{P}_e}^2 = \hat{P}_e(1-\hat{P}_e)/N$，其中$N$为总比特数。在$95\%$置信度下，置信区间半宽为$1.96\sigma_{\hat{P}_e}$（Jeruchim 2000 §4）。
+
+**4.3 偏差机制与最小迭代次数**
+理论与仿真偏差源于：高SNR区误码事件稀少，蒙特卡洛方差大，导致仿真点偏离理论曲线；若随机数生成器周期不足或分布尾部拟合差，亦引入系统偏差（Jeruchim 2000 §7）。最小迭代次数由目标精度$\epsilon$决定：$N \geq (z_{\alpha/2}^2 \cdot P_e) / \epsilon^2$。因高SNR下$P_e$极小，需极大$N$，工程上常要求至少观测到100个错误以保证统计有效性，或采用重要采样（IS）技术加速低误码率区收敛（Sadowsky 1985）。
+
+5. 【现状与挑战】
+当前纯AWGN下BPSK仿真已成熟，但在极低误码率（如$10^{-15}$）验证中，常规蒙特卡洛因算力瓶颈不可行；重要采样等方差缩减技术虽有效，但针对非线性和记忆信道的偏置分布设计仍为开放问题。此外，硬件在环仿真中量化噪声与AWGN的交互耦合机制尚缺普适解析模型。
+
+6. 【结论】
+BPSK在AWGN下的误码率$Q(\sqrt{2E_b/N_0})$具备严格几何与概率基础，仿真验证需精确进行$1/(2E_b/N_0)$的方差映射，并依据置信区间约束迭代次数。建议深入方向：探索极低误码率下的高效方差缩减仿真算法，以及非理想硬件损伤下的理论与仿真修正模型。
+
+7. 【参考文献】
+[1] Proakis J G. Digital Communications 4th Edition. McGraw-Hill, 2001. §5.2
+[2] Jeruchim M C, et al. Simulation of Communication Systems. Springer, 2000. §4, §7
+[3] Sadowsky J S. On the use of importance sampling for the evaluation of bit error rates. IEEE GLOBECOM, 1985.
+
+（自检：引用来源已标注，逻辑结构一致，因当前环境未挂载知识库，已如实采用领域公认经典文献为参照，未编造非标准索引）</div></div>
+  </div>
+
+
+  <div class="card">
+    <div class="card-header"><span class="badge badge-exp">math_agent</span> BPSK调制在AWGN信道下的理论误码率公式（Q函数形式）如何基于信号空间投影与高斯噪声分布严格推导？</div>
+    <div class="card-body"><div class="expert-answer">**【结论】**
+BPSK在AWGN信道下的理论误码率严格表达式为 $P_e = Q\left(\sqrt{\frac{2E_b}{N_0}}\right)$。该结论由一维信号空间投影下的最大似然判决门限与高斯噪声分布尾部积分严格导出。
+
+**【逐步推导】**
+
+**第一步：列出已知条件**
+- 调制方式：BPSK，信号空间维度 $D=1$（仅含同相分量）。
+- 星座点映射：$s_1 = +\sqrt{E_b}$，$s_2 = -\sqrt{E_b}$（$E_b$ 为每比特能量）。
+- 信道模型：AWGN信道，加性噪声 $n \sim \mathcal{N}(0, \sigma^2)$，噪声方差 $\sigma^2 = N_0/2$（$N_0$ 为单边噪声功率谱密度）。
+- 先验概率：等概发送，$P(s_1) = P(s_2) = 0.5$。
+- 接收信号模型：$r = s_i + n$。
+
+**第二步：选择公式**
+- 判决门限：ML准则下，一维BPSK最佳判决门限为两星座点中点 $\gamma_{th} = 0$。
+- 高斯概率密度函数（PDF）：$f_N(x) = \frac{1}{\sqrt{2\pi}\sigma} \exp\left(-\frac{x^2}{2\sigma^2}\right)$。
+- Q函数定义（高斯右尾概率）：$Q(x) = \frac{1}{\sqrt{2\pi}} \int_x^\infty \exp\left(-\frac{t^2}{2}\right) \mathrm{d}t$。
+- *出处标注*：信号空间模型与判决逻辑引自【调研资料 4.1节】及 Proakis (2001) §5.2；Q函数为标准通信数学定义。
+
+**第三步：代入计算**
+1. 发送 $s_1$ 时，误码发生在接收信号落入错误判决区（$r &lt; 0$），即 $\sqrt{E_b} + n &lt; 0 \Rightarrow n &lt; -\sqrt{E_b}$。
+2. 利用高斯分布对称性，条件误码概率为：
+   $P(e|s_1) = P(n &gt; \sqrt{E_b}) = \int_{\sqrt{E_b}}^\infty \frac{1}{\sqrt{\pi N_0}} \exp\left(-\frac{x^2}{N_0}\right) \mathrm{d}x$
+   （此处代入 $\sigma = \sqrt{N_0/2}$，归一化系数化简为 $1/\sqrt{\pi N_0}$）
+3. 变量代换以匹配Q函数标准形式：令 $t = x/\sigma = x\sqrt{2/N_0}$，则 $\mathrm{d}x = \sqrt{N_0/2}\,\mathrm{d}t$。
+   积分下限变为 $t_{min} = \sqrt{E_b} \cdot \sqrt{2/N_0} = \sqrt{2E_b/N_0}$。
+4. 执行积分变换：
+   $P(e|s_1) = \int_{\sqrt{2E_b/N_0}}^\infty \frac{1}{\sqrt{\pi N_0}} \exp\left(-\frac{t^2}{2}\right) \cdot \sqrt{\frac{N_0}{2}} \mathrm{d}t = \frac{1}{\sqrt{2\pi}} \int_{\sqrt{2E_b/N_0}}^\infty \exp\left(-\frac{t^2}{2}\right) \mathrm{d}t$
+   $= Q\left(\sqrt{\frac{2E_b}{N_0}}\right)$
+5. 由对称性可知 $P(e|s_2) = Q\left(\sqrt{\frac{2E_b}{N_0}}\right)$，结合等概先验得总误码率：
+   $P_e = P(s_1)P(e|s_1) + P(s_2)P(e|s_2) = 0.5 \times Q(\cdot) + 0.5 \times Q(\cdot) = Q\left(\sqrt{\frac{2E_b}{N_0}}\right)$。
+
+**第四步：给出结论**
+- BPSK在AWGN下的误码率严格公式为 $P_e = Q\left(\sqrt{2E_b/N_0}\right)$。
+- 物理意义解释：该式表明误码性能仅由比特信噪比 $E_b/N_0$ 决定。根号内的系数“2”源于BPSK信号点欧氏距离 $d = 2\sqrt{E_b}$ 在投影判决中转化出的等效信噪比增益，使其在相同能量约束下具备最优抗噪几何结构。推导全过程基于一维欧氏空间投影与高斯分布尾部积分，数学逻辑闭环完整，与调研资料结论严格一致。</div></div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><span class="badge badge-verify">verify_agent</span> 综合校验意见</div>
+    <div class="card-body"><div class="feedback-box">(综合校验被跳过：平台侧校验环节暂时不可用 —— 平台返回错误（error）: current agent has been offline)</div></div>
+  </div>
+
+</div>
+
+<div class="footer">
+  AI for Comm · 通信领域多 Agent 协作智能问答系统 · Powered by OpenTrek
+</div>
+
+<script>
+/* 公式保护：Markdown 会把 LaTeX 里的下划线当成斜体强调，
+   $\text{SNR}_{\text{th}} = 2^\eta - 1$ 这种写法一旦被排版库吃掉下划线，
+   整段正文会跟着变斜体、公式也废了。所以排版前先把公式摘出来占位，
+   排版完放回去，再交给 KaTeX。 */
+function protectMath(text){
+  var store=[];
+  var s=String(text==null?'':text)
+    .replace(/\$\$[\s\S]+?\$\$/g,function(m){store.push(m);return '\u0000K'+(store.length-1)+'\u0000';})
+    .replace(/\$(?:[^$\n])+?\$/g,function(m){store.push(m);return '\u0000K'+(store.length-1)+'\u0000';});
+  s = s.replace(/~/g, '\u0000W\u0000');
+  return [s,store];
+}
+function restoreMath(html,store){
+  return String(html).replace(/\u0000K(\d+)\u0000/g,function(m,i){return store[+i]==null?m:store[+i];})
+                     .replace(/\u0000W\u0000/g,'~');
+}
+
+// 渲染 Markdown + 数学公式 + 代码高亮
+document.addEventListener('DOMContentLoaded', function() {
+  marked.setOptions({ breaks: true, gfm: true,
+    highlight: function(code, lang) {
+      if (lang && hljs.getLanguage(lang)) {
+        try { return hljs.highlight(code, { language: lang }).value; } catch(e) {}
+      }
+      return hljs.highlightAuto(code).value;
+    }
+  });
+  ['.expert-answer', '.lit-box', '.feedback-box', '.derivation-box'].forEach(function(sel) {
+    document.querySelectorAll(sel).forEach(function(el) {
+      var raw = el.textContent;
+      if (!raw || !raw.trim()) return;
+      try { el.innerHTML = marked.parse(raw); } catch(e) { el.style.whiteSpace = 'pre-wrap'; return; }
+      try {
+        renderMathInElement(el, {
+          delimiters: [
+            {left: '$$', right: '$$', display: true},
+            {left: '$', right: '$', display: false},
+            {left: '\\(', right: '\\)', display: false},
+            {left: '\\[', right: '\\]', display: true}
+          ],
+          throwOnError: false
+        });
+      } catch(e) {}
+    });
+  });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,29 @@
+# 一键起服务：docker compose up -d  →  http://localhost:7860
+#
+# 设计要点：
+#   1. config.json 不进镜像（含平台 appKey），以只读卷挂载注入，换环境只改宿主机文件；
+#   2. outputs/ 与 logs/ 挂载到宿主机，容器重建不丢报告库与结构化事件日志；
+#   3. 平台地址是内网 IP，容器需能路由到该网段（默认 bridge 网络即可，
+#      若宿主机走 VPN/代理，用 network_mode: host 更省事）。
+services:
+  ai-for-comm:
+    build: .
+    image: ai-for-comm:latest
+    container_name: ai-for-comm
+    ports:
+      - "7860:7860"
+    environment:
+      - MPLBACKEND=Agg
+      - PORT=7860
+    volumes:
+      - ./config.json:/app/config.json:ro
+      - ./outputs:/app/outputs
+      - ./logs:/app/logs
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c",
+             "import urllib.request;urllib.request.urlopen('http://127.0.0.1:7860/')"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 20s

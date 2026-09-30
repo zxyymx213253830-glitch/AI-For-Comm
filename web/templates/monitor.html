@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}智能体监控{% endblock %}
+{% block page_title %}智能体监控{% endblock %}
+{% block page_sub %}七位专家 · 注册与健康状况{% endblock %}
+{% block content %}
+<div class="stat-grid" id="statGrid"></div>
+<div class="section-title">七位专家智能体 · 注册状态一览</div>
+<div class="agent-grid" id="agentGrid"><div class="log-empty">加载中…</div></div>
+{% endblock %}
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/monitor.js') }}"></script>
+{% endblock %}

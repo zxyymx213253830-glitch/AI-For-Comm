@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>AI for Comm 实践手册</title>
+<style>
+@page {
+  size: A4;
+  margin: 22mm 20mm 20mm 20mm;
+}
+html { font-size: 10.5pt; }
+body { font-family: "Microsoft YaHei", "PingFang SC", sans-serif; color: #2C2C2A; line-height: 1.75; margin: 0; }
+
+/* ===== 封面（青蓝版，区别于方案书的紫色） ===== */
+.cover { width: 210mm; height: 297mm; background: #04342C; color: #FFFFFF; position: relative; overflow: hidden; page-break-after: always; }
+.cover-inner { position: absolute; top: 0; left: 0; right: 0; bottom: 0; padding: 30mm 24mm; }
+.cover-badge { display: inline-block; border: 1px solid #5DCAA5; color: #9FE1CB; font-size: 9.5pt; letter-spacing: 4px; padding: 6px 18px; border-radius: 20px; }
+.cover-title { font-size: 40pt; font-weight: 700; margin: 32mm 0 6mm 0; letter-spacing: 2px; }
+.cover-sub { font-size: 16pt; color: #9FE1CB; font-weight: 400; margin-bottom: 14mm; }
+.cover-line { width: 46mm; height: 3px; background: #1D9E75; margin-bottom: 14mm; }
+.cover-kw { font-size: 11pt; color: #5DCAA5; letter-spacing: 1px; line-height: 2.2; }
+.cover-kw span { margin-right: 8mm; }
+.cover-bottom { position: absolute; bottom: 24mm; left: 24mm; right: 24mm; font-size: 10pt; color: #5DCAA5; border-top: 1px solid #0F6E56; padding-top: 6mm; }
+.cover-bottom td { color: #9FE1CB; font-size: 10pt; }
+.cover-deco1 { position: absolute; top: 36mm; right: -34mm; width: 92mm; height: 92mm; border: 1.5mm solid #085041; border-radius: 50%; }
+.cover-deco2 { position: absolute; top: 68mm; right: 18mm; width: 24mm; height: 24mm; border: 1mm solid #0F6E56; border-radius: 50%; }
+.cover-deco3 { position: absolute; bottom: 58mm; right: 38mm; width: 62mm; height: 62mm; border: 1mm solid #085041; border-radius: 12mm; }
+.cover-series { position: absolute; bottom: 42mm; left: 24mm; font-size: 10pt; color: #1D9E75; letter-spacing: 2px; }
+
+/* ===== 目录 ===== */
+.toc { page-break-after: always; }
+.toc-title { font-size: 20pt; font-weight: 700; color: #04342C; margin: 0 0 10mm 0; }
+.toc table { width: 100%; border-collapse: collapse; }
+.toc td { padding: 3.2mm 0; border-bottom: 1px dotted #D3D1C7; font-size: 11pt; }
+.toc td.num { width: 12mm; color: #0F6E56; font-weight: 700; }
+.toc td.pg { width: 12mm; text-align: right; color: #5F5E5A; }
+.toc .toc-l2 td { padding-left: 12mm; font-size: 10pt; color: #5F5E5A; border-bottom: none; padding-top: 1mm; padding-bottom: 1mm; }
+
+/* ===== 章节 ===== */
+h1.chapter { page-break-before: always; font-size: 20pt; font-weight: 700; color: #04342C; margin: 0 0 2mm 0; padding-bottom: 3mm; border-bottom: 2.5px solid #0F6E56; }
+h1.chapter .chno { color: #5DCAA5; margin-right: 6mm; }
+h2 { font-size: 13.5pt; font-weight: 700; color: #085041; margin: 8mm 0 3mm 0; }
+p { margin: 2mm 0; text-align: justify; }
+strong { color: #04342C; }
+
+/* ===== 组件 ===== */
+.callout { background: #F0FAF6; border-left: 3px solid #0F6E56; padding: 3mm 5mm; margin: 4mm 0; border-radius: 0 6px 6px 0; }
+.callout-amber { background: #FBF6EC; border-left: 3px solid #BA7517; padding: 3mm 5mm; margin: 4mm 0; border-radius: 0 6px 6px 0; }
+.callout p { margin: 1mm 0; }
+.callout-amber p { margin: 1mm 0; }
+
+table.data { width: 100%; border-collapse: collapse; margin: 4mm 0; font-size: 10pt; }
+table.data th { background: #04342C; color: #FFFFFF; font-weight: 500; padding: 2.6mm 3mm; text-align: left; border: none; }
+table.data td { padding: 2.4mm 3mm; border-bottom: 1px solid #E8E7E1; vertical-align: top; }
+table.data tr.alt td { background: #FAFAF8; }
+
+code { font-family: "Cascadia Code", Consolas, monospace; font-size: 9pt; background: #EDF7F2; padding: 0.5mm 1.5mm; border-radius: 3px; color: #085041; }
+pre { background: #F6F6F9; border: 1px solid #E4E3EE; border-left: 3px solid #5DCAA5; border-radius: 4px; padding: 3.5mm 4mm; font-family: Consolas, monospace; font-size: 8.4pt; line-height: 1.55; white-space: pre-wrap; word-wrap: break-word; margin: 3mm 0; color: #2C2C2A; }
+
+ul, ol { margin: 2mm 0; padding-left: 7mm; }
+li { margin: 1.2mm 0; }
+
+.role-head { background: #E1F5EE; border-left: 4px solid #0F6E56; padding: 2.5mm 4mm; font-weight: 700; color: #085041; font-size: 12pt; border-radius: 0 4px 4px 0; margin: 6mm 0 0 0; }
+
+.footer-note { margin-top: 10mm; padding-top: 4mm; border-top: 1px solid #D3D1C7; font-size: 9pt; color: #888780; text-align: center; }
+</style>
+</head>
+<body>
+
+<!-- ================= 封面 ================= -->
+<div class="cover">
+  <div class="cover-deco1"></div>
+  <div class="cover-deco2"></div>
+  <div class="cover-deco3"></div>
+  <div class="cover-inner">
+    <div class="cover-badge">AI 创新大赛 · 参赛项目实践手册</div>
+    <div class="cover-title">AI for Comm<br>实践手册</div>
+    <div class="cover-sub">落地操作 · 核心代码 · 团队分工</div>
+    <div class="cover-line"></div>
+    <div class="cover-kw">
+      <span>环境搭建</span><span>Agent 实现</span><span>知识库操作</span><br>
+      <span>执行手册模板</span><span>测试用例</span><span>三人分工</span>
+    </div>
+    <div class="cover-series">方案书 · 下篇　｜　上篇《项目方案书》另册发行</div>
+    <div class="cover-bottom">
+      <table style="width:100%; border-collapse:collapse;">
+        <tr>
+          <td>版本　v2.0</td>
+          <td style="text-align:center;">2026 年 8 月</td>
+          <td style="text-align:right;">项目团队 · 三人组</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ================= 目录 ================= -->
+<div class="toc">
+  <div class="toc-title">目　录</div>
+  <table>
+    <tr><td class="num">01</td><td>环境准备</td><td class="pg">@@PG_ch1@@</td></tr>
+    <tr><td class="num">02</td><td>项目代码结构</td><td class="pg">@@PG_ch2@@</td></tr>
+    <tr><td class="num">03</td><td>核心代码实现</td><td class="pg">@@PG_ch3@@</td></tr>
+    <tr class="toc-l2"><td></td><td>Agent 节点 · 消息总线 · 全局日志</td><td></td></tr>
+    <tr><td class="num">04</td><td>OpenTrek 知识库搭建</td><td class="pg">@@PG_ch4@@</td></tr>
+    <tr><td class="num">05</td><td>执行手册编写指南</td><td class="pg">@@PG_ch5@@</td></tr>
+    <tr><td class="num">06</td><td>测试用例</td><td class="pg">@@PG_ch6@@</td></tr>
+    <tr><td class="num">07</td><td>团队分工</td><td class="pg">@@PG_ch7@@</td></tr>
+  </table>
+</div>
+
+<!-- ================= 01 环境准备 ================= -->
+<h1 class="chapter" id="ch1"><span class="chno">01</span>环境准备</h1>
+
+<h2>1.1 OpenTrek 平台开通</h2>
+<ol>
+  <li>登录 OpenTrek 平台（学校部署）<code>http://<platform-host>:80/sfm-agent-studio</code>，进入 主页 → 点击头像 → APP_KEY → 创建 APP_KEY；</li>
+  <li>进入 <strong>智能体页面</strong> → 创建/配置智能体 → 获取 <code>agentCode</code> 和 <code>agentVersion</code>；</li>
+  <li>学校部署平台，开发期无直接费用。</li>
+</ol>
+
+<h2>1.2 本地环境</h2>
+<pre># 安装依赖
+pip install structlog  # HTTP 调用用标准库 urllib，无额外 SDK
+
+# 配置环境变量（Windows PowerShell）
+setx OPENTREK_APP_KEY "your_app_key_here"
+
+# 验证连通性：用 createSession 接口验证
+python -c "import json, urllib.request; \
+r=urllib.request.urlopen(urllib.request.Request('http://<platform-host>/sfm-agent-studio/sfm-api-gateway/gateway/agent/api/createSession', data=json.dumps({'agentCode':'your-code'}).encode(), headers={'Authorization':'Bearer YOUR_APP_KEY','Content-Type':'application/json'}, method='POST')); print(json.loads(r.read()))"</pre>
+
+<div class="callout">
+  <p><strong>注意：</strong>APP_KEY 不要提交进 Git 仓库。建议在 <code>core/config.py</code> 中通过 <code>os.environ["OPENTREK_APP_KEY"]</code> 读取。</p>
+</div>
+
+<!-- ================= 02 项目代码结构 ================= -->
+<h1 class="chapter" id="ch2"><span class="chno">02</span>项目代码结构</h1>
+
+<pre>ai-comm/
+├── core/                    # 框架骨架
+│   ├── agent_node.py        #   Agent 节点基类（封装 OpenTrek Agent API）
+│   ├── message_bus.py       #   消息总线（发布/订阅）
+│   ├── logger.py            #   全局日志（structlog → JSONL）
+│   ├── orchestrator.py      #   协调器（任务分解与路由）
+│   └── config.py            #   APP_KEY、agentCode、版本编码配置
+├── agents/                  # 四个领域 Agent
+│   ├── comm_agent.py        #   通信工程 Agent
+│   ├── math_agent.py        #   数学理论 Agent
+│   ├── hw_agent.py          #   硬件实践 Agent
+│   └── verify_agent.py      #   验证 Agent
+├── prompts/                 # 执行手册（Markdown，独立维护）
+│   ├── comm_system.md
+│   ├── math_system.md
+│   ├── hw_system.md
+│   └── verify_system.md
+├── knowledge/               # 知识库原始文档（3GPP / 信息论 / FPGA）
+├── tests/                   # 测试用例
+├── logs/                    # 运行日志输出（session.jsonl）
+└── main.py                  # CLI 入口</pre>
+
+<p>职责边界：<code>core/</code> 不含任何领域知识，可原样复用到其他领域；领域差异全部收敛在 <code>agents/</code> 与 <code>prompts/</code> 中。</p>
+
+<!-- ================= 03 核心代码实现 ================= -->
+<h1 class="chapter" id="ch3"><span class="chno">03</span>核心代码实现</h1>
+
+<h2>3.1 Agent 节点（core/agent_node.py）</h2>
+<pre>import json, urllib.request, urllib.error
+from core.config import OPENTREK_BASE_URL, APP_KEY, REQUEST_TIMEOUT, SSE_READ_TIMEOUT
+from core.logger import log
+
+class AgentNode:
+    """一个 Agent 节点 = OpenTrek Agent + 独立 Session + 消息收件箱"""
+
+    def __init__(self, name: str, agent_code: str, agent_version: str, bus=None):
+        self.name = name
+        self.agent_code = agent_code        # OpenTrek 智能体编码
+        self.agent_version = agent_version   # OpenTrek 版本编码
+        self.bus = bus
+        self.inbox = []
+        self.session_id = self._create_session()
+        if self.bus: self.bus.register(name)
+        log.info("agent.init", agent=name, session_id=self.session_id)
+
+    def think(self, task: str) -> str:
+        """把任务发给 OpenTrek Agent（SSE 流式），返回完整回复"""
+        log.info("agent.think.start", agent=self.name, task=task[:100])
+        url = f"{OPENTREK_BASE_URL}/run"
+        body = json.dumps({"sessionId": self.session_id, "stream": True, "delta": True,
+            "message": {"text": task, "metadata": {}, "attachments": []}}, ensure_ascii=False).encode()
+        req = urllib.request.Request(url, data=body, headers={
+            "Authorization": f"Bearer {APP_KEY}", "Content-Type": "application/json"}, method="POST")
+        with urllib.request.urlopen(req, timeout=SSE_READ_TIMEOUT) as resp:
+            reply = self._parse_sse(resp)
+        log.info("agent.think.done", agent=self.name, reply=reply[:100])
+        return reply
+
+    @staticmethod
+    def _parse_sse(resp) -> str:
+        """解析 SSE 流：thought.delta（忽略）+ message.delta（累计）"""
+        parts, buf = [], ""
+        while True:
+            chunk = resp.read(8192)
+            if not chunk: break
+            buf += chunk.decode("utf-8", errors="replace")
+            lines = buf.split("\n"); buf = lines.pop()
+            for line in lines:
+                line = line.strip()
+                if not line.startswith("data:"): continue
+                js = line[5:].strip()
+                if js == "[DONE]": return "".join(parts)
+                try: obj = json.loads(js)
+                except: continue
+                t = obj.get("object", ""); c = obj.get("content", {})
+                if t == "message.delta" and isinstance(c, list) and c:
+                    ti = c[0].get("text", {})
+                    if isinstance(ti, dict): parts.append(ti.get("value", ""))
+                elif t == "text.delta" and isinstance(c, dict):
+                    parts.append(c.get("data", ""))
+        return "".join(parts)
+
+    def _request(self, path, body, timeout=REQUEST_TIMEOUT):
+        """向 OpenTrek 发送 POST，返回 JSON"""
+        url = f"{OPENTREK_BASE_URL}/{path}"
+        data = json.dumps(body, ensure_ascii=False).encode("utf-8")
+        req = urllib.request.Request(url, data=data, headers={
+            "Authorization": f"Bearer {APP_KEY}", "Content-Type": "application/json"}, method="POST")
+        with urllib.request.urlopen(req, timeout=timeout) as resp:
+            return json.loads(resp.read().decode("utf-8"))
+
+    def _create_session(self) -> str:
+        """创建会话，返回 uniqueCode"""
+        resp = self._request("createSession", {"agentCode": self.agent_code, "agentVersion": self.agent_version})
+        if not resp.get("success"): raise RuntimeError(f"createSession 失败: {resp}")
+        return resp["data"]["uniqueCode"]
+
+    def send(self, to_agent: "AgentNode", msg_type: str, content: str):
+        """向另一个节点发消息（微信式）"""
+        from datetime import datetime
+        msg = {"from": self.name, "to": to_agent.name, "type": msg_type,
+               "content": content, "timestamp": datetime.now().isoformat()}
+        to_agent.inbox.append(msg)
+        log.info("agent.message", sender=msg["from"], receiver=msg["to"], type=msg_type)
+        return msg</pre>
+
+<h2>3.2 全局日志（core/logger.py）</h2>
+<pre>import structlog, os
+
+os.makedirs("logs", exist_ok=True)
+structlog.configure(
+    processors=[
+        structlog.processors.TimeStamper(fmt="iso"),
+        structlog.processors.JSONRenderer(ensure_ascii=False),
+    ],
+    logger_factory=structlog.WriteLoggerFactory(
+        file=open("logs/session.jsonl", "a", encoding="utf-8")
+    ),
+)
+log = structlog.get_logger()</pre>
+
+<h2>3.3 消息总线（core/message_bus.py）</h2>
+<pre>from collections import defaultdict
+from core.logger import log
+
+class MessageBus:
+    """发布/订阅总线：节点注册邮箱，消息按收件人路由"""
+    def __init__(self):
+        self._mailboxes = defaultdict(list)
+
+    def register(self, agent_name: str):
+        self._mailboxes[agent_name] = []
+
+    def post(self, msg: dict):
+        self._mailboxes[msg["to"]].append(msg)
+        log.info("bus.post", sender=msg["from"], receiver=msg["to"], type=msg["type"])
+
+    def fetch(self, agent_name: str) -> list:
+        msgs, self._mailboxes[agent_name] = self._mailboxes[agent_name], []
+        return msgs</pre>
+
+<h2>3.4 双节点最小闭环（验证架构通畅）</h2>
+<pre># tests/test_simple.py —— 阶段三的验收脚本
+from core.agent_node import AgentNode
+
+from core.config import AGENTS
+math_agent   = AgentNode("math_agent",   AGENTS["math_agent"]["agentCode"], AGENTS["math_agent"]["agentVersion"])
+verify_agent = AgentNode("verify_agent", AGENTS["verify_agent"]["agentCode"], AGENTS["verify_agent"]["agentVersion"])
+
+task = "AWGN信道，带宽B=20MHz，信噪比SNR=30dB，求信道容量。请逐步推导。"
+
+# 1. 数学 Agent 求解
+derivation = math_agent.think(task)
+
+# 2. 数学 Agent 把推导发给验证 Agent
+math_agent.send(verify_agent, "derivation", derivation)
+
+# 3. 验证 Agent 从收件箱取出并检查
+msg = verify_agent.inbox.pop()
+feedback = verify_agent.think(f"请检查以下推导是否正确：\n{msg['content']}")
+
+# 4. 验证 Agent 回发结果
+verify_agent.send(math_agent, "feedback", feedback)
+
+print("=== 推导 ===");  print(derivation)
+print("=== 验证 ===");  print(feedback)
+# 人工核对：推导中应出现 log2(1+1000)，结果 ≈ 199.5 Mbps
+# 检查 logs/session.jsonl 应有完整的 init/think/message 记录</pre>
+
+<!-- ================= 04 OpenTrek 知识库搭建 ================= -->
+<h1 class="chapter" id="ch4"><span class="chno">04</span>OpenTrek 知识库搭建</h1>
+
+<h2>4.1 三个知识库规划</h2>
+<table class="data">
+  <tr><th style="width:22%;">知识库</th><th style="width:44%;">上传内容</th><th>类型选择</th></tr>
+  <tr><td><strong>通信协议库</strong></td><td>3GPP TS 29.274（GTPv2）、TS 36.413（S1AP）、TS 38.413（NGAP）等规范 PDF</td><td>检索字段：text</td></tr>
+  <tr class="alt"><td><strong>信息论数学库</strong></td><td>香农原著关键章节、Cover《信息论基础》公式集、典型例题</td><td>检索字段：text（含公式）</td></tr>
+  <tr><td><strong>FPGA 硬件库</strong></td><td>Verilog 模块模板、时序约束指南、Xilinx / Altera 官方文档</td><td>检索字段：text</td></tr>
+</table>
+
+<h2>4.2 单个知识库操作步骤（约 10 分钟）</h2>
+<ol>
+  <li>OpenTrek 控制台 → <strong>知识库管理</strong> → 创建知识库 → 本地上传文件（PDF / DOCX / MD）；</li>
+  <li>记录每个知识库的 <code>kbIndexCode</code>（检索时必填）；</li>
+  <li>记录 <code>workspacecode</code>（检索请求头 <code>x-sfm-workspacecode</code> 必填）；</li>
+  <li>调用 <strong>kortex API</strong> 验证检索（需 APP_KEY 和 workspacecode）；</li>
+  <li>输入 2-3 个典型问题，确认能检索到正确片段（查看 score 与 text 字段）。</li>
+</ol>
+
+<div class="callout">
+  <p><strong>知识素材来源建议：</strong>3GPP 规范从官网免费下载（3gpp.org/specifications-technologies）；信息论整理经典教材公式；FPGA 资料来自开源社区与厂商官方手册。注意仅使用公开可获取的资料。</p>
+</div>
+
+<h2>4.3 知识库接入 Agent</h2>
+<p>两种方式，按进度选择：</p>
+<table class="data">
+  <tr><th style="width:28%;">方式</th><th>说明</th></tr>
+  <tr><td><strong>控制台关联（快）</strong></td><td>在 OpenTrek 控制台的智能体中直接挂载知识库，适合演示前快速见效</td></tr>
+  <tr class="alt"><td><strong>API 检索注入（可控）</strong></td><td>Agent 的 think() 前先调 kortex 检索 API，把命中文段拼入任务上下文，检索行为可写日志</td></tr>
+</table>
+
+<!-- ================= 05 执行手册编写指南 ================= -->
+<h1 class="chapter" id="ch5"><span class="chno">05</span>执行手册编写指南</h1>
+
+<h2>5.1 编写原则</h2>
+<ul>
+  <li><strong>身份具体</strong>：写明精通的子领域与规范编号，不写空泛的"你是专家"；</li>
+  <li><strong>过程外化</strong>：要求逐步推导、标注公式出处，方便验证 Agent 检查；</li>
+  <li><strong>协作写死</strong>：明确"完成后发给谁""收到反馈后怎么做"；</li>
+  <li><strong>允许说不</strong>：不确定时必须明说，禁止编造。</li>
+</ul>
+
+<h2>5.2 模板：数学理论 Agent（prompts/math_system.md）</h2>
+<pre># 数学理论 Agent 执行手册
+
+## 身份
+你是信息论与通信数学专家，精通：香农定理、信道容量、
+信源/信道编码（LDPC、Polar）、调制解调的数学推导。
+
+## 工作方式
+1. 推导必须逐步展开，每步标注所用公式与定理
+2. 数值计算给出完整中间过程（含单位换算）
+3. 完成推导后，必须把完整过程发送给 verify_agent 检查
+4. 收到 verify_agent 的 feedback 后：
+   - 若通过，输出最终结果
+   - 若指出错误，修正后重新发送验证
+
+## 约束
+- 引用公式须注明出处（如 Shannon 1948）
+- 不确定时明确说"不确定"，禁止编造</pre>
+
+<h2>5.3 模板：验证 Agent（prompts/verify_system.md）</h2>
+<pre># 验证 Agent 执行手册
+
+## 身份
+你是严谨的审稿人，负责检查其他 Agent 发来的推导、
+计算与代码。你不关心谁发来的，只关心对错。
+
+## 检查清单
+1. 公式选择是否正确（如信道容量必须用 C = B·log2(1+S/N)）
+2. 单位换算是否正确（dB → 线性值：10^(dB/10)）
+3. 数值计算逐步复核
+4. 代码检查语法、时序逻辑、边界条件
+
+## 回复格式（必须二选一）
+- 【通过】+ 一句话说明核对了什么
+- 【不通过】+ 指出具体错误位置 + 正确做法
+回复后把结果发送回消息来源 Agent。</pre>
+
+<h2>5.4 模型选择约定</h2>
+<table class="data">
+  <tr><th style="width:30%;">Agent</th><th style="width:26%;">模型</th><th>理由</th></tr>
+  <tr><td>math_agent / verify_agent</td><td>推理能力强的模型</td><td>推导与检查不能出错（控制台选配）</td></tr>
+  <tr class="alt"><td>comm_agent / hw_agent</td><td>均衡模型</td><td>均衡性能（控制台选配）</td></tr>
+</table>
+
+<!-- ================= 06 测试用例 ================= -->
+<h1 class="chapter" id="ch6"><span class="chno">06</span>测试用例</h1>
+
+<h2>6.1 首个测试用例（架构验证）</h2>
+<div class="callout-amber">
+  <p><strong>题目：</strong>AWGN 信道，带宽 B = 20MHz，信噪比 SNR = 30dB，求信道容量。</p>
+  <p><strong>标准答案：</strong>SNR 线性值 = 10^(30/10) = 1000；C = B·log₂(1+SNR) = 20×10⁶ × log₂(1001) ≈ <strong>199.5 Mbps</strong></p>
+</div>
+<p><strong>验证清单：</strong></p>
+<ul>
+  <li>math_agent 正确调用香农公式，dB → 线性值换算正确（10³ = 1000）</li>
+  <li>math_agent 主动向 verify_agent 发送 derivation 消息</li>
+  <li>verify_agent 回发 feedback 消息（通过或指出错误）</li>
+  <li><code>logs/session.jsonl</code> 中出现完整的消息流记录</li>
+</ul>
+
+<h2>6.2 进阶测试用例</h2>
+<table class="data">
+  <tr><th style="width:20%;">用例</th><th style="width:44%;">题目</th><th>验证点</th></tr>
+  <tr><td><strong>通信协议</strong></td><td>GTPv2 中 Create Session Request 的必选 IE 有哪些？SGW 回复 Cause=73 代表什么？</td><td>RAG 检索命中；引用 TS 29.274 具体章节号</td></tr>
+  <tr class="alt"><td><strong>数学建模</strong></td><td>带宽加倍而 SNR 不变时，信道容量是否加倍？给出推导与结论</td><td>发现并纠正"简单加倍"的直觉错误</td></tr>
+  <tr><td><strong>硬件实践</strong></td><td>编写一个同步 FIFO 的 Verilog 模块，深度 16、位宽 8</td><td>HW Agent 生成代码；Verify Agent 检查语法与空满逻辑</td></tr>
+</table>
+
+<!-- ================= 07 团队分工 ================= -->
+<h1 class="chapter" id="ch7"><span class="chno">07</span>团队分工</h1>
+
+<div class="role-head">A · 架构师 —— 项目的骨架</div>
+<table class="data">
+  <tr><th style="width:52%;">任务</th><th style="width:32%;">产出</th><th>优先级</th></tr>
+  <tr><td>项目骨架 + 配置管理</td><td><code>core/config.py</code></td><td>P0</td></tr>
+  <tr class="alt"><td>Agent 节点基类（封装 OpenTrek Agent API）</td><td><code>core/agent_node.py</code></td><td>P0</td></tr>
+  <tr><td>消息总线（发布/订阅 + 路由）</td><td><code>core/message_bus.py</code></td><td>P0</td></tr>
+  <tr class="alt"><td>全局日志系统（structlog → JSONL）</td><td><code>core/logger.py</code></td><td>P0</td></tr>
+  <tr><td>Orchestrator 协调器（分解、路由、聚合）</td><td><code>core/orchestrator.py</code></td><td>P1</td></tr>
+  <tr class="alt"><td>CLI 入口 /（进阶）Gradio Web 演示界面</td><td><code>main.py / webui.py</code></td><td>P1 / P2</td></tr>
+</table>
+
+<div class="role-head">B · Agent 工程师 —— Agent 的灵魂</div>
+<table class="data">
+  <tr><th style="width:52%;">任务</th><th style="width:32%;">产出</th><th>优先级</th></tr>
+  <tr><td>调通 OpenTrek createSession + /run 接口，跑通最小 Demo</td><td>验证脚本</td><td>P0</td></tr>
+  <tr class="alt"><td>编写 4 份执行手册（System Prompt）</td><td><code>prompts/*.md</code></td><td>P0</td></tr>
+  <tr><td>实现 4 个领域 Agent 类</td><td><code>agents/*.py</code></td><td>P0</td></tr>
+  <tr class="alt"><td>计算器工具（数值计算函数封装）</td><td><code>agents/tools.py</code></td><td>P1</td></tr>
+  <tr><td>在 OpenTrek 控制台调试 Prompt 并迭代</td><td>调优记录</td><td>P1</td></tr>
+  <tr class="alt"><td>知识库检索工具接入 Agent</td><td>RAG 工具函数</td><td>P2</td></tr>
+</table>
+
+<div class="role-head">C · 领域专家 —— 知识与验证</div>
+<table class="data">
+  <tr><th style="width:52%;">任务</th><th style="width:32%;">产出</th><th>优先级</th></tr>
+  <tr><td>收集三域知识库素材（3GPP / 信息论 / FPGA）</td><td><code>knowledge/</code> 文档</td><td>P0</td></tr>
+  <tr class="alt"><td>OpenTrek 控制台创建 3 个知识库并命中测试</td><td>3 个可用知识库</td><td>P0</td></tr>
+  <tr><td>编写入门测试用例（含标准答案）</td><td><code>tests/test_simple.py</code></td><td>P0</td></tr>
+  <tr class="alt"><td>编写三域进阶测试用例</td><td><code>tests/</code> 全套</td><td>P1</td></tr>
+  <tr><td>核对 Agent 输出的专业正确性</td><td>验证报告</td><td>P1</td></tr>
+  <tr class="alt"><td>答辩 PPT 与演示文档</td><td>演示材料</td><td>P2</td></tr>
+</table>
+
+<h2>7.1 协作约定</h2>
+<div class="callout">
+  <p>① 接口约定：<code>AgentNode(name, agent_code, agent_version, bus)</code>、<code>.think(task)</code>、<code>.send(to, type, content)</code>，变更须群内同步；</p>
+  <p>② Prompt 与知识库文档走 Git 版本管理，禁止口头传递；</p>
+  <p>③ 每天 15 分钟站会同步进度与阻塞点；</p>
+  <p>④ 阶段三（双节点链路验证）未通过前，全员集中攻关。</p>
+</div>
+
+<div class="footer-note">AI for Comm · 通信领域多智能体协作系统 —— 实践手册 v2.0 · 适配 OpenTrek 平台（下篇）</div>
+
+</body>
+</html>

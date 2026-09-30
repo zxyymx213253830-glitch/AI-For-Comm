@@ -1,0 +1,62 @@
+{
+  "platform": {
+    "baseUrl": "http://<platform-host>/sfm-agent-studio/sfm-api-gateway/gateway/agent/api",
+    "appKey": "YOUR_APP_KEY",
+    "requestTimeout": 300,
+    "sseReadTimeout": 300
+  },
+  "agents": {
+    "math_agent": {
+      "agentCode": "d0778d9a-16b1-4e0b-81d7-d060bdfed564",
+      "agentVersion": "1786194666467",
+      "description": "数学推导 Agent — 负责信息论公式推导与信道容量计算",
+      "kbIds": [
+        "t6doo3pjacqe"
+      ]
+    },
+    "verify_agent": {
+      "agentCode": "fed235c6-e97c-431e-b7e1-2cec6200ad9d",
+      "agentVersion": "1788075577472",
+      "description": "验证 Agent — 负责检查推导正确性并给出反馈"
+    },
+    "comm_agent": {
+      "agentCode": "72d8241c-55cf-4dc7-9f2a-d9e464ff13b8",
+      "agentVersion": "1787757082841",
+      "description": "通信工程 Agent — 负责 3GPP 协议查询与信令流程分析",
+      "kbIds": [
+        "jka3mxb19y08",
+        "anb7bpimm2jn"
+      ]
+    },
+    "hw_agent": {
+      "agentCode": "62d77ba3-1a25-4b67-8728-13617e543e19",
+      "agentVersion": "1786113673445",
+      "description": "硬件实践 Agent — 负责 FPGA / Verilog 模块生成与时序分析",
+      "kbIds": [
+        "jfoi1hlf60e7",
+        "d8xgrvwu8zr7"
+      ]
+    },
+    "sim_agent": {
+      "agentCode": "c1c9aa5f-f657-49d0-9999-25a2969c3345",
+      "agentVersion": "1787760897423",
+      "description": "通信仿真 Agent — 负责蒙特卡洛仿真代码生成与理论对照（BER/容量/星座图等）",
+      "requireFullAnswer": "。注意：请把【仿真方案】【代码】【理论对照】【运行说明】四个章节的全部内容完整写在你本次最终答复的正文中一次性输出；你的最终答复就是唯一交付物，不要只给摘要，也不要说见上方输出。"
+    },
+    "lit_review_agent": {
+      "agentCode": "ada4212a-c471-42a7-84a0-26e7a23b520f",
+      "agentVersion": "1787753150262",
+      "description": "文献调研 Agent — 公网(arXiv/SemanticScholar)+平台KB 双源检索、归纳与综述生成",
+      "kbIds": [
+        "jka3mxb19y08",
+        "anb7bpimm2jn"
+      ]
+    },
+    "report_agent": {
+      "agentCode": "89468b5f-abbe-4d5a-a717-a0fcda29b9b3",
+      "agentVersion": "1788229915815",
+      "description": "报告主编 Agent — 把多智能体产出统稿成结构化研究报告内容（固定字段 JSON），由本地渲染引擎排版成高审美 HTML",
+      "requireFullAnswer": "。注意：请把完整的 JSON 对象一次性写在你本次最终答复的正文中，这个 JSON 就是唯一交付物；不要只给摘要，不要有任何 JSON 以外的文字，也不要说\"见上方输出\"。"
+    }
+  }
+}

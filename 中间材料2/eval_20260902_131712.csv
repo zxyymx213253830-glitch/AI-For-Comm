@@ -1,0 +1,3 @@
+﻿id,kind,agent,level,auto,ok,time,len
+collab-05,collab,sim_agent,S,✅ 通过,True,209.4,609
+collab-06,collab,report_agent,S,❌ 未通过,False,444.1,102

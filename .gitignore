@@ -1,0 +1,24 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+env/
+
+# 开发工具与工作记忆
+.workbuddy/
+.qoder/
+.vscode/
+.idea/
+
+# 临时产物
+*.tmp
+*.bak
+
+# 本地密钥（若你填入了真实 appKey，建议不要提交）
+# config.json
+
+# 系统
+.DS_Store
+Thumbs.db

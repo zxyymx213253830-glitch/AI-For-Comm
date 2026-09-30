@@ -1,0 +1,38 @@
+﻿id,kind,agent,level,auto,ok,time,len
+comm-01,direct,comm_agent,S,待人工评分,True,91.1,748
+comm-02,direct,comm_agent,S,待人工评分,True,78.5,786
+comm-03,direct,comm_agent,M,待人工评分,True,45.6,820
+comm-04,direct,comm_agent,M,待人工评分,True,65.9,786
+comm-05,direct,comm_agent,M,待人工评分,True,76.3,886
+comm-06,direct,comm_agent,H,待人工评分,True,102.5,629
+hw-01,direct,hw_agent,S,待人工评分,True,108.0,1385
+hw-02,direct,hw_agent,S,待人工评分,True,44.6,332
+hw-03,direct,hw_agent,M,待人工评分,True,72.6,1694
+hw-04,direct,hw_agent,M,待人工评分,True,59.5,699
+hw-05,direct,hw_agent,M,待人工评分,True,133.0,1127
+hw-06,direct,hw_agent,H,待人工评分,True,127.0,985
+lit-01,direct,lit_review_agent,S,待人工评分,True,44.8,1630
+lit-02,direct,lit_review_agent,M,待人工评分,True,34.8,1770
+lit-03,direct,lit_review_agent,M,待人工评分,True,45.3,1385
+lit-04,direct,lit_review_agent,M,待人工评分,True,36.0,1537
+lit-05,direct,lit_review_agent,H,待人工评分,True,35.7,1628
+math-01,direct,math_agent,S,待人工评分,True,73.2,918
+math-02,direct,math_agent,S,待人工评分,True,55.2,1394
+math-03,direct,math_agent,M,待人工评分,True,48.7,1334
+math-04,direct,math_agent,M,待人工评分,True,61.0,1492
+math-05,direct,math_agent,M,待人工评分,True,100.9,1225
+math-06,direct,math_agent,H,待人工评分,True,188.1,70
+report-01,direct,report_agent,S,待人工评分,False,166.1,102
+report-02,direct,report_agent,M,待人工评分,True,171.8,1307
+sim-01,direct,sim_agent,S,待人工评分,True,226.8,3200
+sim-02,direct,sim_agent,M,待人工评分,True,245.9,3547
+verify-01,judge,verify_agent,S,✅ 命中,True,28.1,376
+verify-02,judge,verify_agent,S,✅ 命中,True,40.7,363
+verify-03,judge,verify_agent,M,✅ 命中,True,34.5,756
+verify-04,judge,verify_agent,M,✅ 命中,True,85.8,523
+verify-05,judge,verify_agent,H,✅ 命中,True,72.5,879
+collab-01,collab,math_agent,-,✅ 通过,True,125.4,609
+collab-02,collab,comm_agent,-,✅ 通过,True,329.3,609
+collab-04,collab,lit_review_agent,-,✅ 通过,True,97.4,609
+collab-05,collab,sim_agent,S,✅ 通过,True,209.4,609
+collab-06,collab,report_agent,S,❌ 未通过,False,444.1,102

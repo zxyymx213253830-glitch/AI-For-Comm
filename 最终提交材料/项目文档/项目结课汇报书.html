@@ -1,0 +1,1621 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>AI for Comm 项目结课汇报书</title><style>
+:root{
+  --ink:#0a1f3d; --ink-tint:#152a4a; --paper:#f1f3f5; --paper-tint:#e6eaee;
+  --gold:#c9973f; --gold-soft:#e3c88f; --text:#1a2332; --muted:#5b6472;
+  --line:#d7dce2; --serif:"Songti SC","STSong","SimSun",serif;
+  --sans:"PingFang SC","Microsoft YaHei",sans-serif;
+  --mono:"JetBrains Mono","Consolas","Courier New",monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{background:var(--paper);color:var(--text);font-family:var(--sans);
+  text-rendering:optimizeLegibility;}
+body{line-height:1.78;font-size:10.5pt;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+
+/* ── 封面 ── */
+.cover{width:210mm;height:296mm;background:var(--ink);color:#e9edf2;
+  display:flex;flex-direction:column;justify-content:center;
+  padding:26mm 22mm;position:relative;overflow:hidden;}
+.cover::before{content:"";position:absolute;inset:0;
+  background:radial-gradient(ellipse 120% 60% at 85% -10%,rgba(201,151,63,.18),transparent 60%),
+             radial-gradient(ellipse 90% 45% at -10% 110%,rgba(21,42,74,.95),transparent 65%);}
+.cover::after{content:"";position:absolute;right:-60mm;top:-40mm;width:180mm;height:180mm;
+  border:1px solid rgba(201,151,63,.16);border-radius:50%;}
+.cover>*{position:relative;}
+.cover .kicker{font-size:12px;letter-spacing:.34em;color:var(--gold);margin-bottom:24px;}
+.cover h1{font-family:var(--serif);font-size:41px;font-weight:700;line-height:1.34;margin-bottom:16px;}
+.cover .subtitle{font-size:15.5px;color:#b6c2d4;letter-spacing:.05em;margin-bottom:34px;}
+.cover .rule{width:52mm;height:2px;background:var(--gold);margin-bottom:30px;}
+.cover .meta{font-size:11.5px;color:#93a2b8;line-height:2.05;}
+.cover .meta b{color:#dfe6ef;font-weight:600;}
+.cover .claim{margin-top:34px;padding:13px 16px;border-left:2px solid var(--gold);
+  background:rgba(201,151,63,.07);font-size:10.5px;color:#a9b6c8;line-height:1.85;}
+.cover .foot{position:absolute;bottom:20mm;left:22mm;right:22mm;
+  display:flex;justify-content:space-between;font-size:9.5px;color:#6d7d94;
+  border-top:1px solid rgba(255,255,255,.1);padding-top:11px;}
+
+/* ── 目录 ── */
+.toc{padding:2mm 0 6mm;}
+.toc h2{font-family:var(--serif);font-size:20px;color:var(--ink);
+  border-bottom:2px solid var(--gold);padding-bottom:7px;margin-bottom:14px;
+  page-break-before:auto;break-before:auto;}
+.toc ol{list-style:none;columns:2;column-gap:9mm;}
+.toc li{break-inside:avoid;font-size:9.6px;line-height:1.62;padding:2.2px 0;color:var(--text);}
+.toc li.l2{font-weight:700;color:var(--ink);margin-top:6px;}
+.toc li.l2 .no{color:var(--gold);font-family:var(--mono);margin-right:6px;}
+.toc li.l3{padding-left:13px;color:var(--muted);}
+.toc li.l3 .no{font-family:var(--mono);margin-right:5px;color:#9aa4b2;}
+
+/* ── 正文 ── */
+.body{padding:0;}
+.body h2{font-family:var(--serif);font-size:19px;color:var(--ink);
+  margin:0 0 11px;padding:0 0 7px;border-bottom:2px solid var(--gold);
+  page-break-before:always;break-before:page;page-break-after:avoid;break-after:avoid;}
+.body h2 .no{color:var(--gold);font-family:var(--mono);font-size:15px;
+  letter-spacing:.06em;margin-right:9px;}
+.body h3{font-size:13px;color:var(--ink);margin:15px 0 7px;padding-left:9px;
+  border-left:3px solid var(--gold);page-break-after:avoid;break-after:avoid;}
+.body h3 .no{color:var(--gold);font-family:var(--mono);margin-right:6px;}
+.body h4{font-size:11.2px;color:var(--ink-tint);margin:11px 0 5px;
+  page-break-after:avoid;break-after:avoid;}
+.body p{margin:0 0 7.5px;text-align:left;}
+.body ul,.body ol{margin:0 0 8px 20px;page-break-inside:avoid;break-inside:avoid;}
+.body li{margin-bottom:3.2px;text-align:left;}
+.body strong{color:var(--ink);font-weight:700;}
+.body em{color:var(--ink-tint);}
+.body a{color:#1d5fa8;text-decoration:none;}
+.body code{font-family:var(--mono);font-size:.88em;background:var(--paper-tint);
+  color:#8a5a12;padding:1px 4px;border-radius:2px;}
+.body pre{background:#0d1b2f;color:#dfe6ef;padding:10px 12px;border-radius:3px;
+  margin:0 0 9px;overflow:hidden;page-break-inside:avoid;break-inside:avoid;
+  border-left:3px solid var(--gold);}
+.body pre code{background:none;color:inherit;padding:0;font-size:8.6px;line-height:1.62;
+  white-space:pre-wrap;word-break:break-word;
+  /* 架构图含中文，须用全角=2×半角的等宽中文字体，否则制表符与中文宽度不一致会错位 */
+  font-family:"Sarasa Mono SC","NSimSun","SimSun",monospace;}
+.body blockquote{margin:0 0 9px;padding:8px 13px;background:#fff;
+  border-left:3px solid var(--gold-soft);color:var(--muted);font-size:9.9px;
+  page-break-inside:avoid;break-inside:avoid;}
+.body blockquote p{margin:0 0 3px;}
+.body hr{border:none;border-top:1px solid var(--line);margin:13px 0;}
+.body table{width:100%;border-collapse:collapse;margin:0 0 10px;font-size:9.1px;
+  line-height:1.55;background:#fff;page-break-inside:auto;}
+.body thead{display:table-header-group;}
+.body tr{page-break-inside:avoid;break-inside:avoid;}
+.body th{background:var(--ink);color:#eef2f7;font-weight:600;text-align:left;
+  padding:5px 7px;border:1px solid var(--ink-tint);font-size:9px;}
+.body td{padding:4.5px 7px;border:1px solid var(--line);vertical-align:top;
+  word-break:break-word;}
+.body tbody tr:nth-child(even) td{background:#f7f9fb;}
+.body table code{font-size:8.4px;}
+
+@media screen{
+  body{background:var(--paper);padding:24px 0;}
+  .cover{margin:0 auto 24px;border-radius:3px;box-shadow:0 2px 24px rgba(10,31,61,.22);}
+  .wrap{max-width:1000px;margin:0 auto;padding:26px 34px 64px;background:#fff;
+        box-shadow:0 2px 22px rgba(10,31,61,.13);border-radius:3px;}
+  .body{font-size:11pt;}
+}</style></head><body><section class="cover">
+  <div class="kicker">AI 创新大赛 · 结课汇报</div>
+  <h1>AI for Comm 项目结课汇报书</h1>
+  <div class="subtitle">通信领域多智能体科研协作系统</div>
+  <div class="rule"></div>
+  <div class="meta"><div>编制日期：2026-09-03 · 项目周期：2026-07-28 至 2026-09-02（约五周） · 编制：周行远（架构师）</div><div>运行环境：阿里云专有云 OpenTrek Agent Dev（智能体工厂）工作空间「AI For Comm」+ 本地 Python 编排层</div></div>
+  
+  <div class="foot"><span>AI for Comm</span><span>阿里云专有云 OpenTrek Agent Dev</span></div>
+</section><div class="wrap"><nav class="toc"><h2>目录</h2><ol><li class="l2"><span class="no">01</span>项目功能总览</li><li class="l3"><span class="no">1.1</span>系统定位</li><li class="l3"><span class="no">1.2</span>功能清单</li><li class="l3"><span class="no">1.3</span>模式一：快问快答</li><li class="l3"><span class="no">1.4</span>模式二：六步科研流水线</li><li class="l3"><span class="no">1.5</span>报告产出的固定形态</li><li class="l3"><span class="no">1.6</span>交付形态</li><li class="l2"><span class="no">02</span>系统架构与智能体之间的通信</li><li class="l3"><span class="no">2.1</span>分层架构：大脑在平台，手脚在本地</li><li class="l3"><span class="no">2.2</span>拓扑选择：星型</li><li class="l3"><span class="no">2.3</span>通信通道之一：平台调用协议（纵向，本地 ↔ 平台）</li><li class="l3"><span class="no">2.4</span>通信通道之二：内存消息总线（横向，智能体 ↔ 智能体）</li><li class="l3"><span class="no">2.5</span>通信通道之三：工具回环协议（智能体 ↔ 本地工具）</li><li class="l3"><span class="no">2.6</span>可靠性设计：故障 → 检测 → 处置</li><li class="l3"><span class="no">2.7</span>配置与可观测</li><li class="l2"><span class="no">03</span>三个核心机制</li><li class="l3"><span class="no">3.1</span>机制一：仿真真执行闭环</li><li class="l3"><span class="no">3.2</span>机制二：三级校验与闭环修正</li><li class="l3"><span class="no">3.3</span>机制三：分段统稿与高审美渲染</li><li class="l3"><span class="no">3.4</span>六道质量门</li><li class="l2"><span class="no">04</span>七个智能体逐个详述</li><li class="l3"><span class="no">4.1</span>总览表</li><li class="l3"><span class="no">4.2</span>math_agent：信息论与数学推导</li><li class="l3"><span class="no">4.3</span>comm_agent：3GPP 协议与组网（兼默认规划者）</li><li class="l3"><span class="no">4.4</span>hw_agent：FPGA / Verilog 硬件实践</li><li class="l3"><span class="no">4.5</span>sim_agent：蒙特卡洛仿真与数值验证</li><li class="l3"><span class="no">4.6</span>lit_review_agent：公网 + 知识库双源文献调研</li><li class="l3"><span class="no">4.7</span>verify_agent：三级校验</li><li class="l3"><span class="no">4.8</span>report_agent：统稿主编</li><li class="l3"><span class="no">4.9</span>分工边界：谁向谁要什么</li><li class="l2"><span class="no">05</span>平台资产盘点</li><li class="l3"><span class="no">5.1</span>智能体资产（7 个，全部在线）</li><li class="l3"><span class="no">5.2</span>知识库与本地知识资产</li><li class="l3"><span class="no">5.3</span>本地工具层（7 个工具，最小权限白名单）</li><li class="l3"><span class="no">5.4</span>技能资产（3 个，已上传平台技能中心）</li><li class="l3"><span class="no">5.5</span>提示词资产（13 份手册）</li><li class="l3"><span class="no">5.6</span>评测与留痕资产</li><li class="l2"><span class="no">06</span>测试与量化验证</li><li class="l3"><span class="no">6.1</span>测试轮次总账</li><li class="l3"><span class="no">6.2</span>评测集设计（38 题）</li><li class="l3"><span class="no">6.3</span>摸底成绩：35/37</li><li class="l3"><span class="no">6.4</span>离线回归矩阵</li><li class="l3"><span class="no">6.5</span>综合多智能体跑批</li><li class="l3"><span class="no">6.6</span>平台侧核对留痕（29 张截图，docs/验证记录图片/）</li><li class="llevel">附录 A · 最终提交材料里有什么</li><li class="llevel">A.1 一级结构</li><li class="llevel">A.2 项目文档\</li><li class="llevel">A.3 演示成果\</li><li class="llevel">A.4 代码\</li><li class="llevel">附录 B · 数字复核索引</li></ol></nav><main class="body"><h2><span class="no">01</span>项目功能总览</h2>
+<h3><span class="no">1.1</span>系统定位</h3>
+<p>系统接收一句通信领域的自然语言输入，自动完成路由判定、智能体调用与本地工具执行，输出两类结果之一：一段带依据的专业答案，或一份含真实仿真图表、经独立校验的研究报告。</p>
+<p>系统提供两种工作模式，共用同一套智能体资产与本地工具层：</p>
+<table>
+<thead>
+<tr>
+<th>模式</th>
+<th>输入</th>
+<th>内部动作</th>
+<th>输出</th>
+<th>典型耗时</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>① 快问快答</strong>（单智能体直答）</td>
+<td>一个具体问题</td>
+<td>关键词打分路由 → 单个专家作答 → 按需回环调用本地工具</td>
+<td>结构化答案 + 工具使用标识</td>
+<td>35 ~ 250 秒</td>
+</tr>
+<tr>
+<td><strong>② 科研任务</strong>（六步流水线）</td>
+<td>一个研究课题</td>
+<td>拆解 → 文献综述 → 多专家并行论证 → 交叉校验 → 闭环修正 → 分段统稿 → 渲染</td>
+<td>HTML 研究报告（内嵌真实仿真图）</td>
+<td>5 ~ 14 分钟</td>
+</tr>
+</tbody>
+</table>
+<p>两种模式共用同一个 AgentNode 对象、同一份 <code>config.json</code>、同一套 <code>tools/</code> 工具白名单：快问快答是流水线第 3 步的单点形态，流水线是快问快答的多点编排形态。</p>
+<h3><span class="no">1.2</span>功能清单</h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>功能</th>
+<th>入口</th>
+<th>触发方式</th>
+<th>产出</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>单智能体直答</td>
+<td>Web <code>/</code> · CLI <code>python main.py</code></td>
+<td>自然语言问题，自动路由</td>
+<td>答案正文 + 回答者标识 + 工具徽标</td>
+</tr>
+<tr>
+<td>2</td>
+<td>带真实计算的直答</td>
+<td>同上</td>
+<td>问题命中工具可解范围</td>
+<td>答案内嵌符号计算与仿真的真实输出</td>
+</tr>
+<tr>
+<td>3</td>
+<td>推导+校验双节点问答</td>
+<td>CLI（数学类自动进入）</td>
+<td>关键词命中数学类</td>
+<td>推导全文 + 校验意见，不通过自动重试 ≤3 轮</td>
+</tr>
+<tr>
+<td>4</td>
+<td>文献综述单点问答</td>
+<td>CLI（含"综述/文献/调研"）</td>
+<td><code>LitReviewAgent.survey()</code></td>
+<td>公网+平台双源综述 + 参考文献</td>
+</tr>
+<tr>
+<td>5</td>
+<td>仿真五步法单点问答</td>
+<td>CLI（含"仿真/BER/蒙特卡洛"）</td>
+<td>自动追加一次性交付指令</td>
+<td>方案 / 代码 / 理论对照 / 运行说明</td>
+</tr>
+<tr>
+<td>6</td>
+<td>六步科研流水线</td>
+<td>Web <code>/research</code> · CLI <code>科研: &lt;课题&gt;</code></td>
+<td>一句课题</td>
+<td>HTML 研究报告 + 若干仿真图</td>
+</tr>
+<tr>
+<td>7</td>
+<td>流水线实时进度可视化</td>
+<td>Web <code>/research</code></td>
+<td>SSE <code>/api/pipeline/progress/&lt;id&gt;</code></td>
+<td>六步状态灯 + 细节文案 + 协作网络动画</td>
+</tr>
+<tr>
+<td>8</td>
+<td>报告库（在线查看/下载）</td>
+<td>Web <code>/reports</code></td>
+<td>扫描 <code>outputs/research_*.html</code></td>
+<td>列表、新窗口查看、附件下载</td>
+</tr>
+<tr>
+<td>9</td>
+<td>智能体监控看板</td>
+<td>Web <code>/monitor</code></td>
+<td>读取配置与报告统计</td>
+<td>7 智能体在线状态、知识库、报告数量</td>
+</tr>
+<tr>
+<td>10</td>
+<td>平台连接与凭证管理</td>
+<td>Web <code>/settings</code></td>
+<td>表单保存 → 校验 → 热写 <code>config.json</code></td>
+<td>免改代码切换智能体版本与知识库</td>
+</tr>
+<tr>
+<td>11</td>
+<td>无人值守批量跑研究</td>
+<td>CLI / 容器</td>
+<td><code>python main.py</code> 脚本化</td>
+<td>报告落盘 <code>outputs/</code></td>
+</tr>
+<tr>
+<td>12</td>
+<td>能力评测（38 题集）</td>
+<td><code>tests/run_eval.py</code></td>
+<td>按科或按模式跑批</td>
+<td>HTML + CSV 评测结果</td>
+</tr>
+<tr>
+<td>13</td>
+<td>人工评分表生成</td>
+<td><code>tests/make_score_sheet.py</code></td>
+<td>读评测结果</td>
+<td>四维打分表 HTML</td>
+</tr>
+<tr>
+<td>14</td>
+<td>知识库源文档打包</td>
+<td><code>build_kb_json.py</code></td>
+<td>命令行</td>
+<td>平台可导入的知识库 JSON</td>
+</tr>
+<tr>
+<td>15</td>
+<td>容器化部署</td>
+<td><code>Dockerfile</code> + <code>docker-compose.yml</code></td>
+<td><code>docker compose up -d</code></td>
+<td>7860 端口常驻服务</td>
+</tr>
+</tbody>
+</table>
+<h3><span class="no">1.3</span>模式一：快问快答</h3>
+<p><strong>路由规则。</strong> 路由是一张关键词打分表（<code>web/routes/helpers.py</code>），问题文本按命中次数为每个智能体计分，取最高分；全部未命中时落到默认路由 <code>comm_agent</code>：</p>
+<table>
+<thead>
+<tr>
+<th>目标智能体</th>
+<th>触发关键词（不区分大小写）</th>
+<th>对应职责</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>math_agent</code></td>
+<td>AWGN、SNR、BER、香农、信道容量、互信息、熵、编码、调制、公式、推导、计算</td>
+<td>信息论与数学推导</td>
+</tr>
+<tr>
+<td><code>comm_agent</code></td>
+<td>GTP、S1AP、NAS、3GPP、协议、信令、组网、RRC、切换、5G、4G、LTE</td>
+<td>3GPP 协议与信令</td>
+</tr>
+<tr>
+<td><code>hw_agent</code></td>
+<td>Verilog、FPGA、Vivado、硬件、时序、综合、RTL、模块</td>
+<td>FPGA / Verilog 实现</td>
+</tr>
+<tr>
+<td><code>sim_agent</code></td>
+<td>仿真、蒙特卡洛、模拟、曲线、误码率仿真</td>
+<td>数值仿真验证</td>
+</tr>
+<tr>
+<td><code>lit_review_agent</code></td>
+<td>综述、文献、调研</td>
+<td>文献综述（CLI 侧优先判定）</td>
+</tr>
+</tbody>
+</table>
+<p>两条入口的路由实现有意不同：Web 走纯打分制，稳定且适合演示；CLI 额外做两件事——命中"综述/文献"时直接调用 <code>LitReviewAgent.survey()</code>；命中数学类或无匹配时调用 <code>orchestrator.dual_verify()</code>，即 math_agent 推导 → verify_agent 审稿 → 不通过则修正重提的双节点闭环（最多 3 轮）。</p>
+<p><strong>单答同样带本地工具。</strong> 每次提问都经过 <code>ask_with_tools()</code>：驱动器先按问题关键词本地预跑 1~2 个离线工具（标准误码率曲线、香农容量、本地知识库摘录），把真实数值连同工具说明书一并交给智能体；智能体可直接引用这些数值，也可按协议申请更多工具，本地执行后结果回喂，再定稿（协议见 2.5）。前端据此在答案下方显示工具徽标。</p>
+<h3><span class="no">1.4</span>模式二：六步科研流水线</h3>
+<table>
+<thead>
+<tr>
+<th>步</th>
+<th>名称</th>
+<th>执行者</th>
+<th>输入</th>
+<th>输出</th>
+<th>失败时的降级动作</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>问题拆解</td>
+<td>规划者角色（候选 <code>comm_agent</code>→<code>math_agent</code>）</td>
+<td>一句课题</td>
+<td>≤5 个子问题的 JSON，标注归属专家</td>
+<td>解析失败→整题交给 comm；候选空回复→换下一候选</td>
+</tr>
+<tr>
+<td>2</td>
+<td>文献调研</td>
+<td><code>lit_review_agent</code></td>
+<td>课题 + 子问题清单</td>
+<td>公网（arXiv/Semantic Scholar）+ 平台知识库双源综述</td>
+<td>公网不可用→退化为纯平台库；异常→标注降级并继续</td>
+</tr>
+<tr>
+<td>3</td>
+<td>并行咨询专家</td>
+<td>math / comm / hw / sim</td>
+<td>文献综述 + 各自子问题</td>
+<td>各专家完整论证 + 自主申请的工具清单</td>
+<td>单专家失败只警告不中断；sim 有三级提示词退让</td>
+</tr>
+<tr>
+<td>3.5</td>
+<td>仿真代码真执行</td>
+<td>本地沙箱</td>
+<td>sim 答案中的 Python 代码</td>
+<td>stdout + PNG 图表（自动回收）</td>
+<td>未提取到代码→记录原因，不编造结果</td>
+</tr>
+<tr>
+<td>4</td>
+<td>交叉校验</td>
+<td><code>verify_agent</code></td>
+<td>综述节选 + 全部专家论证</td>
+<td>【通过】/【有条件通过】/【不通过】三级意见</td>
+<td>平台异常重试 1 次，仍失败→标注跳过并继续出报告</td>
+</tr>
+<tr>
+<td>4.5</td>
+<td>闭环修正</td>
+<td>原专家 + <code>verify_agent</code></td>
+<td>评级为【不通过】的条目</td>
+<td>修正后的论证 + 二次评级（≤2 轮）</td>
+<td>轮次耗尽→保留现状并在报告中如实标注</td>
+</tr>
+<tr>
+<td>5</td>
+<td>分段统稿</td>
+<td><code>report_agent</code> + 本地合并</td>
+<td>每位专家的完整论证（每次只送一位）</td>
+<td>固定 7 字段 JSON</td>
+<td>分节失败→原文直录；全局失败→本地补齐；平台全挂→机械拼装</td>
+</tr>
+<tr>
+<td>6</td>
+<td>报告渲染</td>
+<td>本地渲染引擎</td>
+<td>统稿 JSON + 全部原始材料 + 消息轨迹</td>
+<td><code>outputs/research_&lt;时间戳&gt;.html</code></td>
+<td>渲染异常→记录错误，前序产物不丢</td>
+</tr>
+</tbody>
+</table>
+<p>两条设计约束：</p>
+<ul>
+<li><strong>同一专家至多领一道子问题</strong>。规划者若拆出两道同归属的子问题，第二道并入同一次提问作为补充，不并发开两个会话，以规避平台同会话并发锁。</li>
+<li><strong>并发度固定为 2</strong>。同时打开的网关 SSE 连接数限制在 2，超出会触发网关限流。</li>
+</ul>
+<h3><span class="no">1.5</span>报告产出的固定形态</h3>
+<p>流水线产出的每份报告为单文件 HTML，自带样式与内嵌图片，可离线打开、可整文件转发，章节结构固定：</p>
+<table>
+<thead>
+<tr>
+<th>章节</th>
+<th>内容</th>
+<th>数据来源</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>封面</td>
+<td>课题、执行摘要、关键词、耗时与参与智能体</td>
+<td>report_agent <code>summary</code> / <code>keywords</code></td>
+</tr>
+<tr>
+<td>Ⅰ 协作链路</td>
+<td>各环节产出材料的字符量</td>
+<td>本地 <code>steps</code> 消息轨迹</td>
+</tr>
+<tr>
+<td>Ⅱ 研究背景与文献综述</td>
+<td>综述全文，含来源标注与参考文献</td>
+<td>lit_review_agent</td>
+</tr>
+<tr>
+<td>Ⅲ 核心发现</td>
+<td>每位专家一节正文 + 该节仿真图表 + 可展开的专家原文</td>
+<td>report_agent 分节统稿 + 专家原文</td>
+</tr>
+<tr>
+<td>Ⅳ 交叉分析</td>
+<td>各专家结论是否互相印证、理论值与仿真值是否一致</td>
+<td>report_agent <code>cross_analysis</code></td>
+</tr>
+<tr>
+<td>Ⅴ 校验意见</td>
+<td>三级评级与逐项核对结论，原样转述</td>
+<td>verify_agent</td>
+</tr>
+<tr>
+<td>Ⅵ 综合结论与展望</td>
+<td>结论以评级开头 + 后续可执行验证建议</td>
+<td>report_agent <code>conclusion</code> / <code>outlook</code></td>
+</tr>
+<tr>
+<td>附录</td>
+<td>协作过程留痕（消息轨迹表 + 材料体量与全文位置）</td>
+<td>本地编排层</td>
+</tr>
+</tbody>
+</table>
+<h3><span class="no">1.6</span>交付形态</h3>
+<ul>
+<li><strong>Web 应用</strong>：Flask，六个中文页面（<code>/</code> 实时对话、<code>/research</code> 发起研究、<code>/reports</code> 报告库、<code>/reports/view/&lt;file&gt;</code> 在线查看、<code>/monitor</code> 监控、<code>/settings</code> 设置）；页面模板在 <code>web/templates/</code>，样式在 <code>web/static/css/style.css</code>，交互脚本在 <code>web/static/js/</code>（六个页面各一份），设计系统为深海军蓝 + 琥珀金，配自研 logo。</li>
+<li><strong>命令行</strong>：<code>python main.py</code>，双模式文本交互，适合无人值守与录屏。</li>
+<li><strong>容器</strong>：<code>Dockerfile</code> + <code>docker-compose.yml</code>，内网演示环境常驻 7860 端口。</li>
+<li><strong>报告归档</strong>：<code>outputs/</code> 目录累计研究报告 17 份，仿真图表在 <code>outputs/sim/</code>。</li>
+</ul>
+<hr>
+<h2><span class="no">02</span>系统架构与智能体之间的通信</h2>
+<p>本章回答一个核心问题：七个运行在远端平台上的智能体彼此不能直接通信，系统如何将它们组织为协作整体。</p>
+<h3><span class="no">2.1</span>分层架构：大脑在平台，手脚在本地</h3>
+<pre><code>┌─ 本地应用层 ─────────────────────────────────────────┐
+│  Web（Flask · 6 页中文）   CLI main.py   Docker/7860                                           │
+│  对话 / 研究 / 报告库 / 监控 / 设置                                                            │
+├─ 本地编排层 core/ ──────────────────────────────────────┤
+│  ResearchPipeline（六步流水线，星型中枢）                                                      │
+│  Orchestrator（路由 route / 双节点 dual_verify）                                               │
+│  AgentNode（会话·SSE·空回复重试·知识库挂载）                                                   │
+│  MessageBus（内存邮箱）  tool_driver（工具回环）                                               │
+│  report.py（HTML 渲染）  config_manager  logger  lit_search                                    │
+├─ 本地工具层 tools/  ─────────────────────────────────────┤
+│  SymPy 推演/恒等式复核 · 通信算法库 · Python 沙箱执行                                          │
+│  Verilog 编译仿真 · 公网文献检索 · 本地资料检索 · 注册表/白名单                                │
+├─ HTTP/SSE  ·  平台层 OpenTrek ────────────────────────────────┤
+│  7 个智能体（角色对话型 · ReAct 引擎）· 5 个知识库                                             │
+│  4 个 API 工具（搭载至对应智能体）· 3 个技能（Skills Hub）                                     │
+└────────────────────────────────────────────────┘
+</code></pre>
+<p>分工原则：需要稳定、可审计、真算真跑的能力放本地，需要模型能力、知识检索、版本治理的能力放平台。两侧之间只有一个接口——<code>core/agent_node.py</code> 中约 200 行的 HTTP/SSE 客户端。</p>
+<h3><span class="no">2.2</span>拓扑选择：星型</h3>
+<p>点对点的智能体互调在本平台不可行，原因有三条硬约束：</p>
+<ol>
+<li>角色对话型智能体不能被另一个智能体调用，平台不提供 agent-as-tool 的互挂能力；</li>
+<li>每次调用都是无记忆的，一次 <code>/run</code> 结束即完成使命，无法在其内部等待第三方回复；</li>
+<li>平台没有回调或 webhook 入口，不会主动把消息推给本地。</li>
+</ol>
+<p>因此系统采用星型拓扑：编排器（<code>ResearchPipeline</code> + <code>Orchestrator</code> + <code>MessageBus</code>）是全图唯一枢纽，所有智能体只与编排器相连，任意两个智能体之间的"对话"实际上是编排器把一方产出注入另一方的下一次提问。</p>
+<pre><code>                 ┌──────────── 编排器（本地） ────────────┐
+   plan ────────▶│ comm  math  hw  sim  lit  verify  report│
+                 │   ▲     ▲    ▲   ▲    ▲      ▲      ▲   │
+                 └───┼─────┼────┼───┼────┼──────┼──────┼───┘
+      send/receive   │     │    │   │    │      │      │
+      全部经中枢代投递└─────┴────┴───┴────┴──────┴──────┘
+                     任何两个智能体之间没有直接边
+</code></pre>
+<p>代价是多一次中枢搬运，收益是协作过程完全可记录、可重放、可降级，报告附录的"协作过程留痕"直接由此生成。</p>
+<h3><span class="no">2.3</span>通信通道之一：平台调用协议（纵向，本地 ↔ 平台）</h3>
+<p>所有智能体共用一套调用协议，由 <code>AgentNode</code> 封装。平台侧接口文档见 <code>docs/平台参考资料/</code>（创建会话、创建连接、发起 agent 调用、发起一次对话、知识库检索共 5 份）。</p>
+<p><strong>第一步 建会话</strong></p>
+<pre><code>POST {base}/createSession
+Body: { &quot;agentCode&quot;: &quot;&lt;UUID&gt;&quot;, &quot;agentVersion&quot;: &quot;&lt;版本编码&gt;&quot; }
+Resp: { &quot;data&quot;: &quot;&lt;uniqueCode&gt;&quot; }     ← 即 sessionId，一个 AgentNode 一个专属会话
+</code></pre>
+<p><code>base</code> 为 <code>http://<platform-host>/sfm-agent-studio/sfm-api-gateway/gateway/agent/api</code>，鉴权统一为 <code>Authorization: Bearer &lt;APP_KEY&gt;</code>。</p>
+<p><strong>第二步 发起对话（流式）</strong></p>
+<pre><code>POST {base}/{agentCode}/run
+Body: { &quot;agentVersion&quot;: &quot;...&quot;, &quot;sessionId&quot;: &quot;...&quot;, &quot;stream&quot;: true, &quot;delta&quot;: true,
+        &quot;input&quot;: &quot;&lt;提示词&gt;&quot;, &quot;kbIds&quot;: [&quot;...&quot;] }      ← 有 kbIds 时平台自动做知识库检索
+</code></pre>
+<p><strong>第三步 解析 SSE 流</strong>。平台以 <code>data:{...}</code> 逐帧推送，本地按对象类型分流：</p>
+<table>
+<thead>
+<tr>
+<th>SSE 对象</th>
+<th>含义</th>
+<th>本地处理</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>thought.delta</code></td>
+<td>ReAct 思考过程增量</td>
+<td>默认丢弃；<code>collect_thought=True</code> 时缓存备用</td>
+</tr>
+<tr>
+<td><code>message.delta</code></td>
+<td>旧版回答增量（累计）</td>
+<td>计入终答</td>
+</tr>
+<tr>
+<td><code>text.delta</code></td>
+<td>新版回答增量（累计）</td>
+<td>计入终答</td>
+</tr>
+<tr>
+<td><code>complete</code></td>
+<td>流结束</td>
+<td>立即退出读取</td>
+</tr>
+</tbody>
+</table>
+<p>终答取用采用双保险：若 <code>text.delta</code>/<code>message.delta</code> 拼接结果为空或过短，自动回退到缓存的 <code>thought.delta</code>，避免把过渡语当成答案。</p>
+<p><strong>第四步 会话无记忆 → 上下文由本地重建</strong>。平台不保留上一轮，因此工具回环、闭环修正等多轮交互，本地都必须把"原始问题 + 上一轮回答 + 工具结果"整段重新拼进新的 <code>input</code>。</p>
+<p><strong>超时与硬限制</strong>。本地 <code>requestTimeout</code>/<code>sseReadTimeout</code> 均配 300 秒，但平台侧"任务规划套件-结果渲染"环节存在约 180 秒的硬超时，超过即断流并返回不完整响应。为此本地实现两道抢救：<code>_repair_truncated()</code> 对被截断的 JSON 补齐闭合结构后再解析，<code>_fix_escapes()</code> 修复 LaTeX 命令被当作非法转义导致的解析失败。</p>
+<h3><span class="no">2.4</span>通信通道之二：内存消息总线（横向，智能体 ↔ 智能体）</h3>
+<p>智能体之间的传话由 <code>core/message_bus.py</code> 承担，提供 <code>register</code> / <code>post</code> / <code>fetch</code> 三个方法；AgentNode 对外暴露 <code>send()</code> / <code>fetch_messages()</code> 两个动作。消息结构为 <code>{ "from", "to", "type", "content", "ts" }</code>，按收件人姓名路由到内存邮箱，取完即清。</p>
+<p>在用的消息类型：</p>
+<table>
+<thead>
+<tr>
+<th>type</th>
+<th>方向</th>
+<th>场景</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>derivation</code> / <code>feedback</code></td>
+<td>math ↔ verify</td>
+<td>快问快答的双节点校验</td>
+</tr>
+<tr>
+<td><code>sub_question</code> / <code>answer</code></td>
+<td>编排器 ↔ 专家</td>
+<td>流水线第 3 步并行咨询</td>
+</tr>
+<tr>
+<td><code>summary</code></td>
+<td>lit → 编排器</td>
+<td>文献综述回传</td>
+</tr>
+<tr>
+<td><code>verdict</code> / <code>correction</code></td>
+<td>verify ↔ 编排器/专家</td>
+<td>评级与闭环修正</td>
+</tr>
+<tr>
+<td><code>angle@&lt;专家&gt;</code></td>
+<td>规划者 → 编排器</td>
+<td>拆解出的每个子问题</td>
+</tr>
+<tr>
+<td><code>digest@&lt;专家&gt;</code> / <code>global</code></td>
+<td>report → 编排器</td>
+<td>分节统稿 / 全局统稿结果</td>
+</tr>
+</tbody>
+</table>
+<p>总线是逻辑信箱而非网络组件：纯 Python 进程内 <code>defaultdict(list)</code>，不落盘、不走网络。它解决的是消息语义与投递记录，真正的数据搬运发生在编排器的函数调用里。这一取舍使整条流水线可以在断网环境下用 mock 完成单元测试。</p>
+<p>同时 <code>_record()</code> 会把每次投递的 <code>(step, from, to, type, chars)</code> 追加进 <code>pipeline.steps</code>，最终写进报告附录，使通信过程本身成为交付物的一部分。</p>
+<h3><span class="no">2.5</span>通信通道之三：工具回环协议（智能体 ↔ 本地工具）</h3>
+<p>平台智能体无法自行充当 MCP 客户端，因此本项目自定义了一套纯文本协议，使智能体能够驱动本地工具。</p>
+<p><strong>请求格式</strong>（写在智能体回答里，一行 JSON，用中文方括号包裹）：</p>
+<pre><code>〔工具请求〕{&quot;name&quot;: &quot;sympy_check_equality&quot;, &quot;arguments&quot;: {&quot;left&quot;: &quot;...&quot;, &quot;right&quot;: &quot;...&quot;}}〔/工具请求〕
+</code></pre>
+<p>不使用标准代码围栏，原因是平台 SSE 对围栏的截断处理会打断流，中文标记不会被围栏解析器吞掉。</p>
+<p><strong>结果回注格式</strong>：</p>
+<pre><code>〔工具结果 run_python｜执行成功〕{&quot;returncode&quot;: 0, &quot;stdout&quot;: &quot;...&quot;}〔/工具结果〕
+</code></pre>
+<p><strong>回环控制参数</strong>（<code>core/tool_driver.py</code>）：</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>取值</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>MAX_TOOL_ROUNDS</code></td>
+<td>2</td>
+<td>一个问题最多两轮工具回环</td>
+</tr>
+<tr>
+<td><code>MAX_CALLS_PER_ROUND</code></td>
+<td>3</td>
+<td>单轮最多执行 3 个请求</td>
+</tr>
+<tr>
+<td><code>RESULT_MAX_CHARS</code></td>
+<td>2500</td>
+<td>单个工具结果注入提示词的上限</td>
+</tr>
+<tr>
+<td><code>MAX_PREFLIGHT</code></td>
+<td>2</td>
+<td>每次提问最多预跑 2 个离线工具</td>
+</tr>
+<tr>
+<td>上下文重建</td>
+<td>原问题 + 预跑结果 + 工具说明书 + 上轮回答（截 4000 字）+ 工具结果</td>
+<td>补偿会话无记忆</td>
+</tr>
+<tr>
+<td>定稿条件</td>
+<td>回答中不再出现工具标记</td>
+<td>剥除标记后返回</td>
+</tr>
+</tbody>
+</table>
+<p><strong>确定性预跑</strong>。工具回环若完全依赖模型自愿申请，实际执行率极低。因此驱动器在发出首轮提问之前，先按"专家权限 + 题干关键词"本地真跑 1~2 个参数可自动推导的离线工具（<code>comm_lib</code> 标准算法库、<code>protocol_lookup</code> 本地知识库），把真实数值以"系统已真实执行"段落压进提示词并要求模型引用而非覆盖。预跑以 <code>round=0</code> 事件留痕，与自愿申请的 <code>round≥1</code> 区分；预跑失败的结果不进提示词，只写日志。<code>run_python</code> / <code>run_verilog</code> 需要模型提供代码，仍走自愿申请通道。</p>
+<p><strong>最小权限白名单</strong>（<code>tools/registry.py</code>，未列出的智能体退化为普通问答）：</p>
+<table>
+<thead>
+<tr>
+<th>智能体</th>
+<th>可用本地工具</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>math_agent</td>
+<td>sympy_compute、sympy_check_equality、comm_lib、protocol_lookup、search_papers</td>
+</tr>
+<tr>
+<td>sim_agent</td>
+<td>run_python、comm_lib、sympy_compute、protocol_lookup、search_papers</td>
+</tr>
+<tr>
+<td>hw_agent</td>
+<td>run_verilog、comm_lib、sympy_compute、protocol_lookup、search_papers</td>
+</tr>
+<tr>
+<td>comm_agent</td>
+<td>protocol_lookup、comm_lib、sympy_compute、search_papers</td>
+</tr>
+<tr>
+<td>verify_agent</td>
+<td>六个工具全开（审稿需要自行复算）</td>
+</tr>
+<tr>
+<td>lit_review_agent</td>
+<td>无（自身即检索器，内部直调工具）</td>
+</tr>
+<tr>
+<td>report_agent</td>
+<td>无（只统稿，不产生新事实）</td>
+</tr>
+</tbody>
+</table>
+<p><strong>容错解析</strong>。模型写坏 JSON 属高频事件，提取器先用 <code>raw_decode</code> 严格解析，失败则退化为正则抠出工具名、参数置空，由注册层回一句中文的参数说明引导下一轮改对。工具执行的任何异常都被翻译成中文结果返回，工具永远有回复，流水线不会因一个坏参数卡死。</p>
+<h3><span class="no">2.6</span>可靠性设计：故障 → 检测 → 处置</h3>
+<table>
+<thead>
+<tr>
+<th>故障</th>
+<th>检测方式</th>
+<th>处置策略</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SSE 终答为空或只剩收尾语</td>
+<td>长度阈值 + 思考链是否非空</td>
+<td>回退取 <code>thought.delta</code>；调用侧注入完整作答指令</td>
+</tr>
+<tr>
+<td>平台 180 秒硬超时截断</td>
+<td>JSON 解析失败 / 结尾无闭合</td>
+<td>截断抢救 + 分段统稿规避 + 本地兜底</td>
+</tr>
+<tr>
+<td>统稿返回非法 JSON</td>
+<td><code>_parse_draft</code> 关键字段判空</td>
+<td>转义修复 → 重试 → 原文直录 → 机械拼装，四层不退空</td>
+</tr>
+<tr>
+<td>专家回答失败</td>
+<td>并发 future 捕获异常</td>
+<td>只警告不中断，其余专家继续，报告标注缺席</td>
+</tr>
+<tr>
+<td>校验环节不可用</td>
+<td>verify 两次异常</td>
+<td>降级为"校验被跳过"，报告必出</td>
+</tr>
+<tr>
+<td>工具坏参数</td>
+<td>TypeError / ValueError</td>
+<td>转中文提示回喂，引导下一轮改对</td>
+</tr>
+<tr>
+<td>子进程绘图阻塞</td>
+<td>预防式</td>
+<td>强制 <code>MPLBACKEND=Agg</code></td>
+</tr>
+<tr>
+<td>网关限流</td>
+<td>连接重置异常码</td>
+<td>并发限 2 + 退避重试</td>
+</tr>
+<tr>
+<td>仿真代码提取不到</td>
+<td>四形态提取均失败</td>
+<td>记录"无法真执行"，不编造运行结果</td>
+</tr>
+</tbody>
+</table>
+<h3><span class="no">2.7</span>配置与可观测</h3>
+<ul>
+<li><strong>配置</strong>：<code>config.json</code> 集中管理平台地址、APP_KEY、两个超时、7 个智能体的 agentCode / agentVersion / kbIds 与个性化交付指令；<code>ConfigManager</code> 支持 Web 设置页读写与校验。</li>
+<li><strong>日志</strong>：<code>structlog</code> 结构化事件（<code>agent.init</code>、<code>bus.post</code>、<code>tool.executed</code>、<code>pipeline.*.failed</code> 等）落 <code>logs/session.jsonl</code>。</li>
+<li><strong>轨迹</strong>：<code>pipeline.steps</code> 全量记录消息，报告附录直接呈现。</li>
+</ul>
+<hr>
+<h2><span class="no">03</span>三个核心机制</h2>
+<p>本章说明三项关键机制：仿真真执行、校验真闭环、统稿保内容。</p>
+<h3><span class="no">3.1</span>机制一：仿真真执行闭环</h3>
+<p><strong>原则</strong>：凡可本地计算的，一律本地真算，算完把产物嵌进报告。仿真不是"给一段代码看看"，误码率曲线必须由真实执行产生。</p>
+<table>
+<thead>
+<tr>
+<th>线路</th>
+<th>谁产出代码</th>
+<th>谁执行</th>
+<th>执行器</th>
+<th>产物去向</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>数值仿真</td>
+<td>sim_agent 回答中的 Python 代码块</td>
+<td>流水线第 3.5 步 <code>_execute_sim_code</code></td>
+<td>本地子进程（<code>tools/sim_tools.execute_python_code</code>，超时 120 秒，强制 <code>MPLBACKEND=Agg</code>）</td>
+<td>PNG 转 base64 嵌入报告仿真图表区</td>
+</tr>
+<tr>
+<td>硬件验证</td>
+<td>hw_agent 回答中的 Verilog</td>
+<td>本地工具 <code>run_verilog</code></td>
+<td>Verilator / iverilog 本机编译执行</td>
+<td>编译与仿真结论回注下一轮</td>
+</tr>
+</tbody>
+</table>
+<p>实现要点：代码提取与执行逻辑收敛在工具层，与 <code>run_python</code> 共用同一套安全执行实现；执行失败不伪装成功，事件 <code>pipeline.sim.exec_failed</code> 记标准错误输出，报告里该节就没有图；未提取到代码记事件 <code>pipeline.sim.no_code</code> 留痕；硬件仿真选择本地 Verilator 而非外接仿真服务，以满足内网部署下执行链最短、可复现、不引入新依赖的要求。</p>
+<h3><span class="no">3.2</span>机制二：三级校验与闭环修正</h3>
+<p>多专家并行作答必然出现口径不一致、量纲错误、规范版本混用，只校验不修正等于把问题原样交给读者。</p>
+<ol>
+<li><strong>三级评级</strong>：verify_agent 的校验提示词硬规定只能给【通过】/【有条件通过】/【不通过】三档，并逐条写理由（量纲检查、单调性、特殊值、文献对照等）；</li>
+<li><strong>闭环修正</strong>：评级为【不通过】时，流水线把校验意见拆成反馈发回对应专家重答并重新校验，最多 <code>MAX_CORRECTION_ROUNDS = 2</code> 轮（<code>_verify_with_correction</code>），事件 <code>pipeline.correction.reverify</code> 留痕；</li>
+<li><strong>校验者自己也有工具</strong>：verify_agent 白名单含恒等式复核、Python 执行、通信算法库等六个工具，可自行复算；</li>
+<li><strong>评级进报告</strong>：全局统稿提示词硬规定 <code>conclusion</code> 字段必须以三级评级开头并忠实转述理由，封面徽章颜色随评级变化。</li>
+</ol>
+<h3><span class="no">3.3</span>机制三：分段统稿与高审美渲染</h3>
+<p><strong>问题</strong>：平台单次调用有约 180 秒硬超时，而七智能体的原始材料动辄上万字。把全部材料塞进一次统稿调用并压缩配额，会使专家论证在报告正文中所剩无几。</p>
+<p><strong>方案：分段统稿</strong>，把一次大调用拆成"每位专家 1 次分节统稿 + 1 次全局统稿"：</p>
+<table>
+<thead>
+<tr>
+<th>子任务</th>
+<th>输入</th>
+<th>输出</th>
+<th>配额</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>分节统稿 ×N</td>
+<td>单专家完整论证（上限 6000 字）+ 其子问题</td>
+<td><code>findings</code> 仅 1 条</td>
+<td>正文 600~800 字，保留全部关键公式、数值与规范编号</td>
+</tr>
+<tr>
+<td>全局统稿 ×1</td>
+<td>文献综述截 1800 字 + 每专家摘要 260 字 + 校验截 900 字</td>
+<td>摘要/背景/交叉/结论/展望/关键词</td>
+<td>按角色手册满额 300/400/400/300/200 字</td>
+</tr>
+</tbody>
+</table>
+<p>单次调用的输入输出都变小，从而避开硬超时；分节统稿用 2 线程并发（<code>ThreadPoolExecutor</code>）控制总时长，且每次调用开独立会话以规避平台同会话并发锁。</p>
+<p><strong>三层兜底</strong>：单节统稿失败 → <code>_digest_fallback</code> 原文直录（上限 2500 字，标记 <code>degraded</code>）；全局统稿失败 → 本地补齐全局字段，分节内容不受影响；平台全挂 → <code>_fallback_draft</code> 本地机械拼装七字段。另有三道解析保险：<code>_repair_truncated</code>（截断 JSON 补闭合）、<code>_fix_escapes</code>（非法转义双写）、<code>restore_latex_ctrl</code>（还原被 JSON 吃掉的反斜杠，公式不露源码）。</p>
+<p><strong>渲染层</strong>：报告为单文件 HTML，靛蓝瓷主题（深蓝封面 + 金色章号 + 衬线标题）、KaTeX 公式、代码高亮、仿真图内嵌、每节末尾"专家原文全貌"可展开折叠区、附录协作过程留痕表。排版库依赖外网时存在退化风险，故内置本地 Markdown 渲染器（覆盖标题、表格、引用、列表、代码围栏、粗斜体），外网库不可达时自动接管。</p>
+<h3><span class="no">3.4</span>六道质量门</h3>
+<p>三个机制在一次科研任务中的咬合顺序：拆解 → 文献 → 专家作答（工具预跑 + 工具回环）→ 仿真真执行 → 三级校验与闭环修正 → 分段统稿与渲染。在此之上设置六道质量门：</p>
+<table>
+<thead>
+<tr>
+<th>质量门</th>
+<th>实现</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>① 拆解覆盖门</td>
+<td>拆解结果必须 ≥3 题且 ≥3 类专家；不合格带补正指令重问一次；仍不合格按缺失视角本地回填模板子问题</td>
+</tr>
+<tr>
+<td>② 工具优先门</td>
+<td>工具说明书压在"一次性输出"后缀之后，并附工具优先指令：先申请工具、后给终答</td>
+</tr>
+<tr>
+<td>③ 独立会话门</td>
+<td>每次 <code>think()</code> 开独立会话，会话 ID 局部化，支持多线程并发调用同一智能体</td>
+</tr>
+<tr>
+<td>④ 本地排版门</td>
+<td>内置本地 Markdown 渲染器兜底，外网库不可达时正文不退化为裸文本</td>
+</tr>
+<tr>
+<td>⑤ 工具预跑门</td>
+<td>驱动器按权限与关键词先本地真跑离线工具，把真实数值压进首轮提示词；两个离线工具权限扩至全体专家</td>
+</tr>
+<tr>
+<td>⑥ 公式卫生门</td>
+<td>解析后按命令白名单还原被吃反斜杠；<code>\text{}</code> 内下划线转为 KaTeX 可接受写法；渲染前 <code>sanitize_math</code> 统一收口</td>
+</tr>
+</tbody>
+</table>
+<p>门②依赖提示词、门⑤不依赖模型自觉，二者构成同一通道上的两层。六道门均有离线回归覆盖，见 6.4。</p>
+<hr>
+<h2><span class="no">04</span>七个智能体逐个详述</h2>
+<blockquote>
+<p>每个智能体按同一张卡片写：能干什么 → 手册硬规则 → 工具用法 → 本地便捷方法 → 能力边界。平台版本号取自 <code>config.json</code> 实录。</p>
+</blockquote>
+<h3><span class="no">4.1</span>总览表</h3>
+<table>
+<thead>
+<tr>
+<th>智能体</th>
+<th>平台版本</th>
+<th>挂载知识库</th>
+<th>本地工具白名单</th>
+<th>手册</th>
+<th>流水线角色</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>math_agent</td>
+<td>1786194666467</td>
+<td>数学专题库 1 个</td>
+<td>符号推演、恒等式复核、公网检索</td>
+<td>172 行</td>
+<td>专家 / 候选规划者</td>
+</tr>
+<tr>
+<td>comm_agent</td>
+<td>1787757082841</td>
+<td>协议库 2 个</td>
+<td>协议查询、公网检索、符号推演</td>
+<td>52 行</td>
+<td>专家 / <strong>默认规划者</strong></td>
+</tr>
+<tr>
+<td>hw_agent</td>
+<td>1786113673445</td>
+<td>硬件库 2 个</td>
+<td>Verilog 编译仿真、公网检索</td>
+<td>42 行</td>
+<td>专家</td>
+</tr>
+<tr>
+<td>sim_agent</td>
+<td>1787760897423</td>
+<td>不挂（仿真靠本地执行）</td>
+<td>Python 执行、通信算法库、符号推演、公网检索</td>
+<td>44 行</td>
+<td>专家</td>
+</tr>
+<tr>
+<td>lit_review_agent</td>
+<td>1787753150262</td>
+<td>协议库 2 个</td>
+<td>不挂（内部直调检索工具）</td>
+<td>55 行</td>
+<td>第 2 步文献调研</td>
+</tr>
+<tr>
+<td>verify_agent</td>
+<td>1788075577472</td>
+<td>不挂</td>
+<td>恒等式复核、符号推演、Python 执行、通信算法库、公网检索</td>
+<td>191 行</td>
+<td>第 4 步三级校验</td>
+</tr>
+<tr>
+<td>report_agent</td>
+<td>1788229915815</td>
+<td>不挂</td>
+<td>不挂</td>
+<td>59 行 + 备用汇报手册</td>
+<td>第 5 步统稿</td>
+</tr>
+</tbody>
+</table>
+<h3><span class="no">4.2</span>math_agent：信息论与数学推导</h3>
+<ul>
+<li><strong>能干什么</strong>：信道容量、误码率、频谱效率等公式推导与量级估算；恒等式与不等式证明；分贝与线性、带宽与速率的数值换算；推导结果自查与修正。</li>
+<li><strong>手册硬规则</strong>：推导规范与"推导三步法自查"、数值计算注意事项、发送 verify 前的自检清单、约束节。</li>
+<li><strong>工具用法</strong>：<code>sympy_compute</code> 做符号化简与求导，<code>sympy_check_equality</code> 复核恒等式，使每步可复算；<code>comm_lib</code> 提供标准误码率与容量数值作为量级参照，<code>protocol_lookup</code> 提供本地知识库公式摘录，两者由驱动器预跑。</li>
+<li><strong>本地便捷方法</strong>：<code>solve_awgn_capacity(带宽, 信噪比)</code>、<code>derive_capacity_change(场景)</code>。</li>
+<li><strong>边界</strong>：超长推导可能触及平台 180 秒硬超时，由截断抢救与重试处置。</li>
+</ul>
+<h3><span class="no">4.3</span>comm_agent：3GPP 协议与组网（兼默认规划者）</h3>
+<ul>
+<li><strong>能干什么</strong>：规范条款查询（编号、版本、章节）、信令流程分析、组网与参数配置解读、协议演进对比；兼任流水线第 1 步的问题拆解（<code>PLANNER_CANDIDATES</code> 首位）。</li>
+<li><strong>手册硬规则</strong>：回答必须给规范编号与版本；不确定时明说"需查规范"，不编造。</li>
+<li><strong>工具用法</strong>：<code>protocol_lookup</code> 查本地协议知识库条目（驱动器预跑一次，命中摘录直接摆在它面前）；<code>comm_lib</code> 取标准算法库数值；<code>sympy_compute</code> 核算功率与链路预算公式。</li>
+<li><strong>本地便捷方法</strong>：<code>query_protocol(问题)</code>。</li>
+<li><strong>边界</strong>：规划输出受拆解覆盖门约束（≥3 题且 ≥3 类专家）；离线时规划回退 math_agent，再不行由本地回填模板子问题。</li>
+</ul>
+<h3><span class="no">4.4</span>hw_agent：FPGA / Verilog 硬件实践</h3>
+<ul>
+<li><strong>能干什么</strong>：按规格生成可综合 Verilog 模块（译码器、滤波器、接口等）；时序与关键路径分析；查找表、寄存器、块存等资源开销估算；测试激励编写。</li>
+<li><strong>手册硬规则</strong>：输出格式节（平台渲染要求）、代码规范、禁止节，以及验证闭环必做——生成后必须经 <code>run_verilog</code> 本地编译或仿真，不允许只给代码不给结论。</li>
+<li><strong>工具用法</strong>：<code>run_verilog</code> 调本机 Verilator / iverilog，编译与仿真结论回注下一轮；<code>comm_lib</code>、<code>sympy_compute</code>、<code>protocol_lookup</code> 提供可预跑的数值与规范依据。</li>
+<li><strong>本地便捷方法</strong>：<code>generate_verilog(规格)</code>、<code>explain_timing(模块代码)</code>。</li>
+<li><strong>边界</strong>：平台上存在多版本并存，以 <code>config.json</code> 中版本为准；RTL 仿真依赖本机已装工具链，换机部署需先安装。</li>
+</ul>
+<h3><span class="no">4.5</span>sim_agent：蒙特卡洛仿真与数值验证</h3>
+<ul>
+<li><strong>能干什么</strong>：误码率、容量、星座图、收敛性等仿真方案设计与代码生成；理论曲线对照与偏差分析；仿真五步法执行（方案 → 代码 → 运行 → 对照 → 结论）。</li>
+<li><strong>手册硬规则</strong>：仿真五步法必做；禁止编造运行结果；输出格式固定四章节。</li>
+<li><strong>工具用法</strong>：<code>run_python</code> 本地真跑、<code>comm_lib</code> 调通信算法库、<code>sympy_compute</code> 算理论值、<code>protocol_lookup</code> 查本地知识库；<code>comm_lib</code> 会被预跑一次，仿真开始前即取得理论基准曲线。</li>
+<li><strong>本地便捷方法</strong>：<code>simulate_ber(调制方式,…)</code>、<code>simulate_capacity(信噪比范围)</code>、<code>think_verified(任务)</code>（生成 → 执行 → 偏差校验 → 不达标自动反馈重跑）、<code>execute_code(代码)</code>。</li>
+<li><strong>边界</strong>：复合提示词易导致规划超时，流水线对其改用精简提示词（只给课题与子问题，不注入全文综述），并由个性化交付指令要求四章节一次性输出。</li>
+</ul>
+<h3><span class="no">4.6</span>lit_review_agent：公网 + 知识库双源文献调研</h3>
+<ul>
+<li><strong>能干什么</strong>：arXiv / Semantic Scholar 公网检索与平台知识库检索双源融合；按子问题角度组织综述；生成带作者年份或规范编号标注的参考文献清单。</li>
+<li><strong>手册硬规则</strong>：综述流程三步规范；结论必须有出处标注；无出处的论断标"待验证"。</li>
+<li><strong>工具用法</strong>：不挂白名单，内部直调检索工具（<code>core/lit_search</code>），避免回环套回环。</li>
+<li><strong>本地便捷方法</strong>：<code>survey(课题)</code>、<code>survey_with_angles(课题, 角度列表)</code>、<code>_attach_web_refs</code>（公网参考文献注入）。</li>
+<li><strong>边界</strong>：公网不可达时自动退化为仅知识库源，综述标注来源受限；检索源限流时进入冷却并切换可用源。</li>
+</ul>
+<h3><span class="no">4.7</span>verify_agent：三级校验</h3>
+<ul>
+<li><strong>能干什么</strong>：对 math / comm / hw 产出做原理性审查——量纲检查、单调性、特殊值、文献对照、规范版本核对、代码可综合性判断；给出三级评级与逐条理由。</li>
+<li><strong>手册硬规则</strong>：通用四项清单 + 三类专项检查；回复格式硬规定三档评级模板；禁止"看起来没问题"式空话。</li>
+<li><strong>工具用法</strong>：六个工具全开，可自行复算恒等式、重跑仿真片段、调标准算法库取基准值；校验前驱动器按课题预跑一次，使其先握有真实数值再读专家结论。</li>
+<li><strong>本地便捷方法</strong>：<code>check_derivation(内容, 主题)</code>。</li>
+<li><strong>边界</strong>：校验输入为综述截 1000 字 + 每专家截 1500 字（约 4200 字），超长课题会损失细节。</li>
+</ul>
+<h3><span class="no">4.8</span>report_agent：统稿主编</h3>
+<ul>
+<li><strong>能干什么</strong>：把多智能体产出统稿为固定七字段 JSON（摘要、背景、核心发现、交叉分析、结论、展望、关键词）；支持分节统稿与全局统稿两种子任务；遵循编辑方针六条（结论先行、忠实原文、保留评级、交叉印证、缺口诚实、公式规范）。</li>
+<li><strong>手册硬规则</strong>：输出必须是单个合法 JSON、不含 JSON 以外文字；<code>conclusion</code> 必须以三级评级开头；禁止编造材料中没有的数据。</li>
+<li><strong>工具用法</strong>：不挂工具，统稿不产生新事实。</li>
+<li><strong>本地便捷方法</strong>：<code>compile_report(标题, 材料)</code>。</li>
+<li><strong>备用手册</strong>：<code>report_presentation_system.md</code>（组会与答辩文本模式，四步汇报流程），与在线的 JSON 统稿协议不混用。</li>
+<li><strong>边界</strong>：平台侧存在 180 秒硬超时与同会话并发锁两类间歇限制，分别由分段统稿与独立会话门处置，另有三层兜底保证报告必出。</li>
+</ul>
+<h3><span class="no">4.9</span>分工边界：谁向谁要什么</h3>
+<table>
+<thead>
+<tr>
+<th>求助方</th>
+<th>被求方</th>
+<th>要什么</th>
+<th>通道</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>编排器</td>
+<td>comm / math</td>
+<td>课题拆解</td>
+<td>平台调用</td>
+</tr>
+<tr>
+<td>编排器</td>
+<td>四专家</td>
+<td>子问题论证</td>
+<td>平台调用 + 工具回环</td>
+</tr>
+<tr>
+<td>编排器</td>
+<td>verify</td>
+<td>三级校验</td>
+<td>平台调用 + 工具回环</td>
+</tr>
+<tr>
+<td>编排器</td>
+<td>report</td>
+<td>分节与全局统稿</td>
+<td>平台调用</td>
+</tr>
+<tr>
+<td>math / comm / hw</td>
+<td>verify</td>
+<td>反馈修正</td>
+<td>编排器代投递（总线）</td>
+</tr>
+<tr>
+<td>任意专家</td>
+<td>本地工具</td>
+<td>真实计算、检索、仿真</td>
+<td>驱动器预跑（round=0）+ 工具回环协议（round≥1）</td>
+</tr>
+</tbody>
+</table>
+<p>智能体之间没有直接对话通道，一切横向消息由编排器代投递并留痕，这是星型拓扑的硬约束，也是协作过程可追溯的前提。</p>
+<hr>
+<h2><span class="no">05</span>平台资产盘点</h2>
+<blockquote>
+<p>本章为资产总账：平台侧智能体、知识库、技能，本地工具、提示词、知识资产与评测资产。数据以 <code>config.json</code>、<code>tools/registry.py</code> 与目录实录为准。</p>
+</blockquote>
+<h3><span class="no">5.1</span>智能体资产（7 个，全部在线）</h3>
+<p>见 4.1 总览表。三点补充：七个智能体均为平台角色对话型智能体，由本地 <code>AgentNode</code> 统一封装会话创建、SSE 消费、重试、知识库挂载与思考链兜底，本地不重复实现任何平台能力；版本号全部写入 <code>config.json</code>，换版本只改配置不改代码；hw_agent 在平台上多版本并存，以配置中的版本为唯一准绳。</p>
+<h3><span class="no">5.2</span>知识库与本地知识资产</h3>
+<p>平台侧绑定 5 个知识库：</p>
+<table>
+<thead>
+<tr>
+<th>知识库 ID</th>
+<th>挂载者</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>t6doo3pjacqe</td>
+<td>math_agent</td>
+<td>数学专题库（信息论、容量、误码率）</td>
+</tr>
+<tr>
+<td>jka3mxb19y08</td>
+<td>comm_agent、lit_review_agent</td>
+<td>协议规范库其一</td>
+</tr>
+<tr>
+<td>anb7bpimm2jn</td>
+<td>comm_agent、lit_review_agent</td>
+<td>协议规范库其二</td>
+</tr>
+<tr>
+<td>jfoi1hlf60e7</td>
+<td>hw_agent</td>
+<td>硬件实践库其一</td>
+</tr>
+<tr>
+<td>d8xgrvwu8zr7</td>
+<td>hw_agent</td>
+<td>硬件实践库其二</td>
+</tr>
+</tbody>
+</table>
+<p>sim、verify、report 不挂库：仿真靠本地真跑、校验靠工具复算、统稿靠输入材料，属设计选择。</p>
+<p>本地知识资产（<code>knowledge/</code>，即导入平台的源文件）：<code>knowledge/math/</code> 含 9 个专题与 4 件权威文献（Shannon 1948 原文 PDF、Shannon 全文文本、两份讲义）；<code>knowledge/sim/</code> 含 7 篇仿真方法学文档。<code>build_kb_json.py</code> 可把它们打成平台导入包（<code>outputs/sim_kb_import.json</code>），知识库可一键重建。</p>
+<h3><span class="no">5.3</span>本地工具层（7 个工具，最小权限白名单）</h3>
+<table>
+<thead>
+<tr>
+<th>工具</th>
+<th>中文名</th>
+<th>作用</th>
+<th>可用者</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>sympy_compute</td>
+<td>符号数学推演</td>
+<td>化简、求导、积分、解方程</td>
+<td>math、sim、comm、hw、verify</td>
+</tr>
+<tr>
+<td>sympy_check_equality</td>
+<td>恒等式复核</td>
+<td>判断两式是否恒等</td>
+<td>math、verify</td>
+</tr>
+<tr>
+<td>search_papers</td>
+<td>公网文献检索</td>
+<td>arXiv / Semantic Scholar</td>
+<td>除 report 外全部</td>
+</tr>
+<tr>
+<td>run_python</td>
+<td>Python 仿真执行</td>
+<td>沙箱子进程运行代码取 stdout 与图</td>
+<td>sim、verify</td>
+</tr>
+<tr>
+<td>comm_lib</td>
+<td>通信算法库</td>
+<td>调制、编码、信道标准实现</td>
+<td>除 lit_review、report 外全部（可预跑）</td>
+</tr>
+<tr>
+<td>run_verilog</td>
+<td>Verilog 编译仿真</td>
+<td>Verilator / iverilog 本机执行</td>
+<td>hw</td>
+</tr>
+<tr>
+<td>protocol_lookup</td>
+<td>协议知识查询</td>
+<td>本地协议条目检索</td>
+<td>math、sim、comm、hw、verify（可预跑）</td>
+</tr>
+</tbody>
+</table>
+<p>设计原则：统一"名称、描述、参数、执行函数"四要素注册（<code>@tool</code> 自注册），未来可平移到平台工具中心而注册层不动；任何异常都转为中文错误结果，工具永远有回复。标"可预跑"的两个工具参数可自动推导、离线、无副作用，因此能不依赖模型自觉就把真实数值送进回答。</p>
+<h3><span class="no">5.4</span>技能资产（3 个，已上传平台技能中心）</h3>
+<p><code>sim-five-step-method</code>（仿真五步法）、<code>research-report-compile</code>（统稿编辑方针）、<code>research-report-aesthetic</code>（靛蓝瓷报告审美规范）。</p>
+<p>上传链路已实测跑通（技能中心 zip 上传）。实测结论：角色对话型智能体不支持挂载空间技能，因此三个技能在运行时以手册资产形态生效（内容并入各智能体手册与本地渲染器），不构成运行时依赖。</p>
+<h3><span class="no">5.5</span>提示词资产（13 份手册）</h3>
+<p>系统手册 7 份（math / comm / hw / sim / lit_review / verify / report，含编辑方针六条与七字段协议）；调用约束 5 份（constraints_math / comm / hw / verify / report，规定输出格式、禁止事项、知识库引用要求）；备用 1 份（report_presentation_system，组会与答辩文本模式）。平台在线手册与本地 <code>prompts/</code> 双份维护，交付以本地为准。</p>
+<h3><span class="no">5.6</span>评测与留痕资产</h3>
+<p>评测集 <code>evals/tasks.json</code> 为 32 道单题 + 6 道协作题共 38 题，三类判分（直接比对、裁判智能体、协作链路）；跑批器为 <code>tests/run_eval.py</code>、<code>tests/merge_eval_results.py</code>、<code>tests/make_score_sheet.py</code>；留痕为 <code>logs/session.jsonl</code> 全量结构化事件、<code>docs/验证记录图片/</code> 平台与 Web 截图、<code>outputs/research_*.html</code> 历次真实产出。</p>
+<hr>
+<h2><span class="no">06</span>测试与量化验证</h2>
+<blockquote>
+<p>本章只列做过的测试轮次与结果。</p>
+</blockquote>
+<h3><span class="no">6.1</span>测试轮次总账</h3>
+<table>
+<thead>
+<tr>
+<th>轮次</th>
+<th>测试内容</th>
+<th>执行方式</th>
+<th>结果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>能力评测集摸底（38 题集，实跑 37 题）</td>
+<td><code>tests/run_eval.py</code> 在线跑批 + <code>merge_eval_results.py</code> 合并</td>
+<td><strong>35/37 通过（94.6%）</strong></td>
+</tr>
+<tr>
+<td>2</td>
+<td>离线回归矩阵（6 套断言）</td>
+<td><code>tests/test_*.py</code> 本地直接运行</td>
+<td><strong>33 / 38 / 21 / 15 / 11 / 51 全部通过</strong></td>
+</tr>
+<tr>
+<td>3</td>
+<td>BPSK 端到端流水线</td>
+<td><code>tests/test_pipeline.py</code> 真跑六步</td>
+<td><strong>11/11 断言通过</strong>，报告内嵌真跑仿真图</td>
+</tr>
+<tr>
+<td>4</td>
+<td>平台资产与 Web 六页逐页核对</td>
+<td>平台控制台实查 + 浏览器逐页</td>
+<td><strong>29 张核对截图</strong>，7 智能体在线、5 知识库绑定、3 技能上传</td>
+</tr>
+<tr>
+<td>5</td>
+<td>综合多智能体跑批（三道跨领域课题）</td>
+<td><code>tests/run_multi_agent_check.py</code></td>
+<td>三道跨领域课题，21 项硬校验逐条判定（设计见 6.5）</td>
+</tr>
+<tr>
+<td>6</td>
+<td>人工评分复核</td>
+<td><code>tests/make_score_sheet.py</code> 生成四维打分表</td>
+<td>评分表 1 份，逐题复核判分合理性</td>
+</tr>
+</tbody>
+</table>
+<h3><span class="no">6.2</span>评测集设计（38 题）</h3>
+<p>单题 32 道（<code>evals/tasks.json</code>）覆盖七智能体各自职责域，判分两档：直接比对（关键词、数值、规范编号命中）与裁判智能体评分（verify_agent 当裁判）；协作题 6 道，考"甲答完交给乙再审"的链路。分布为 comm 6、hw 6、math 6、lit 5、sim 2、report 2、裁判类 5、协作 6。</p>
+<h3><span class="no">6.3</span>摸底成绩：35/37</h3>
+<p>跑批时间 2026-09-02 13:17，实跑 37 题（collab-03 未跑）。</p>
+<table>
+<thead>
+<tr>
+<th>类别</th>
+<th>题数</th>
+<th>通过</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>单答 · comm</td>
+<td>6</td>
+<td>6</td>
+</tr>
+<tr>
+<td>单答 · hw</td>
+<td>6</td>
+<td>6</td>
+</tr>
+<tr>
+<td>单答 · math</td>
+<td>6</td>
+<td>6</td>
+</tr>
+<tr>
+<td>单答 · lit</td>
+<td>5</td>
+<td>5</td>
+</tr>
+<tr>
+<td>单答 · sim</td>
+<td>2</td>
+<td>2</td>
+</tr>
+<tr>
+<td>单答 · report</td>
+<td>2</td>
+<td>1</td>
+</tr>
+<tr>
+<td>裁判 · verify</td>
+<td>5</td>
+<td>5</td>
+</tr>
+<tr>
+<td>协作链路</td>
+<td>5</td>
+<td>4</td>
+</tr>
+<tr>
+<td><strong>合计</strong></td>
+<td><strong>37</strong></td>
+<td><strong>35（94.6%）</strong></td>
+</tr>
+</tbody>
+</table>
+<h3><span class="no">6.4</span>离线回归矩阵</h3>
+<p>不依赖平台，秒级跑完，用于保护已修复的行为不回退。</p>
+<table>
+<thead>
+<tr>
+<th>脚本</th>
+<th>断言</th>
+<th>保护对象</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>tests/test_tools.py</code></td>
+<td>33/33</td>
+<td>工具四要素注册、执行、异常转中文结果、工具调用协议解析</td>
+</tr>
+<tr>
+<td><code>tests/test_tool_preflight.py</code></td>
+<td>38/38</td>
+<td>确定性预跑：关键词识别、工具选型、真实执行与提示词注入、与自愿申请共存</td>
+</tr>
+<tr>
+<td><code>tests/test_compile_split.py</code></td>
+<td>21/21</td>
+<td>分段统稿配额、三层兜底、合并顺序、降级标记</td>
+</tr>
+<tr>
+<td><code>tests/test_plan_coverage.py</code></td>
+<td>15/15</td>
+<td>拆解质量门：重问、回填、顶替、轨迹留痕</td>
+</tr>
+<tr>
+<td><code>tests/test_latex_escape.py</code></td>
+<td>51/51</td>
+<td>公式卫生：反斜杠还原、<code>\text{}</code> 内下划线、真换行与真制表符不误伤、渲染 HTML 无残渣</td>
+</tr>
+<tr>
+<td><code>tests/test_pipeline.py</code></td>
+<td>11/11</td>
+<td>BPSK 端到端：拆解、综述、专家、校验、统稿、报告内嵌图</td>
+</tr>
+<tr>
+<td><code>tests/test_sim_templates.py</code>、<code>tests/test_report_agent.py</code></td>
+<td>存在</td>
+<td>仿真模板与统稿协议解析的专项回归</td>
+</tr>
+</tbody>
+</table>
+<h3><span class="no">6.5</span>综合多智能体跑批</h3>
+<p>单题评测考不出协作能力，因此另设一套跨领域课题跑批：三道课题各自天然横跨原理推导、规范依据、硬件落地、数值验证四类视角，配合拆解覆盖门逼出多位专家真实参与。</p>
+<table>
+<thead>
+<tr>
+<th>课题</th>
+<th>内容</th>
+<th>涉及的四类视角</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>一</td>
+<td>5G NR 上行共享信道（PUSCH）链路预算与覆盖分析</td>
+<td>香农容量理论界 / 3GPP 功率与调制参数 / 蒙特卡洛覆盖仿真 / 射频前端硬件约束</td>
+</tr>
+<tr>
+<td>二</td>
+<td>Massive MIMO 信道估计</td>
+<td>MMSE 与 LS 误差理论 / 3GPP 参考信号规定 / FPGA 复杂度与资源开销 / 估计精度仿真对照</td>
+</tr>
+<tr>
+<td>三</td>
+<td>eMBB 场景 Polar 码与 LDPC 码选型</td>
+<td>纠错性能理论界 / 3GPP 标准化现状 / 译码器硬件开销与时序 / 误码率仿真验证</td>
+</tr>
+</tbody>
+</table>
+<p>21 项硬校验由脚本内 <code>check()</code> 逐条判定，不依赖人工读数。每道课题 6 项：拆解覆盖 ≥3 类专家、实际作答 ≥3 类专家、每位专家论证 ≥200 字、校验结论含三级评级、统稿核心发现 ≥3 节且 ≥1500 字、报告存在且带本地排版兜底；三题合计再判 3 项：四类专业专家全部真实参与、工具回环至少触发一次、每道课题都产出报告。退出码 0 表示全通过。单题异常只记 FAIL 并继续下一题，输出实时落盘 <code>_multi_out.txt</code>。</p>
+<h3><span class="no">6.6</span>平台侧核对留痕（29 张截图，<code>docs/验证记录图片/</code>）</h3>
+<table>
+<thead>
+<tr>
+<th>类别</th>
+<th>张数</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>平台控制台</td>
+<td>9</td>
+<td>登录页、hw_agent 版本核对 3 张、技能详情与上传链路 4 张、共享空间</td>
+</tr>
+<tr>
+<td>Web 六页</td>
+<td>13</td>
+<td>首页问答、流水页、报告库、监控、设置逐页核对（侧边栏态 7 张 + 桌面态 6 张）</td>
+</tr>
+<tr>
+<td>网络排查</td>
+<td>2</td>
+<td>连接错误区分、公网检索真实响应</td>
+</tr>
+<tr>
+<td>文档核对</td>
+<td>3</td>
+<td>汇报书封面、正文、页眉页脚逐页检查</td>
+</tr>
+<tr>
+<td>仿真产物</td>
+<td>1</td>
+<td>BPSK 误码率对照图（本地真跑产物）</td>
+</tr>
+<tr>
+<td>运行探测</td>
+<td>1</td>
+<td>流水线探测截图</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2>附录 A · 最终提交材料里有什么</h2>
+<blockquote>
+<p>交付包根目录 <code>最终提交材料/</code>，共 152 个文件、约 7.7 MB，四个一级条目。过程性材料（运行日志、评测原始结果、验证截图、排查记录、历史存档）保留在仓库 <code>中间材料/</code> 与 <code>logs/</code>，不随包提交，需要时按附录 B 的路径查阅。&gt; 整个包由 <code>build_submission.ps1</code> 一键从仓库同步，包内每个文件都能在仓库里找到源；多余文件由 <code>clean_submission.ps1</code> 按白名单清理（默认只预览，加 <code>-Yes</code> 才真删）。</p>
+</blockquote>
+<h3>A.1 一级结构</h3>
+<table>
+<thead>
+<tr>
+<th>条目</th>
+<th>体量</th>
+<th>是什么</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>提交材料清单.md</code></td>
+<td>1 份</td>
+<td>评审入口：阅读顺序建议 + 目录说明 + 关键事实速览</td>
+</tr>
+<tr>
+<td><code>项目文档\</code></td>
+<td>7 份 · 2.4 MB</td>
+<td>结课汇报书三态（MD 源 / HTML 屏幕态 / PDF 打印态）+ 架构图 + 两份历史文档 + 构建脚本</td>
+</tr>
+<tr>
+<td><code>演示成果\</code></td>
+<td>7 份 · 0.8 MB</td>
+<td>系统真实产出：4 份研究报告 HTML + 3 张本地真跑的仿真图</td>
+</tr>
+<tr>
+<td><code>代码\</code></td>
+<td>137 份 · 4.6 MB</td>
+<td>完整可运行系统：编排层、智能体角色、工具、Web、提示词、知识库源文档、技能源、评测与测试</td>
+</tr>
+</tbody>
+</table>
+<p>### A.2 项目文档\</p>
+<table>
+<thead>
+<tr>
+<th>文件</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>项目结课汇报书.md</code></td>
+<td><strong>唯一内容源</strong>：本书正文（6 章 + 2 附录）</td>
+</tr>
+<tr>
+<td><code>项目结课汇报书.html</code></td>
+<td>屏幕阅读态，双击即开（封面 + 目录 + 正文，靛蓝瓷主题）</td>
+</tr>
+<tr>
+<td><code>项目结课汇报书.pdf</code></td>
+<td>打印态 A4，页眉页脚带页码，每章另起一页</td>
+</tr>
+<tr>
+<td><code>build_report_pdf.py</code></td>
+<td>由 <code>.md</code> 一键重建 HTML 与 PDF；加 <code>--check</code> 会逐页统计字符数自检空页</td>
+</tr>
+<tr>
+<td><code>architecture.svg</code></td>
+<td>系统分层架构图（矢量）</td>
+</tr>
+<tr>
+<td><code>AI_for_Comm_项目方案书.pdf</code></td>
+<td>立项阶段方案书（历史沿革，口径以本书为准）</td>
+</tr>
+<tr>
+<td><code>AI_for_Comm_实践手册.pdf</code></td>
+<td>平台操作手册（历史沿革）</td>
+</tr>
+</tbody>
+</table>
+<p>三态同源：HTML 与 PDF 都由 <code>.md</code> 渲染而来，改完文稿跑一次构建脚本两者同时更新。</p>
+<p>### A.3 演示成果\</p>
+<table>
+<thead>
+<tr>
+<th>文件</th>
+<th>体量</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>research_20260901_234713.html</code></td>
+<td>228 KB</td>
+<td>BPSK 在 AWGN 信道下的误码率性能与频谱效率验证</td>
+</tr>
+<tr>
+<td><code>research_20260902_003653.html</code></td>
+<td>173 KB</td>
+<td>同课题复跑</td>
+</tr>
+<tr>
+<td><code>research_20260902_215747.html</code></td>
+<td>120 KB</td>
+<td>LDPC 码在 5G NR 中的应用（第二个题材）</td>
+</tr>
+<tr>
+<td><code>research_20260902_225648.html</code></td>
+<td>42 KB</td>
+<td>5G NR PUSCH 链路预算与覆盖分析（跨领域题材）</td>
+</tr>
+<tr>
+<td><code>bpsk_ber_awgn.png</code></td>
+<td>78 KB</td>
+<td>蒙特卡洛误码率曲线（本地沙箱真跑产物）</td>
+</tr>
+<tr>
+<td><code>ber_comparison.png</code></td>
+<td>64 KB</td>
+<td>多方案误码率对照</td>
+</tr>
+<tr>
+<td><code>bpsk_awgn_ber.png</code></td>
+<td>63 KB</td>
+<td>仿真值与理论值对照标杆图</td>
+</tr>
+</tbody>
+</table>
+<p>四份报告均为单文件 HTML、离线双击可开：KaTeX 公式、代码高亮、仿真图内嵌、每节末尾可展开专家原文、附录带协作过程留痕。</p>
+<p>### A.4 代码\</p>
+<table>
+<thead>
+<tr>
+<th>目录</th>
+<th>文件数</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>（根）</td>
+<td>8</td>
+<td><code>main.py</code> CLI 入口、<code>config.json</code> 平台与智能体配置、<code>requirements.txt</code>、<code>Dockerfile</code> / <code>docker-compose.yml</code> / <code>.dockerignore</code>、<code>build_kb_json.py</code> 知识库导入体构建、<code>目录结构说明.md</code>（末节含运行方式）</td>
+</tr>
+<tr>
+<td><code>core\</code></td>
+<td>12</td>
+<td>本地编排层：流水线、编排器、智能体节点、消息总线、工具驱动器、报告渲染、文献检索、配置管理、日志</td>
+</tr>
+<tr>
+<td><code>agents\</code></td>
+<td>9</td>
+<td>七位专家智能体的本地适配子类</td>
+</tr>
+<tr>
+<td><code>tools\</code></td>
+<td>9</td>
+<td>7 个本地工具 + 注册表与最小权限白名单</td>
+</tr>
+<tr>
+<td><code>prompts\</code></td>
+<td>14</td>
+<td>7 份角色手册 + 6 份硬约束 + 1 份备用手册</td>
+</tr>
+<tr>
+<td><code>web\</code></td>
+<td>23</td>
+<td>Flask 应用、6 条路由、6 个页面模板、6 个前端脚本、样式与 logo</td>
+</tr>
+<tr>
+<td><code>knowledge\</code></td>
+<td>21</td>
+<td>数学与仿真两个本地知识库的源文档</td>
+</tr>
+<tr>
+<td><code>skills\</code></td>
+<td>4</td>
+<td>3 个平台技能的源 <code>SKILL.md</code></td>
+</tr>
+<tr>
+<td><code>evals\</code></td>
+<td>8</td>
+<td>38 题评测集与说明 + <code>results\</code> 6 份评测原始结果</td>
+</tr>
+<tr>
+<td><code>tests\</code></td>
+<td>29</td>
+<td>离线回归矩阵、评测跑批器、综合多智能体跑批脚本</td>
+</tr>
+</tbody>
+</table>
+<p>包内不含 <code>logs\</code>、<code>outputs\</code> 等运行时产物目录；首次运行按 <code>目录结构说明.md</code> 末节启动即可自动重建。</p>
+<hr>
+<h2>附录 B · 数字复核索引</h2>
+<blockquote>
+<p>本书每个数字都对应一个可执行或可打开的凭据，路径均相对仓库根目录。</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>数字</th>
+<th>凭据位置</th>
+<th>复核方式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>7 个智能体与平台版本号</td>
+<td><code>config.json</code> 的 <code>agents</code> 段</td>
+<td>逐个对照 <code>agentCode</code> / <code>agentVersion</code> / <code>kbIds</code></td>
+</tr>
+<tr>
+<td>5 个知识库、3 个技能</td>
+<td>平台接口实查</td>
+<td><code>docs/验证记录图片/</code> 对应截图</td>
+</tr>
+<tr>
+<td>38 题评测集</td>
+<td><code>evals/tasks.json</code></td>
+<td>数条目：32 单题 + 6 协作题</td>
+</tr>
+<tr>
+<td>摸底 35/37</td>
+<td><code>中间材料/eval_20260902_131712.csv</code>、<code>eval_summary_20260902_131848.csv</code></td>
+<td><code>tests/merge_eval_results.py</code> 合并口径可复算</td>
+</tr>
+<tr>
+<td>离线回归 33 / 38 / 21 / 15 / 11 / 51</td>
+<td><code>tests/test_*.py</code></td>
+<td>逐个直接运行，秒级出断言计数</td>
+</tr>
+<tr>
+<td>工具预跑真实执行</td>
+<td><code>logs/session.jsonl</code></td>
+<td>过滤 <code>tool.preflight</code> 与 <code>round=0</code> 的 <code>tool.executed</code> 事件</td>
+</tr>
+<tr>
+<td>报告体量、内嵌图与展开块</td>
+<td><code>outputs/research_*.html</code></td>
+<td>看文件大小与页面内嵌图、折叠区数量</td>
+</tr>
+<tr>
+<td>公式不露源码</td>
+<td><code>tests/test_latex_escape.py</code></td>
+<td>51 条断言含"渲染后 HTML 无控制字符残渣"</td>
+</tr>
+<tr>
+<td>平台 180 秒硬超时、同会话并发锁</td>
+<td>平台 trace 与本地日志</td>
+<td><code>logs/session.jsonl</code> 的 <code>agent.think.failed</code></td>
+</tr>
+<tr>
+<td>综合跑批 21 项硬校验</td>
+<td><code>_multi_out.txt</code></td>
+<td>脚本逐条打印 <code>[PASS]</code> / <code>[FAIL]</code>，末行给总计数</td>
+</tr>
+<tr>
+<td>交付包文件数与体量</td>
+<td><code>最终提交材料/</code></td>
+<td>目录属性统计，或运行 <code>build_submission.ps1</code> 看校验段输出</td>
+</tr>
+</tbody>
+</table>
+<p>复核顺序建议：先跑离线回归（不依赖平台、秒级完成），再看 <code>logs/session.jsonl</code> 的事件计数，最后打开报告 HTML 对照正文与图表；平台侧资产以截图与接口实查为准。</p></main></div></body></html>

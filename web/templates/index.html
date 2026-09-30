@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}对话问答{% endblock %}
+{% block page_title %}对话问答{% endblock %}
+{% block page_sub %}快问快答 · 自动路由专家{% endblock %}
+{% block content %}
+<div class="hero">
+  <h3>给一个科研问题，自动产出一份经过校验的研究报告</h3>
+  <p>七位通信专家智能体协同工作 · 平台自动路由最合适的专家即时回答</p>
+</div>
+<div class="expert-grid" id="expertGrid"></div>
+
+<div class="chat-stream" id="chatStream"></div>
+
+<div class="chat-input-wrap">
+  <div class="glass chat-box">
+    <textarea id="chatInput" placeholder="输入通信领域问题，回车发送 / Shift+回车换行…"></textarea>
+    <div class="row">
+      <div class="quick-tags">
+        <button class="qt" type="button" onclick="fillChat('BPSK 在 AWGN 信道下的误码率理论推导与仿真验证')">BPSK 误码率推导</button>
+        <button class="qt" type="button" onclick="fillChat('香农信道容量公式怎么理解？')">香农信道容量</button>
+        <button class="qt" type="button" onclick="fillChat('5G 随机接入流程的信令是怎样的？')">5G 随机接入信令</button>
+      </div>
+      <button class="btn btn-primary" id="chatSend">发送</button>
+    </div>
+  </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/chat.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,23 @@
+启动时间: 2026-08-31 23:15:45
+============================================================
+科研任务流水线端到端验收  2026-08-31 23:15:46
+课题: BPSK 在 AWGN 信道下的误码率理论推导与仿真验证
+============================================================
+
+[0/6] 已加载 6 个 Agent: math_agent, verify_agent, comm_agent, hw_agent, sim_agent, lit_review_agent
+
+[1/6] 启动流水线（预计 3~8 分钟）...
+
+[1/5] 问题拆解 → 5 个子问题（规划者: comm_agent）
+[2/5] 文献调研中…（lit_review_agent，公网+平台KB，约 1~2 分钟）
+[lit_search] Semantic Scholar 429 限流，2s 后再试一次
+[lit_search] Semantic Scholar HTTP 429: {"message": "Too Many Requests. Please wait and try again or apply for a key for higher rate limits. https://www.semanticscholar.org/product/api#api-k
+[lit_search] Semantic Scholar 进入 600s 冷却期
+[3/5] 并行领域专家中…（5 个专家并行）
+      [INFO] sim_agent 降级重试（去掉补充子问题）
+      [WARN] 专家 sim_agent 失败: 平台返回错误（error）: 无规划任务结果
+      完成 1/2 位专家，失败 1 位
+[4/5] verify_agent 综合校验中…
+      [FAIL] 流水线异常中断: 平台返回错误（error）: current agent has been offline
+
+结束时间: 2026-08-31 23:21:16  退出码: 1

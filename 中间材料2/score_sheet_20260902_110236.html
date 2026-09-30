@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="zh"><head><meta charset="utf-8">
+<title>AI for Comm direct 题人工评分表</title>
+<style>
+body{font-family:'Microsoft YaHei',sans-serif;margin:20px;background:#f5f5f5}
+h1{color:#8B0000} .meta{color:#666;font-size:13px;margin-bottom:16px}
+.card{background:#fff;border-radius:10px;box-shadow:0 1px 4px rgba(0,0,0,.12);
+      margin-bottom:16px;padding:14px 18px}
+.card-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+.badge{background:#8B0000;color:#fff;font-weight:bold;padding:3px 10px;border-radius:12px}
+.tag{background:#eee;color:#333;padding:3px 10px;border-radius:12px;font-size:12px}
+.lvS{background:#e3f2e3}.lvM{background:#fff3d6}.lvH{background:#fde2e2}
+.score-box{margin-left:auto;font-size:13px;color:#333}
+.score{width:52px;font-size:15px;text-align:center;border:1px solid #ccc;border-radius:6px;padding:2px}
+.q{color:#333;margin-bottom:10px;font-size:14px}
+.cols{display:flex;gap:16px;flex-wrap:wrap}
+.col{flex:1;min-width:280px}
+.col-title{font-weight:bold;color:#555;margin-bottom:8px;font-size:13px}
+.pt{display:block;padding:4px 0;font-size:13px;color:#333;cursor:pointer}
+.pt input{margin-right:8px;transform:scale(1.2)}
+.criteria{color:#888;font-size:12px;margin-top:8px}
+pre{background:#fafafa;border:1px solid #e8e8e8;border-radius:6px;padding:10px;
+    font-size:12px;white-space:pre-wrap;word-break:break-all;max-height:260px;overflow:auto;color:#333}
+.note{width:100%;border:1px solid #ccc;border-radius:6px;padding:6px;font-size:13px}
+summary{cursor:pointer;color:#8B0000;font-size:13px}
+.progress{position:sticky;top:0;background:#fff;border-bottom:2px solid #8B0000;
+          padding:10px 20px;z-index:10;display:flex;gap:16px;align-items:center}
+.progress b{color:#8B0000;font-size:18px}
+#saveBtn{background:#8B0000;color:#fff;border:none;border-radius:6px;padding:6px 14px;cursor:pointer;font-size:14px}
+</style></head><body>
+<div class="progress">
+  <b>direct 题人工评分（23 题）</b>
+  <span>已勾选：<span id="doneCount">0</span>/23</span>
+  <button id="saveBtn" onclick="saveSheet()">💾 导出评分 JSON</button>
+</div>
+<h1>✅ AI for Comm — direct 题人工评分工作表</h1>
+<div class="meta">对照 tasks.json 的 answer_points 逐题勾选命中要点，得分 0-3（错/部分对/对/对且完整）。
+勾选全部要点后自动记 3 分。页面底部点"导出评分 JSON"下载打分结果。</div>
+
+
+<div class="card" id="math-01">
+  <div class="card-head">
+    <span class="badge">math-01</span>
+    <span class="tag">math_agent</span>
+    <span class="tag lvS">S</span>
+    <span class="tag">73.2s</span>
+    <span class="score-box">得分 <input type="number" class="score" min="0" max="3" step="0.5" value="0"
+      onchange="updateScoreFromNum(this)" oninput="syncCb(this)"> / 3</span>
+  </div>
+  <div class="q"><b>题目：</b>AWGN 信道，带宽 B=20MHz，信噪比 SNR=30dB，求信道容量。请逐步推导。</div>
+  <div class="cols">
+    <div class="col pts">
+      <div class="col-title">✅ 标准要点（勾选命中项）</div>
+      <ul><li><label class='pt'><input type='checkbox' class='pt-cb' onchange='updateScore(this)'>香农公式 C = B·log2(1+S/N)，S/N=10^(30/10)=1000</label></li><li><label class='pt'><input type='checkbox' class='pt-cb' onchange='updateScore(this)'>C = 20e6 × log2(1001) ≈ 199.36 Mbps ≈ 199 Mbps</label></li><li><label class='pt'><input type='checkbox' class='pt-cb' onchange='updateScore(this)'>需展示 dB→线性换算与换底过程</label></li></ul>
+      <div class="criteria">评分维度：correctness、citation、structure、time</div>
+    </div>
+    <div class="col out">
+      <div class="col-title">🤖 Agent 实际输出（前 300 字）</div>
+      <pre>### 第一步：列出已知条件- **带宽 (B)**：20 MHz = 20 × 10⁶ Hz- **信噪比 (SNR_dB)**：30 dB### 第二步：选择公式根据香农-哈特利定理 (Shannon-Hartley Theorem)，AWGN 信道容量公式为：`C = B · log₂(1 + SNR_linear)`*出处：Shannon (1948) 《A Mathematical Theory of Communication》及知识库 `01_香农信道容量公式.md`***适用条件**：AWGN 信道、连续时间功率受限、理想编码假设。其中，需将 dB 单位转换</pre>
+      <details><summary>备注</summary>
+        <textarea class="note" rows="2" placeholder="人工备注..."></textarea>
+      </details>
+    </div>
+  </div>
+</div>
+<div class="card" id="math-02">
+  <div class="card-head">
+    <span class="badge">math-02</span>
+    <span class="tag">math_agent</span>
+    <span class="tag lvS">S</span>
+    <span class="tag">55.2s</span>
+    <span class="score-box">得分 <input type="number" class="score" min="0" max="3" step="0.5" value="0"
+      onchange="updateScoreFromNum(this)" oninput="syncCb(this)"> / 3</span>
+  </div>
+  <div class="q"><b>题目：</b>BSC 信道（二元对称信道），错误概率 p=0.1，求信道容量。请给出推导。</div>
+  <div class="cols">
+    <div class="col pts">
+      <div class="col-title">✅ 标准要点（勾选命中项）</div>
+      <ul><li><label class='pt'><input type='checkbox' class='pt-cb' onchange='updateScore(this)'>C = 1 - H(p) = 1 - p·log2(1/p) - (1-p)·log2(1/(1-p))</label></li><li><label class='pt'><input type='checkbox' class='pt-cb' onchange='updateScore(this)'>H(0.1) ≈ 0.469 bit，C ≈ 0.531 bit/符号</label></li><li><label class='pt'><input type='checkbox' class='pt-cb' onchange='updateScore(this)'>说明 BSC 容量公式与对称性</label></li></ul>
+      <div class="criteria">评分维度：correctness、citation、structure、time</div>
+    </div>
+    <div class="col out">
+      <div class="col-title">🤖 Agent 实际输出（前 300 字）</div>
+      <pre>根据信息论标准定义与知识库推导，二元对称信道（BSC）在错误概率 $p=0.1$ 时的信道容量计算如下：### 第一步：列出已知条件- **信道类型**：二元对称信道（BSC, Binary Symmetric Channel）- **交叉概率（错误概率）**：$p = 0.1$- **输入符号集**：$X \in \{0, 1\}$，输出符号集 $Y \in \{0, 1\}$- **目标**：计算信道容量 $C$（单位：bits/symbol）### 第二步：选择公式根据离散无记忆信道（DMC）的容量定义：$$C = \max_{P(x)} I(X; Y) = \max</pre>
+      <details><summary>备注</summary>
+        <textarea class="note" rows="2" placeholder="人工备注..."></textarea>
+      </details>
+    </div>
+  </div>
+</div>
+<div class="card" id="math-03">
+  <div class="card-head">
+    <span class="badge">math-03</span>
+    <span class="tag">math_agent</span>
+    <span class="tag lvM">M</span>
+    <span class="tag">48.7s</span>
+    <span class="score-box">得分 <input type="number" class="score" min="0" max="3" step="0.5" value="0"
+      onchange="updateScoreFromNum(this)" oninput="syncCb(this)"> / 3</span>
+  </div>
+  <div class="q"><b>题目：</b>在 AWGN 信道中，已知 SNR=10dB，问信道容量是 SNR=0dB 时的多少倍？请推导。</div>
+  <div class="cols">
+    <div class="col pts">
+      <div class="col-title">✅ 标准要点（勾选命中项）</div>
+      <ul><li><label class='pt'><input type='checkbox' class='pt-cb' onchange='updateScore(this)'>C(SNR) = B·log2(1+SNR_linear)</label></li><li><label class='pt'><input type='checkbox' class='pt-cb' onchange='updateScore(this)'>C10/C0 = log2(1+10)/log2(1+1) = log2(11)/1 ≈ 3.459 倍</label></li><li><label class='pt'><input type='checkbox' class='pt-cb' onchange='updateScore(this)'>注意 dB 需先转线性值</label></li></ul>
+      <div class="criteria">评分维度：correctness、structure、time</div>
+    </div>
+    <div class="col out">
+      <div class="col-title">🤖 Agent 实际输出（前 300 字）</div>
+      <pre>### 第一步：列出已知条件- **信道模型**：AWGN 信道（加性高斯白噪声）- **信噪比 1**：SNR₁ = 10 dB- **信噪比 2**：SNR₂ = 0 dB- **隐含条件**：对比同一信道在不同信噪比下的容量，故带宽 $B$ 保持不变。### 第二步：选择公式- **dB 转线性值公式**（引自知识库 01_香农信道容量公式）：  $$\text{SNR}_{\text{linear}} = 10^{(\text{SNR}_{\text{dB}} / 10)}$$- **香农-哈特利定理公式**（AWGN信道容量）：  $$C = B \cdot \l</pre>
+      <details><summary>备注</summary>
+        <textarea class="note" rows="2" placeholder="人工备注..."></textarea>
+      </details>
+    </div>
+  </div>
+</div>
+<div class="card" id="math-04">
+  <div class="card-head">
+    <span class="badge">math-04</span>
+    <span class="tag">math_agent</span>
+    <span class="tag lvM">M</span>
+    <span class="tag">61.0s</span>
+    <span class="score-box">得分 <input type="number" class="score" min="0" max="3" step="0.5" value="0"
+      onchange="updateScoreFromNum(this)" oninput="syncCb(this)"> / 3</span>
+  </div>
+  <div class="q"><b>题目：</b>AWGN 信道带宽趋于无穷时，信道容量趋近于什么？给出表达式并解释物理意义。</div>
+  <div class="cols">
+    <div class="col pts">
+      <div class="col-title">✅ 标准要点（勾选命中项）</div>
+      <ul><li><label class='pt'><input type='checkbox' class='pt-cb' onchange='updateScore(this)'>C∞ = (S/N0)·log2(e) ≈ 1.44·S/N0（S 为信号功率，N0 为单边噪声谱密度）</label></li><li><label class='pt'><input type='checkbox' class='pt-cb' onchange='updateScore(this)'>说明带宽增加收益递减、功率决定极限容量</label></li><li><label class='pt'><input type='checkbox' class='pt-cb' onchange='updateScore(this)'>S/N0 = Eb/N0 · R 关系可引申</label></li></ul>
+      <div class="criteria">评分维度：correctness、structure、time</div>
+    </div>
+    <div class="col out">
+      <div class="col-title">🤖 Agent 实际输出（前 300 字）</div>
+      <pre>**第一步：列出已知条件**- $S$：信号平均发射功率，单位 W- $N_0$：噪声功率谱密度（单边），单位 W/Hz- $B$：信道带宽，单位 Hz，题目给定极限条件 $B \to \infty$- $N$：接收端总噪声功率，对于 AWGN 信道满足 $N = N_0 \cdot B$**第二步：选择公式**- 香农信道容量公式：$C = B \log_2\left(1 + \frac{S}{N}\right)$ （引自知识库 01_香农信道容量公式.md）- 对数换底公式：$\log_2(x) = \frac{\ln(x)}{\ln(2)}$- 重要极限公式：$\lim</pre>
+      <details><summary>备注</summary>
+        <textarea class="note" rows="2" placeholder="人工备注..."></textarea>
+      </details>
+    </div>
+  </div>
+</div>
+<div class="card" id="math-05">
+  <div class="card-head">
+    <span class="badge">math-05</span>
+    <span class="tag">math_agent</span>
+    <span class="tag lvM">M</span>
+    <span class="tag">100.9s</span>
+    <span class="score-box">得分 <input type="number" class="score" min="0" max="3" step="0.5" value="0"
+      onchange="updateScoreFromNum(this)" oninput="syncCb(this)"> / 3</span>
+  </div>
+  <div class="q"><b>题目：</b>16-QAM 调制在 AWGN 信道中每个符号理论上最多能可靠传输多少比特？给出依据。</div>
+  <div class="cols">
+    <div class="col pts">
+      <div class="col-title">✅ 标准要点（勾选命中项）</div>
+      <ul><li><label class='pt'><input type='checkbox' class='pt-cb' onchange='updateScore(this)'>16-QAM 星座点 16 个 → log2(16)=4 bit/符号（容量上界）</label></li><li><label class='pt'><input type='checkbox' class='pt-cb' onchange='updateScore(this)'>实际受噪比约束，容量低于 4 bit/符号，可用 M-QAM 容量近似公式说明</label></li><li><label class='pt'><input type='checkbox' class='pt-cb' onchange='updateScore(this)'>区分符号率与比特率</label></li></ul>
+      <div class="criteria">评分维度：correctness、structure、time</div>
+    </div>
+    <div class="col out">
+      <div class="col-title">🤖 Agent 实际输出（前 300 字）</div>
+      <pre>### 16-QAM 在 AWGN 信道中每符号最大可靠传输比特数推导**第一步：列出已知条件**- 调制方式：16-QAM（正交幅度调制）- 星座点数：$M = 16$- 信道模型：AWGN（加性高斯白噪声信道）- 目标：求每个符号（Symbol）理论上最多能可靠传输的比特数**第二步：选择公式**1. **调制映射比特数公式**：   $$k = \log_2 M$$2. **香农信道容量公式（AWGN）**——确定可靠传输的理论上限：   频谱效率（每符号可靠传输比特数）：   $$\eta = \frac{C}{B} = \log_2(1 + \text{SN</pre>
+      <details><summary>备注</summary>
+        <textarea class="note" rows="2" placeholder="人工备注..."></textarea>
+      </details>
+    </div>
+  </div>
+</div>
+<div class="card" id="math-06">
+  <div class="card-head">
+    <span class="badge">math-06</span>
+    <span class="tag">math_agent</span>
+    <span class="tag lvH">H</span>
+    <span class="tag">188.1s</span>
+    <span class="score-box">得分 <input type="number" class="score" min="0" max="3" step="0.5" value="0"
+      onchange="updateScoreFromNum(this)" oninput="syncCb(this)"> / 3</span>
+  </div>
+  <div class="q"><b>题目：</b>在 AWGN 信道上，给定 Eb/N0，如何求香农极限对应的最大码率？写出超越方程并解释。</div>
+  <div class="cols">
+    <div class="col pts">
+      <div class="col-title">✅ 标准要点（勾选命中项）</div>
+      <ul><li><label class='pt'><input type='checkbox' class='pt-cb' onchange='updateScore(this)'>R = log2(1 + 2R·Eb/N0)（归一化带宽下）</label></li><li><label class='pt'><input type='checkbox' class='pt-cb' onchange='updateScore(this)'>超越方程需数值求解；极限 Eb/N0 = ln(2) ≈ -1.59 dB</label></li><li><label class='pt'><input type='checkbox' class='pt-cb' onchange='updateScore(this)'>解释香农极限的意义：低于该值无法无错传输</label></li></ul>
+      <div class="criteria">评分维度：correctness、citation、structure、time</div>
+    </div>
+    <div class="col out">
+      <div class="col-title">🤖 Agent 实际输出（前 300 字）</div>
+      <pre>### 香农极限最大码率（频谱效率）推导在 AWGN 信道上，给定每比特信噪比 $E_b/N_0$，求对应的最大码率（通常指最大频谱效率</pre>
+      <details><summary>备注</summary>
+        <textarea class="note" rows="2" placeholder="人工备注..."></textarea>
+      </details>
+    </div>
+  </div>
+</div>
+<div class="card" id="comm-01">
+  <div class="card-head">
+    <span class="badge">comm-01</span>
+    <span class="tag">comm_agent</span>
+    <span class="tag lvS">S</span>
+    <span class="tag">91.1s</span>
+    <span class="score-box">得分 <input type="number" class="score" min="0" max="3" step="0.5" value="0"
+      onchange="updateScoreFromNum(this)" oninput="syncCb(this)"> / 3</span>
+  </div>
+  <div class="q"><b>题目：</b>GTPv2 中 Create Session Request 的必选 IE 有哪些？请引用 TS 29.274 具体章节号。</div>
+  <div class="cols">
+    <div class="col pts">
+      <div class="col-title">✅ 标准要点（勾选命中项）</div>
+      <ul><li><label class='pt'><input type='checkbox' class='pt-cb' onchange='updateScore(this)'>引用 TS 29.274（如 V17.x）Table 8.2.1-1</label></li><li><label class='pt'><input type='checkbox' class='pt-cb' onchange='updateScore(this)'>核心必选 IE：IMSI（条件必选 C）、Bearer Contexts to be created 等</label></li><li><label class='pt'><input type='checkbox' class='pt-cb' onchange='updateScore(this)'>注意区分 Mandatory(M)/Conditional(C)/Optional(O) 属性（IMSI 为 C 等细节）</label></li></ul>
+      <div class="criteria">评分维度：correctness、citation、structure、time</div>
+    </div>
+    <div class="col out">
+      <div class="col-title">🤖 Agent 实际输出（前 300 字）</div>
+      <pre>1. 【协议】3GPP TS 29.274 (GTPv2-C 协议)2. 【章节】§7.2.1 (Information Elements in a Create Session Request，具体节号可能随 Release 版本微调，通常在 Clause 7 或 Clause 8 的消息 IE 列表章节)3. 【说明】基于训练知识，未从知识库验证。根据 TS 29.274 规范，Create Session Request 消息中的信息元素分为必选（M）、条件必选（C）和可选（O）。严格标记为必选（M）的核心 IE 包括：   - Serving Network   - RAT T</pre>
+      <details><summary>备注</summary>
+        <textarea class="note" rows="2" placeholder="人工备注..."></textarea>
+      </details>
+    </div>
+  </div>
+</div>
+<div class="card" id="comm-02">
+  <div class="card-head">
+    <span class="badge">comm-02</span>
+    <span class="tag">comm_agent</span>
+    <span class="tag lvS">S</span>
+    <span class="tag">78.5s</span>
+    <span class="score-box">得分 <input type="number" class="score" min="0" max="3" step="0.5" value="0"
+      onchange="updateScoreFromNum(this)" oninput="syncCb(this)"> / 3</span>
+  </div>
+  <div class="q"><b>题目：</b>5G NR 中 SIB1 主要广播哪些内容？引用 TS 38.331 章节号。</div>
+  <div class="cols">
+    <div class="col pts">
+      <div class="col-title">✅ 标准要点（勾选命中项）</div>
+      <ul><li><label class='pt'><input type='checkbox' class='pt-cb' onchange='updateScore(this)'>引用 TS 38.331（SIB1 定义章节）</label></li><li><label class='pt'><input type='checkbox' class='pt-cb' onchange='updateScore(this)'>cellAccessRelatedInfo（PLMN 列表、cellIdentity）、cellSelectionInfo、si-SchedulingInfo、servingCellConfigCommon 等</label></li><li><label class='pt'><input type='checkbox' class='pt-cb' onchange='updateScore(this)'>SIB1 由 RMSI/PDCCH 调度，是驻留必读的系统信息</label></li></ul>
+      <div class="criteria">评分维度：correctness、citation、structure、time</div>
+    </div>
+    <div class="col out">
+      <div class="col-title">🤖 Agent 实际输出（前 300 字）</div>
+      <pre>【协议】3GPP TS 38.331 V18.9.0 Release 18【章节】§6.2.2.1 (SystemInformationBlockType1)【说明】SIB1 包含 UE 初始接入小区所必需的核心控制信息，主要广播内容包括：1) 小区接入与重选参数（如 cellBarred、intraFreqReselection、q-RxLevMin、q-QualMin）；2) 其他系统消息（Other SI）的调度信息（schedulingInfoList 及 si-WindowLength），指示 SIB 类型、广播状态与周期；3) 服务小区公共配置（ServingCellConfi</pre>
+      <details><summary>备注</summary>
+        <textarea class="note" rows="2" placeholder="人工备注..."></textarea>
+      </details>
+    </div>
+  </div>
+</div>
+<div class="card" id="comm-03">
+  <div class="card-head">
+    <span class="badge">comm-03</span>
+    <span class="tag">comm_agent</span>
+    <span class="tag lvM">M</span>
+    <span class="tag">45.6s</span>
+    <span class="score-box">得分 <input type="number" class="score" min="0" max="3" step="0.5" value="0"
+      onchange="updateScoreFromNum(this)" oninput="syncCb(this)"> / 3</span>
+  </div>
+  <div class="q"><b>题目：</b>LTE RRC 连接建立流程包含哪几个主要步骤？引用 TS 36.331。</div>
+  <div class="cols">
+    <div class="col pts">
+      <div class="col-title">✅ 标准要点（勾选命中项）</div>
+      <ul><li><label class='pt'><input type='checkbox' class='pt-cb' onchange='updateScore(this)'>引用 TS 36.331</label></li><li><label class='pt'><input type='checkbox' class='pt-cb' onchange='updateScore(this)'>RRCConnectionRequest → RRCConnectionSetup → RRCConnectionSetupComplete</label></li><li><label class='pt'><input type='checkbox' class='pt-cb' onchange='updateScore(this)'>说明 SRB1 建立、初始 NAS 消息携带（附着/TAU 请求）</label></li></ul>
+      <div class="criteria">评分维度：correctness、citation、structure、time</div>
+    </div>
+    <div class="col out">
+      <div class="col-title">🤖 Agent 实际输出（前 300 字）</div>
+      <pre>【协议】3GPP TS 36.331 (LTE)【章节】Section 5.3.3 (RRC connection establishment)【说明】基于训练知识回答（未从知识库验证到TS 36.331具体段落），LTE RRC连接建立流程主要用于建立SRB1并传输初始NAS消息。包含三个主要步骤：1. UE发起请求：当上层请求建立RRC连接或响应寻呼时，UE在CCCH逻辑信道上向E-UTRAN发送 `RRCConnectionRequest` 消息，包含建立原因（establishmentCause）和UE标识。2. 网络建立SRB1：E-UTRAN决定接受连接时，向UE发送 `R</pre>
+      <details><summary>备注</summary>
+        <textarea class="note" rows="2" placeholder="人工备注..."></textarea>
+      </details>
+    </div>
+  </div>
+</div>
+<div class="card" id="comm-04">
+  <div class="card-head">
+    <span class="badge">comm-04</span>
+    <span class="tag">comm_agent</span>
+    <span class="tag lvM">M</span>
+    <span class="tag">65.9s</span>
+    <span class="score-box">得分 <input type="number" class="score" min="0" max="3" step="0.5" value="0"
+      onchange="updateScoreFromNum(this)" oninput="syncCb(this)"> / 3</span>
+  </div>
+  <div class="q"><b>题目：</b>5G NGAP 中 UE 上下文建立流程的目的是什么？涉及哪些关键消息？引用 TS 38.413。</div>
+  <div class="cols">
+    <div class="col pts">
+      <div class="col-title">✅ 标准要点（勾选命中项）</div>
+      <ul><li><label class='pt'><input type='checkbox' class='pt-cb' onchange='updateScore(this)'>引用 TS 38.413</label></li><li><label class='pt'><input type='checkbox' class='pt-cb' onchange='updateScore(this)'>UE CONTEXT SETUP REQUEST → UE CONTEXT SETUP RESPONSE</label></li><li><label class='pt'><input type='checkbox' class='pt-cb' onchange='updateScore(this)'>目的：gNB 为 UE 建立 NG 接口上下文、配置 DRB/承载（QoS 流映射）</label></li></ul>
+      <div class="criteria">评分维度：correctness、citation、structure、time</div>
+    </div>
+    <div class="col out">
+      <div class="col-title">🤖 Agent 实际输出（前 300 字）</div>
+      <pre>1. 【协议】TS 38.300 V18.9.0 (知识库验证) / TS 38.413 (基于训练知识，未从知识库验证)2. 【章节】§16.3.4.3 UE Context Handling (TS 38.300) / §8.2.1 Initial Context Setup (TS 38.413)3. 【说明】根据 TS 38.300 §16.3.4.3，在完成初始接入与 RRC 连接建立后，AMF 通过 NG-C 接口向 NG-RAN 发送 INITIAL CONTEXT SETUP REQUEST 消息以建立完整的 UE 上下文（包含 Allowed NSSAI、PDU 会话资源</pre>
+      <details><summary>备注</summary>
+        <textarea class="note" rows="2" placeholder="人工备注..."></textarea>
+      </details>
+    </div>
+  </div>
+</div>
+<div class="card" id="comm-05">
+  <div class="card-head">
+    <span class="badge">comm-05</span>
+    <span class="tag">comm_agent</span>
+    <span class="tag lvM">M</span>
+    <span class="tag">76.3s</span>
+    <span class="score-box">得分 <input type="number" class="score" min="0" max="3" step="0.5" value="0"
+      onchange="updateScoreFromNum(this)" oninput="syncCb(this)"> / 3</span>
+  </div>
+  <div class="q"><b>题目：</b>5G 切换流程中 Xn 切换与 N2 切换的主要区别是什么？分别在什么场景使用？</div>
+  <div class="cols">
+    <div class="col pts">
+      <div class="col-title">✅ 标准要点（勾选命中项）</div>
+      <ul><li><label class='pt'><input type='checkbox' class='pt-cb' onchange='updateScore(this)'>Xn 切换：gNB 间直接协调，无需经过 AMF（核心网少参与，时延低）</label></li><li><label class='pt'><input type='checkbox' class='pt-cb' onchange='updateScore(this)'>N2 切换：跨 AMF/需要核心网参与的切换（如 AMF 变化、Xn 不可用）</label></li><li><label class='pt'><input type='checkbox' class='pt-cb' onchange='updateScore(this)'>Xn 优先；无 Xn 接口时走 N2</label></li></ul>
+      <div class="criteria">评分维度：correctness、citation、structure、time</div>
+    </div>
+    <div class="col out">
+      <div class="col-title">🤖 Agent 实际输出（前 300 字）</div>
+      <pre>【协议】3GPP TS 38.300 V18.9.0【章节】§9.2.3.2 (Mobility in RRC_CONNECTED)【说明】1. Xn切换（Xn-based Handover）：适用于源gNB与目标gNB之间存在Xn接口，且UE保持连接至同一个AMF的场景。切换信令直接在两个基站之间通过XnAP协议交互（如XnAP HANDOVER REQUEST），核心网不参与切换决策，仅在切换完成后由目标gNB发起路径切换（PATH SWITCH REQUEST）以更新用户面锚点。该方式信令路径短、切换时延低，是5G网络内切换的首选。2. N2切换/NG切换（NG-based Han</pre>
+      <details><summary>备注</summary>
+        <textarea class="note" rows="2" placeholder="人工备注..."></textarea>
+      </details>
+    </div>
+  </div>
+</div>
+<div class="card" id="comm-06">
+  <div class="card-head">
+    <span class="badge">comm-06</span>
+    <span class="tag">comm_agent</span>
+    <span class="tag lvH">H</span>
+    <span class="tag">102.5s</span>
+    <span class="score-box">得分 <input type="number" class="score" min="0" max="3" step="0.5" value="0"
+      onchange="updateScoreFromNum(this)" oninput="syncCb(this)"> / 3</span>
+  </div>
+  <div class="q"><b>题目：</b>GTPv2 与 GTPv1-U 在控制面与用户面分离的设计上有何区别？S11/S5/S8/S1-U 各承载什么？</div>
+  <div class="cols">
+    <div class="col pts">
+      <div class="col-title">✅ 标准要点（勾选命中项）</div>
+      <ul><li><label class='pt'><input type='checkbox' class='pt-cb' onchange='updateScore(this)'>GTPv2-C 用于控制面（S11/S5/S8/S4），GTPv1-U 用于用户面（S1-U/S5-U/S8-U）</label></li><li><label class='pt'><input type='checkbox' class='pt-cb' onchange='updateScore(this)'>S11：MME-SGW 控制面；S5/S8：SGW-PGW；S1-U：eNB-SGW 用户面</label></li><li><label class='pt'><input type='checkbox' class='pt-cb' onchange='updateScore(this)'>设计动机：控制面集中、用户面可分离部署（EPC 解耦）</label></li></ul>
+      <div class="criteria">评分维度：correctness、citation、structure、time</div>
+    </div>
+    <div class="col out">
+      <div class="col-title">🤖 Agent 实际输出（前 300 字）</div>
+      <pre>【协议】基于训练知识，未从知识库验证（对应 3GPP TS 23.401, TS 29.274, TS 29.281）【章节】EPS 系统架构与接口定义概述【说明】在 EPS (LTE) 架构中，3GPP 将 GTP 协议严格分离以优化控制与转发效率：1. GTPv2-C (Control Plane)：专用于控制面信令。采用消息驱动架构，支持复杂的信息单元 (IE) 嵌套，用于 MME、S-GW、P-GW 间的会话建立、承载管理与移动性信令交互。2. GTPv1-U (User Plane)：专用于用户面数据隧道。头部极度精简，仅依赖 TEID 标识隧道，用于 eNodeB、S-GW</pre>
+      <details><summary>备注</summary>
+        <textarea class="note" rows="2" placeholder="人工备注..."></textarea>
+      </details>
+    </div>
+  </div>
+</div>
+<div class="card" id="hw-01">
+  <div class="card-head">
+    <span class="badge">hw-01</span>
+    <span class="tag">hw_agent</span>
+    <span class="tag lvS">S</span>
+    <span class="tag">108.0s</span>
+    <span class="score-box">得分 <input type="number" class="score" min="0" max="3" step="0.5" value="0"
+      onchange="updateScoreFromNum(this)" oninput="syncCb(this)"> / 3</span>
+  </div>
+  <div class="q"><b>题目：</b>编写一个同步 FIFO 的 Verilog 模块，深度 16、位宽 8。请给出完整代码。</div>
+  <div class="cols">
+    <div class="col pts">
+      <div class="col-title">✅ 标准要点（勾选命中项）</div>
+      <ul><li><label class='pt'><input type='checkbox' class='pt-cb' onchange='updateScore(this)'>module 端口：clk、rst_n、wr_en、rd_en、din[7:0]、dout[7:0]、full、empty</label></li><li><label class='pt'><input type='checkbox' class='pt-cb' onchange='updateScore(this)'>读写指针位宽 5（4 位地址 + 1 位标志），空满判断正确（读指针=写指针为空、高 1 位不同其余相同为满）</label></li><li><label class='pt'><input type='checkbox' class='pt-cb' onchange='updateScore(this)'>时序逻辑非阻塞赋值、rst_n 低有效、完整 endmodule、无 TODO</label></li></ul>
+      <div class="criteria">评分维度：correctness、citation、structure、time</div>
+    </div>
+    <div class="col out">
+      <div class="col-title">🤖 Agent 实际输出（前 300 字）</div>
+      <pre>module sync_fifo (    input              clk,    input              rst_n,    input              wr_en,    input              rd_en,    input      [7:0]   din,    output reg [7:0]   dout,    output reg         full,    output reg         empty);    parameter DEPTH = 16;    parameter WIDT</pre>
+      <details><summary>备注</summary>
+        <textarea class="note" rows="2" placeholder="人工备注..."></textarea>
+      </details>
+    </div>
+  </div>
+</div>
+<div class="card" id="hw-02">
+  <div class="card-head">
+    <span class="badge">hw-02</span>
+    <span class="tag">hw_agent</span>
+    <span class="tag lvS">S</span>
+    <span class="tag">44.6s</span>
+    <span class="score-box">得分 <input type="number" class="score" min="0" max="3" step="0.5" value="0"
+      onchange="updateScoreFromNum(this)" oninput="syncCb(this)"> / 3</span>
+  </div>
+  <div class="q"><b>题目：</b>用 Verilog 实现一个 4 位二进制计数器，带异步复位。</div>
+  <div class="cols">
+    <div class="col pts">
+      <div class="col-title">✅ 标准要点（勾选命中项）</div>
+      <ul><li><label class='pt'><input type='checkbox' class='pt-cb' onchange='updateScore(this)'>cnt[3:0]，always@(posedge clk or negedge rst_n)</label></li><li><label class='pt'><input type='checkbox' class='pt-cb' onchange='updateScore(this)'>异步复位：rst_n 无效时 cnt&lt;=0，否则 cnt&lt;=cnt+1</label></li><li><label class='pt'><input type='checkbox' class='pt-cb' onchange='updateScore(this)'>非阻塞赋值、完整模块</label></li></ul>
+      <div class="criteria">评分维度：correctness、structure、time</div>
+    </div>
+    <div class="col out">
+      <div class="col-title">🤖 Agent 实际输出（前 300 字）</div>
+      <pre>module counter_4bit (    input  wire       clk,    input  wire       rst_n,    output reg  [3:0] cnt);always @(posedge clk or negedge rst_n) begin    if (!rst_n) begin        cnt &lt;= 4&#x27;b0000;    end else begin        cnt &lt;= cnt + 4&#x27;b0001;    endendendmodule说明：采用异步低电平复位rst_n，时钟上升沿触发计数，</pre>
+      <details><summary>备注</summary>
+        <textarea class="note" rows="2" placeholder="人工备注..."></textarea>
+      </details>
+    </div>
+  </div>
+</div>
+<div class="card" id="hw-03">
+  <div class="card-head">
+    <span class="badge">hw-03</span>
+    <span class="tag">hw_agent</span>
+    <span class="tag lvM">M</span>
+    <span class="tag">72.6s</span>
+    <span class="score-box">得分 <input type="number" class="score" min="0" max="3" step="0.5" value="0"
+      onchange="updateScoreFromNum(this)" oninput="syncCb(this)"> / 3</span>
+  </div>
+  <div class="q"><b>题目：</b>同步 FIFO 中如何判断空与满？解释为什么指针位宽要设计为 N+1 位。</div>
+  <div class="cols">
+    <div class="col pts">
+      <div class="col-title">✅ 标准要点（勾选命中项）</div>
+      <ul><li><label class='pt'><input type='checkbox' class='pt-cb' onchange='updateScore(this)'>空：读指针==写指针；满：指针最高位相反且低 N 位相同</label></li><li><label class='pt'><input type='checkbox' class='pt-cb' onchange='updateScore(this)'>N+1 位原因：多出的 1 位标志位区分&#x27;刚好一圈&#x27;（满）与&#x27;同一位置&#x27;（空）</label></li><li><label class='pt'><input type='checkbox' class='pt-cb' onchange='updateScore(this)'>避免地址回卷歧义</label></li></ul>
+      <div class="criteria">评分维度：correctness、structure、time</div>
+    </div>
+    <div class="col out">
+      <div class="col-title">🤖 Agent 实际输出（前 300 字）</div>
+      <pre>module sync_fifo #(    parameter DATA_W = 8,    parameter ADDR_W = 4)(    input  wire                 clk,    input  wire                 rst_n,    input  wire                 wr_en,    input  wire                 rd_en,    input  wire  [DATA_W-1:0]   din,    output reg   [DATA_W-1:0]   dou</pre>
+      <details><summary>备注</summary>
+        <textarea class="note" rows="2" placeholder="人工备注..."></textarea>
+      </details>
+    </div>
+  </div>
+</div>
+<div class="card" id="hw-04">
+  <div class="card-head">
+    <span class="badge">hw-04</span>
+    <span class="tag">hw_agent</span>
+    <span class="tag lvM">M</span>
+    <span class="tag">59.5s</span>
+    <span class="score-box">得分 <input type="number" class="score" min="0" max="3" step="0.5" value="0"
+      onchange="updateScoreFromNum(this)" oninput="syncCb(this)"> / 3</span>
+  </div>
+  <div class="q"><b>题目：</b>FPGA 设计中如何避免亚稳态？给出至少 3 种方法。</div>
+  <div class="cols">
+    <div class="col pts">
+      <div class="col-title">✅ 标准要点（勾选命中项）</div>
+      <ul><li><label class='pt'><input type='checkbox' class='pt-cb' onchange='updateScore(this)'>双级（多级）同步寄存器链</label></li><li><label class='pt'><input type='checkbox' class='pt-cb' onchange='updateScore(this)'>异步 FIFO/握手协议（en/ack）跨时钟域</label></li><li><label class='pt'><input type='checkbox' class='pt-cb' onchange='updateScore(this)'>格雷码（跨时钟计数）、单比特信号同步器；约束（set_false_path）</label></li><li><label class='pt'><input type='checkbox' class='pt-cb' onchange='updateScore(this)'>不违反亚稳态恢复时间/保持时间</label></li></ul>
+      <div class="criteria">评分维度：correctness、structure、time</div>
+    </div>
+    <div class="col out">
+      <div class="col-title">🤖 Agent 实际输出（前 300 字）</div>
+      <pre>FPGA设计中避免亚稳态的3种主要方法：1. 多级触发器同步（Synchronizer）：针对单比特信号跨时钟域，通常使用两级或三级触发器（打两拍）进行同步，增加数据稳定时间，降低亚稳态传播概率。2. 异步 FIFO（Async FIFO）：针对多比特数据流跨时钟域传输，利用双口RAM和格雷码读写指针，实现不同时钟域下的安全数据缓冲与传输。3. 握手协议（Handshake）：通过请求（Req）和应答（Ack）信号交互，确保发送端在接收端成功采样并反馈前不改变数据，适用于多比特控制信号或非连续数据传输。以下是典型的单比特信号“打两拍”同步器 Verilog 代码：module s</pre>
+      <details><summary>备注</summary>
+        <textarea class="note" rows="2" placeholder="人工备注..."></textarea>
+      </details>
+    </div>
+  </div>
+</div>
+<div class="card" id="hw-05">
+  <div class="card-head">
+    <span class="badge">hw-05</span>
+    <span class="tag">hw_agent</span>
+    <span class="tag lvM">M</span>
+    <span class="tag">133.0s</span>
+    <span class="score-box">得分 <input type="number" class="score" min="0" max="3" step="0.5" value="0"
+      onchange="updateScoreFromNum(this)" oninput="syncCb(this)"> / 3</span>
+  </div>
+  <div class="q"><b>题目：</b>用 Verilog 写出一个三段式状态机（Moore 型）识别序列 1011 的代码框架，并说明三段式优点。</div>
+  <div class="cols">
+    <div class="col pts">
+      <div class="col-title">✅ 标准要点（勾选命中项）</div>
+      <ul><li><label class='pt'><input type='checkbox' class='pt-cb' onchange='updateScore(this)'>三段：状态转移（组合）、状态寄存器（时序）、输出（组合）</label></li><li><label class='pt'><input type='checkbox' class='pt-cb' onchange='updateScore(this)'>输出不依赖输入（Moore）→ 输出由现态决定</label></li><li><label class='pt'><input type='checkbox' class='pt-cb' onchange='updateScore(this)'>优点：结构清晰、利于时序收敛、输出无毛刺（寄存器输出）</label></li></ul>
+      <div class="criteria">评分维度：correctness、structure、time</div>
+    </div>
+    <div class="col out">
+      <div class="col-title">🤖 Agent 实际输出（前 300 字）</div>
+      <pre>module seq_det_1011_moore (    input  wire       clk,    input  wire       rst_n,    input  wire       din,    output wire       dout);    reg [2:0] curr_state;    reg [2:0] next_state;    localparam S0 = 3&#x27;b000;     localparam S1 = 3&#x27;b001;     localparam S2 = 3&#x27;b010;     localparam S3</pre>
+      <details><summary>备注</summary>
+        <textarea class="note" rows="2" placeholder="人工备注..."></textarea>
+      </details>
+    </div>
+  </div>
+</div>
+<div class="card" id="hw-06">
+  <div class="card-head">
+    <span class="badge">hw-06</span>
+    <span class="tag">hw_agent</span>
+    <span class="tag lvH">H</span>
+    <span class="tag">127.0s</span>
+    <span class="score-box">得分 <input type="number" class="score" min="0" max="3" step="0.5" value="0"
+      onchange="updateScoreFromNum(this)" oninput="syncCb(this)"> / 3</span>
+  </div>
+  <div class="q"><b>题目：</b>异步 FIFO 的读写指针为什么要用格雷码跨时钟域同步？格雷码转换的边界条件是什么？</div>
+  <div class="cols">
+    <div class="col pts">
+      <div class="col-title">✅ 标准要点（勾选命中项）</div>
+      <ul><li><label class='pt'><input type='checkbox' class='pt-cb' onchange='updateScore(this)'>格雷码相邻地址仅 1 bit 变化 → 跨时钟采样时最多错 1 bit，避免多 bit 竞争误判</label></li><li><label class='pt'><input type='checkbox' class='pt-cb' onchange='updateScore(this)'>空满判断需转换到对方时钟域；满判断用写时钟域读指针同步值，空判断反之</label></li><li><label class='pt'><input type='checkbox' class='pt-cb' onchange='updateScore(this)'>边界：指针从最大值回卷 0 时格雷码连续性；需额外 1 位做圈数标志</label></li></ul>
+      <div class="criteria">评分维度：correctness、citation、structure、time</div>
+    </div>
+    <div class="col out">
+      <div class="col-title">🤖 Agent 实际输出（前 300 字）</div>
+      <pre>**一、 为什么异步 FIFO 指针要用格雷码？**1. **单比特变化特性**：二进制计数器在特定数值跳变时（如 `0111` -&gt; `1000`）会同时翻转多个比特。在跨时钟域（CDC）传输时，由于各比特走线延迟差异及寄存器建立/保持时间不确定性，接收端极易采样到错误的中间状态（如 `1111` 或 `0000`）。格雷码的相邻状态仅有 1 个比特发生变化，从根本上避免了多比特同时翻转导致的采样错误。2. **亚稳态安全与容错**：即使唯一变化的比特在接收端时钟域产生亚稳态，其最终稳定结果也只能是“跳变前的值”或“跳变后的值”。这两个结果都是合法的格雷码，且对应相邻的 FIFO 存储位</pre>
+      <details><summary>备注</summary>
+        <textarea class="note" rows="2" placeholder="人工备注..."></textarea>
+      </details>
+    </div>
+  </div>
+</div>
+<div class="card" id="lit-01">
+  <div class="card-head">
+    <span class="badge">lit-01</span>
+    <span class="tag">lit_review_agent</span>
+    <span class="tag lvS">S</span>
+    <span class="tag">44.8s</span>
+    <span class="score-box">得分 <input type="number" class="score" min="0" max="3" step="0.5" value="0"
+      onchange="updateScoreFromNum(this)" oninput="syncCb(this)"> / 3</span>
+  </div>
+  <div class="q"><b>题目：</b>文献调研：LDPC 码在 5G NR 中的应用（覆盖：信道编码原理 / 5G 标准化现状 / 硬件实现）</div>
+  <div class="cols">
+    <div class="col pts">
+      <div class="col-title">✅ 标准要点（勾选命中项）</div>
+      <ul><li><label class='pt'><input type='checkbox' class='pt-cb' onchange='updateScore(this)'>引用平台 KB：3GPP TS 38.212 §5.3.2/§5.4.2（BG1/BG2、最大码长 8448/3840）</label></li><li><label class='pt'><input type='checkbox' class='pt-cb' onchange='updateScore(this)'>引用公网文献：LDPC 开山之作 Gallager(1962)、近期打孔优化论文</label></li><li><label class='pt'><input type='checkbox' class='pt-cb' onchange='updateScore(this)'>综述结构完整：主题/子问题/背景/核心/现状/结论/参考文献</label></li></ul>
+      <div class="criteria">评分维度：correctness、citation、structure、time</div>
+    </div>
+    <div class="col out">
+      <div class="col-title">🤖 Agent 实际输出（前 300 字）</div>
+      <pre>1. 【主题】LDPC码在5G NR数据信道中的编码原理、标准化现状与硬件实现综述。2. 【子问题】(1) LDPC码的信道编码原理及其在5G中的适配性是什么？(2) 3GPP 5G NR标准中LDPC码的结构与标准化现状如何？(3) LDPC编解码器的硬件实现面临哪些关键挑战？3. 【研究背景】5G NR需支持eMBB超高吞吐与URLLC超低时延，4G Turbo码因吞吐量扩展受限及并行解码缺陷被取代。LDPC码凭借逼近香农限的性能与高度并行的解码架构，于2016年被3GPP选为5G NR数据信道标准编码方案（TS 38.212 V15.0.0）。4. 【核心内容】**</pre>
+      <details><summary>备注</summary>
+        <textarea class="note" rows="2" placeholder="人工备注..."></textarea>
+      </details>
+    </div>
+  </div>
+</div>
+<div class="card" id="lit-02">
+  <div class="card-head">
+    <span class="badge">lit-02</span>
+    <span class="tag">lit_review_agent</span>
+    <span class="tag lvM">M</span>
+    <span class="tag">34.8s</span>
+    <span class="score-box">得分 <input type="number" class="score" min="0" max="3" step="0.5" value="0"
+      onchange="updateScoreFromNum(this)" oninput="syncCb(this)"> / 3</span>
+  </div>
+  <div class="q"><b>题目：</b>文献调研：Polar 码在 5G eMBB 场景中的应用与研究进展</div>
+  <div class="cols">
+    <div class="col pts">
+      <div class="col-title">✅ 标准要点（勾选命中项）</div>
+      <ul><li><label class='pt'><input type='checkbox' class='pt-cb' onchange='updateScore(this)'>Polar 码用于 5G NR 控制信道（PDCCH/PBCH）与 eMBB 上行小码块</label></li><li><label class='pt'><input type='checkbox' class='pt-cb' onchange='updateScore(this)'>引用 TS 38.212 相关章节 + 公网论文（Arikan 2009 奠基）</label></li><li><label class='pt'><input type='checkbox' class='pt-cb' onchange='updateScore(this)'>研究进展：CA-Polar、速率匹配、译码算法（SCL/BP）</label></li></ul>
+      <div class="criteria">评分维度：correctness、citation、structure、time</div>
+    </div>
+    <div class="col out">
+      <div class="col-title">🤖 Agent 实际输出（前 300 字）</div>
+      <pre>1. 【主题】Polar码在5G eMBB场景中的标准化应用与技术演进综述。2. 【子问题】- Polar码的原理与译码机制是什么？- 3GPP标准中Polar码在5G eMBB控制信道如何规范？- Polar码在eMBB场景的性能优化研究进展如何？3. 【研究背景】Polar码是首个被严格证明可达信道容量的编码方案（Arıkan 2009）。3GPP在R15标准中将其采纳为5G eMBB控制信道（PDCCH/PUCCH）及广播信道（PBCH）的编码方案，替代了4G时代的TBCC码，标志着信道编码理论的重大突破与工程落地。4. 【核心内容】**4.1 Polar码原理与译</pre>
+      <details><summary>备注</summary>
+        <textarea class="note" rows="2" placeholder="人工备注..."></textarea>
+      </details>
+    </div>
+  </div>
+</div>
+<div class="card" id="lit-03">
+  <div class="card-head">
+    <span class="badge">lit-03</span>
+    <span class="tag">lit_review_agent</span>
+    <span class="tag lvM">M</span>
+    <span class="tag">45.3s</span>
+    <span class="score-box">得分 <input type="number" class="score" min="0" max="3" step="0.5" value="0"
+      onchange="updateScoreFromNum(this)" oninput="syncCb(this)"> / 3</span>
+  </div>
+  <div class="q"><b>题目：</b>文献调研：URLLC 低时延高可靠通信的关键技术</div>
+  <div class="cols">
+    <div class="col pts">
+      <div class="col-title">✅ 标准要点（勾选命中项）</div>
+      <ul><li><label class='pt'><input type='checkbox' class='pt-cb' onchange='updateScore(this)'>关键技术：mini-slot、短 TTI、免授权传输（grant-free）、多样性（频率/空间/时域重传）、HARQ 优化</label></li><li><label class='pt'><input type='checkbox' class='pt-cb' onchange='updateScore(this)'>引用 3GPP TS 38.214/38.321 + 公网综述论文</label></li><li><label class='pt'><input type='checkbox' class='pt-cb' onchange='updateScore(this)'>指标：端到端时延 1ms、可靠性 99.999%</label></li></ul>
+      <div class="criteria">评分维度：correctness、citation、structure、time</div>
+    </div>
+    <div class="col out">
+      <div class="col-title">🤖 Agent 实际输出（前 300 字）</div>
+      <pre>1. 【主题】调研5G及演进系统中URLLC低时延高可靠通信的关键技术。2. 【子问题】- URLLC的时延与可靠性量化目标是什么？- 降低空口时延的关键机制有哪些？- 提升传输可靠性的编码与冗余机制有哪些？3. 【研究背景】URLLC是5G三大核心场景之一，驱动工业互联网与自动驾驶演进。3GPP自Rel-15起定义基础框架，Rel-16/17逐步将时延极限推向0.1ms，可靠性逼近1-10^-6，形成从物理层到网络层的系统性技术体系。4. 【核心内容】**1) URLLC定义与目标**- 权威定义：3GPP TS 22.261 V17.4.0 §6.1.1明确URLL</pre>
+      <details><summary>备注</summary>
+        <textarea class="note" rows="2" placeholder="人工备注..."></textarea>
+      </details>
+    </div>
+  </div>
+</div>
+<div class="card" id="lit-04">
+  <div class="card-head">
+    <span class="badge">lit-04</span>
+    <span class="tag">lit_review_agent</span>
+    <span class="tag lvM">M</span>
+    <span class="tag">36.0s</span>
+    <span class="score-box">得分 <input type="number" class="score" min="0" max="3" step="0.5" value="0"
+      onchange="updateScoreFromNum(this)" oninput="syncCb(this)"> / 3</span>
+  </div>
+  <div class="q"><b>题目：</b>文献调研：大规模 MIMO 信道估计技术综述（导频污染问题与解决方案）</div>
+  <div class="cols">
+    <div class="col pts">
+      <div class="col-title">✅ 标准要点（勾选命中项）</div>
+      <ul><li><label class='pt'><input type='checkbox' class='pt-cb' onchange='updateScore(this)'>导频污染：不同小区复用导频导致信道估计误差累积</label></li><li><label class='pt'><input type='checkbox' class='pt-cb' onchange='updateScore(this)'>解决方案：导频分配优化、时移导频、半盲/盲估计、协作</label></li><li><label class='pt'><input type='checkbox' class='pt-cb' onchange='updateScore(this)'>引用公网论文（含 IEEE 元数据论文），综述结构完整</label></li></ul>
+      <div class="criteria">评分维度：correctness、citation、structure、time</div>
+    </div>
+    <div class="col out">
+      <div class="col-title">🤖 Agent 实际输出（前 300 字）</div>
+      <pre>1. 【主题】大规模 MIMO 信道估计中的导频污染问题及其解决方案综述。2. 【子问题】1) 导频污染的成因及对信道估计的影响？2) 基于协议与资源分配的导频污染缓解机制？3) 基于信号处理与预编码的导频污染消除技术？3. 【研究背景】TDD 模式下大规模 MIMO 依赖上下行信道互易性，基站通过上行导频估计信道。由于相干时间内导频资源有限，多小区复用导频导致非正交干扰，即导频污染，被视为制约系统性能的根本瓶颈 (Marzetta 2010)。4. 【核心内容】**4.1 导频污染成因与影响**在多小区 TDD 系统中，相邻小区用户使用相同导频序列，导致基站估计的信道</pre>
+      <details><summary>备注</summary>
+        <textarea class="note" rows="2" placeholder="人工备注..."></textarea>
+      </details>
+    </div>
+  </div>
+</div>
+<div class="card" id="lit-05">
+  <div class="card-head">
+    <span class="badge">lit-05</span>
+    <span class="tag">lit_review_agent</span>
+    <span class="tag lvH">H</span>
+    <span class="tag">35.7s</span>
+    <span class="score-box">得分 <input type="number" class="score" min="0" max="3" step="0.5" value="0"
+      onchange="updateScoreFromNum(this)" oninput="syncCb(this)"> / 3</span>
+  </div>
+  <div class="q"><b>题目：</b>文献调研：语义通信（Semantic Communication）研究进展与挑战</div>
+  <div class="cols">
+    <div class="col pts">
+      <div class="col-title">✅ 标准要点（勾选命中项）</div>
+      <ul><li><label class='pt'><input type='checkbox' class='pt-cb' onchange='updateScore(this)'>语义通信：传输&#x27;含义&#x27;而非&#x27;符号&#x27;，DL 编码端到端优化（如 DeepSC）</label></li><li><label class='pt'><input type='checkbox' class='pt-cb' onchange='updateScore(this)'>挑战：语义度量、任务相关设计、泛化性、与现有编码体系融合</label></li><li><label class='pt'><input type='checkbox' class='pt-cb' onchange='updateScore(this)'>引用公网最新论文（arXiv + IEEE），注明年份与会议/期刊</label></li></ul>
+      <div class="criteria">评分维度：correctness、citation、structure、time</div>
+    </div>
+    <div class="col out">
+      <div class="col-title">🤖 Agent 实际输出（前 300 字）</div>
+      <pre>1. 【主题】语义通信在6G背景下的理论演进、关键技术与面临挑战综述。2. 【子问题】① 语义通信的定义与理论演进是什么？② 深度学习驱动的语义通信关键技术有哪些？③ 语义通信的评价体系与标准化现状如何？3. 【研究背景】Shannon经典信息论聚焦语法层（比特传输），导致逼近容量极限后难以提升有效信息传递效率。Weaver 1949年提出通信三级层次，指出语义与语用层是未来方向。随着6G愿景提出，突破语义瓶颈、实现“意义”传输成为研究热点。4. 【核心内容】**① 定义与理论演进**- 权威定义：Weaver将通信分为语法、语义、语用三级（Weaver 1949）；传</pre>
+      <details><summary>备注</summary>
+        <textarea class="note" rows="2" placeholder="人工备注..."></textarea>
+      </details>
+    </div>
+  </div>
+</div>
+
+<div style="text-align:center;margin:20px">
+  <button onclick="saveSheet()" style="background:#8B0000;color:#fff;border:none;
+    border-radius:8px;padding:10px 30px;font-size:16px;cursor:pointer">💾 导出评分 JSON</button>
+</div>
+
+<script>
+function cbCount(card){
+  const cbs = card.querySelectorAll('.pt-cb');
+  let n = 0; cbs.forEach(c => { if (c.checked) n++; });
+  return n;
+}
+function updateScore(elm){
+  const card = elm.closest('.card');
+  const total = card.querySelectorAll('.pt-cb').length;
+  const hit = cbCount(card);
+  const num = card.querySelector('.score');
+  if (hit === total) { num.value = 3; }
+  else if (hit > 0) { num.value = num.value || 1; }
+  else { num.value = 0; }
+  refreshDone();
+}
+function updateScoreFromNum(elm){
+  const card = elm.closest('.card');
+  const hit = cbCount(card), total = card.querySelectorAll('.pt-cb').length;
+  const v = parseFloat(elm.value) || 0;
+  if (v === 3 && hit < total) {
+    card.querySelectorAll('.pt-cb').forEach(c => c.checked = true);
+  }
+  if (v === 0) { card.querySelectorAll('.pt-cb').forEach(c => c.checked = false); }
+  refreshDone();
+}
+function syncCb(elm){ /* 数字输入实时同步到勾选状态 */ }
+function refreshDone(){
+  const cards = document.querySelectorAll('.card');
+  let n = 0;
+  cards.forEach(c => { if (parseFloat(c.querySelector('.score').value) > 0) n++; });
+  document.getElementById('doneCount').textContent = n;
+}
+function saveSheet(){
+  const cards = document.querySelectorAll('.card');
+  const out = {};
+  cards.forEach(c => {
+    const id = c.id;
+    const score = parseFloat(c.querySelector('.score').value) || 0;
+    const note = c.querySelector('.note') ? c.querySelector('.note').value : '';
+    const hit = [];
+    c.querySelectorAll('.pt-cb').forEach(cb => { if (cb.checked) hit.push(cb.closest('.pt').textContent.trim()); });
+    out[id] = { score: score, hit: hit, note: note };
+  });
+  const blob = new Blob([JSON.stringify(out, null, 2)], {type: 'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'score_result_' + new Date().toISOString().slice(0,10) + '.json';
+  a.click();
+}
+</script>
+</body></html>
